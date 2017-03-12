@@ -71,7 +71,7 @@ class SiteController extends Controller
      * @return mixed
      */
     public function actionIndex()
-    {
+    {		
         return $this->render('index');
     }
 
@@ -172,6 +172,7 @@ class SiteController extends Controller
      */
     public function actionRequestPasswordReset()
     {
+		$this->bodyClass = 'login';
         $model = new PasswordResetRequestForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
