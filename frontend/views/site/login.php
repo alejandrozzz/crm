@@ -27,10 +27,14 @@ $this->params['breadcrumbs'][] = $this->title;
 	</div>
 	<div>
 	<?= Html::submitButton('Log in', ['class' => 'btn btn-default submit', 'name' => 'login-button']) ?>
-	</div>
-	<div>
+	
 	<?= Html::a('Lost your password?', ['site/request-password-reset', 'class' => 'reset_pass']) ?>
 	</div>
+	<div class="separator">
+                <p class="change_link">New to site? <?= Html::a('Create Account', ['site/register'], ['class' => 'to_register'])?>
+                  
+                </p>
+				</div>
 	<div class="clearfix"></div>
 	<?php ActiveForm::end(); ?>
 	</section>

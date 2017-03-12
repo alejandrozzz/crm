@@ -10,7 +10,6 @@ use yii\bootstrap\ActiveForm;
 $this->title = 'Signup';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-    <h1><?= Html::encode($this->title) ?></h1>
 
       
 <div class="login_wrapper">
@@ -34,7 +33,11 @@ $this->params['breadcrumbs'][] = $this->title;
 				<?= Html::submitButton('Submit', ['class' => 'btn btn-default submit', 'name' => 'signup-button']) ?>
                 
               </div>
-
+<div class="separator">
+                <p class="change_link">Already a member ? <?= Html::a('Log in', ['site/login'])?>
+				
+                </p>
+				</div>
               <div class="clearfix"></div>
 
             
