@@ -28,7 +28,7 @@ AppAsset::register($this);
 <?php
 $currentAction = (Yii::$app->controller->id.'/'.Yii::$app->controller->action->id);
 
-if ( $currentAction != 'site/signup'  ) {
+if ( $currentAction != 'site/signup' && $currentAction != 'site/login'  ) {
 ?>
 <div class="container body">
       <div class="main_container">
@@ -280,11 +280,11 @@ if ( $currentAction != 'site/signup'  ) {
  
 		<?php } ?>
         <?= $content ?>
-<?php if ( $currentAction != 'site/signup'  ) {
+<?php if ( $currentAction != 'site/signup' && $currentAction != 'site/login' ) {
 ?>
 </div>
     </div>
-<?php }?>
+
 <footer class="footer">
 <!-- footer content -->
         <footer>
@@ -297,7 +297,7 @@ if ( $currentAction != 'site/signup'  ) {
         <!-- /footer content -->
     
 </footer>
-
+<?php }?>
 <?php $this->endBody() ?>
 </body>
 </html>
