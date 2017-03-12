@@ -20,10 +20,16 @@ AppAsset::register($this);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
+	
     <?php $this->head() ?>
 </head>
-<body class="nav-md">
+<body class="<?= $this->context->bodyClass; ?>">
 <?php $this->beginBody() ?>
+<?php
+$currentAction = (Yii::$app->controller->id.'/'.Yii::$app->controller->action->id);
+
+if ( $currentAction != 'site/signup'  ) {
+?>
 <div class="container body">
       <div class="main_container">
         <div class="col-md-3 left_col">
@@ -197,7 +203,7 @@ AppAsset::register($this);
                       </a>
                     </li>
                     <li><a href="javascript:;">Help</a></li>
-					<li><?= (Yii::$app->user->isGuest ?  Html::a('<i class="fa fa-sign-out pull-right"></i>Register', ['site/signup'], ['class' => 'fa fa-sign-out pull-right'])  : Html::a('<i class="fa fa-sign-out pull-right"></i>Logout', ['site/logout'], ['class' => 'fa fa-sign-out pull-right']));?>
+					<li><?= (Yii::$app->user->isGuest ?  Html::a('<i class="fa fa-sign-out pull-right"></i>Register', ['site/signup'], [])  : Html::a('<i class="fa fa-sign-out pull-right"></i>Logout', ['site/logout'], ['data-method'=>'post']));?>
                     </ul>
                 </li>
 
@@ -272,11 +278,13 @@ AppAsset::register($this);
         <!-- /top navigation -->
 
  
-        
+		<?php } ?>
         <?= $content ?>
-
+<?php if ( $currentAction != 'site/signup'  ) {
+?>
 </div>
     </div>
+<?php }?>
 <footer class="footer">
 <!-- footer content -->
         <footer>

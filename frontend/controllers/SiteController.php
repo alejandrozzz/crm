@@ -103,6 +103,7 @@ class SiteController extends Controller
      */
     public function actionLogout()
     {
+		
         Yii::$app->user->logout();
 
         return $this->goHome();
@@ -148,6 +149,7 @@ class SiteController extends Controller
      */
     public function actionSignup()
     {
+		$this->bodyClass = 'login';
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {

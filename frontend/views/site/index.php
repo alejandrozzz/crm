@@ -3,6 +3,7 @@
 /* @var $this yii\web\View */
 
 $this->title = 'DupaCRM';
+
 ?>
 
 <!-- page content -->

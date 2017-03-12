@@ -12,7 +12,7 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/site.css',
+        
 		'vendors/bootstrap/dist/css/bootstrap.min.css',
 		'vendors/font-awesome/css/font-awesome.min.css',
 		'vendors/nprogress/nprogress.css',
@@ -52,4 +52,5 @@ class AppAsset extends AssetBundle
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
     ];
+	public $jsOptions = ['position' => \yii\web\View::POS_HEAD];
 }
