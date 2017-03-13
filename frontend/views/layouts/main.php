@@ -1,15 +1,12 @@
 <?php
-
 /* @var $this \yii\web\View */
 /* @var $content string */
-
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
-
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
@@ -27,7 +24,6 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 <?php
 $currentAction = (Yii::$app->controller->id.'/'.Yii::$app->controller->action->id);
-
 if ( $currentAction != 'site/signup' && $currentAction != 'site/login' && $currentAction != 'site/request-password-reset' ) {
 ?>
 <div class="container body">

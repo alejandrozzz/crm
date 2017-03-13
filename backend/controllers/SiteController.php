@@ -6,6 +6,10 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\LoginForm;
+use backend\models\Module;
+use backend\models\ModuleFields;
+use backend\models\ModuleFieldTypes;
+use yii\helpers\DupaHelper;
 
 /**
  * Site controller
@@ -60,7 +64,13 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+		$modules = Module::find()->all();
+        $tables = DupaHelper::getDBTables([]);
+        
+        return $this->render('index', [
+            'modules' => $modules,
+            'tables' => $tables
+        ]);
     }
 
     /**
