@@ -1,5 +1,9 @@
 <?php
-
+use yii\helpers\Html;
+use yii\bootstrap\Modal;
+use yii\bootstrap\ActiveForm;
+use backend\models\Module;
+use backend\controllers\Dupa;
 /* @var $this yii\web\View */
 
 $this->title = 'My Yii Application';
@@ -13,7 +17,26 @@ $this->title = 'My Yii Application';
 
         <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
     </div>
-
+	<?php var_dump($tables) ?>
+	<button class="btn btn-success btn-sm pull-right" data-toggle="modal" data-target="#AddModal">Add __singular_cap_var__</button>
+	
+		<?php 
+		$model = new Module();
+		$form = ActiveForm::begin([ 'enableClientValidation' => true, 'action'	=> ['dupa/store'], 'method' => 'post',
+                'options'                => [
+                    'id'      => '__singular_var__-add-form'
+					
+                 ]]);
+                
+		Modal::begin(['id' => 'AddModal',
+		'header' => '<b>' . Yii::t('app', 'Create new project') . '</b>',
+		'footer' => Html::submitButton('Send', ['class' => 'btn btn-success'])]);?>
+		
+	  <?php echo $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+      
+	  <?php Modal::end();
+	  ActiveForm::end();?>
+</div>
     <div class="body-content">
 
         <div class="row">

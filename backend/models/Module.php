@@ -713,6 +713,59 @@ class Module extends ActiveRecord
             }
         }
     }
+	
+	public static function getListingColumns($module_id_name, $isObjects = false)
+    {
+        $module = null;
+        if(is_int($module_id_name)) {
+            $module = self::get($module_id_name);
+        } else {
+            $module = self::find()->where('name', $module_id_name)->one();
+        }
+        $listing_cols = ModuleFields::find()->where('module', $module->id)->where('listing_col', 1)->orderBy('sort', 'asc')->asArray()->all();
+        
+        if($isObjects) {
+            $id_col = array('label' => 'id', 'colname' => 'id');
+        } else {
+            $id_col = 'id';
+        }
+        $listing_cols_temp = array($id_col);
+        foreach($listing_cols as $col) {
+            //if(Module::hasFieldAccess($module->id, $col['id'])) {
+                if($isObjects) {
+                    $listing_cols_temp[] = $col;
+                } else {
+                    $listing_cols_temp[] = $col['colname'];
+                }
+            //}
+        }
+        return $listing_cols_temp;
+    }
+
+    public static function get($module_name)
+    {
+        $module = null;
+        if(is_int($module_name)) {
+            $module = self::find($module_name);
+        } else {
+            $module = self::find()->where(['name' => $module_name, 'name_db' => $module_name])->one();
+        }
+
+        // If Module is found in database also attach its field array to it.
+        if(isset($module)) {
+            $module = $module->asArray();
+            $fields = ModuleFields::find()->where('module', $module['id'])->orderBy('sort', 'asc')->asArray()->all();
+            $fields2 = array();
+            foreach($fields as $field) {
+                $fields2[$field['colname']] = $field;
+            }
+            $module['fields'] = $fields2;
+            return (object)$module;
+        } else {
+            return null;
+        }
+    }
+	
 	public static function tableName(){
 		return '{{modules}}';
 	}
