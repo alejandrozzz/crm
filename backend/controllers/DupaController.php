@@ -30,14 +30,14 @@ class DupaController extends Controller
 
     public function actionIndex()
     {
+        $id = (int)Yii::$app->request->get('id');
+        $module = Module::get($id);
 
-        $module = Module::get('__module_name__');
-        var_dump($module);
-        die();
+
         //if(Module::hasAccess($module->id)) {
-        return $this->render('dupa.__view_folder__.index', [
+        return $this->render('index', [
             'show_actions' => $this->show_action,
-            'listing_cols' => Module::getListingColumns('__module_name__'),
+            'listing_cols' => Module::getListingColumns($id),
             'module' => $module
         ]);
 
@@ -57,7 +57,7 @@ class DupaController extends Controller
     }
     
 
-    public function actionStore(Request $request)
+    public function actionStore()
     {
         //if(Module::hasAccess("__module_name__", "create")) {
             
@@ -68,9 +68,22 @@ class DupaController extends Controller
             //if($validator->fails()) {
              //   return redirect()->back()->withErrors($validator)->withInput();
             //}
-            
-            $insert_id = Module::insert("__module_name__", $request);
-            
+            //Yii::$app->db->createCommand()->insert();
+           //
+            //////
+            $model = new Module();
+        ($model->load(Yii::$app->request->post(), false));
+
+//        $model->text = '123';
+//        ...
+        if (!$model->validate())
+        {
+            $model->errors;
+        }
+        $model->save();
+            //////
+            $insert_id = $model->id;
+        return $this->redirect(['dupa/index/', 'id' => $insert_id]);
      //       return redirect()->route(config('laraadmin.adminRoute') . '.__route_resource__.index');
             
        // } else {

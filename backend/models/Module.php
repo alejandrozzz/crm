@@ -746,15 +746,18 @@ class Module extends ActiveRecord
     {
         $module = null;
         if(is_int($module_name)) {
-            $module = self::find($module_name);
+            $module = self::find()->where(['id' => $module_name])->one();
         } else {
             $module = self::find()->where(['name' => $module_name, 'name_db' => $module_name])->one();
         }
 
         // If Module is found in database also attach its field array to it.
         if(isset($module)) {
-            $module = $module->asArray();
+            $module = $module->attributes;
+
             $fields = ModuleFields::find()->where('module', $module['id'])->orderBy('sort', 'asc')->asArray()->all();
+            var_dump($fields);
+            die();
             $fields2 = array();
             foreach($fields as $field) {
                 $fields2[$field['colname']] = $field;
