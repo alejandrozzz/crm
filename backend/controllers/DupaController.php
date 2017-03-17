@@ -70,24 +70,49 @@ class DupaController extends Controller
             //}
             //Yii::$app->db->createCommand()->insert();
            //
+        var_dump(Yii::$app->request->post('Module')['name']);
             //////
-            $model = new Module();
-        ($model->load(Yii::$app->request->post(), false));
+        $insert_id = Module::insertModule(Yii::$app->request->post('Module')['name'], Yii::$app->request->post('Module'));
+//            $model = new Module();
 
-//        $model->text = '123';
-//        ...
-        if (!$model->validate())
-        {
-            $model->errors;
-        }
-        $model->save();
+  //      $model->attributes=Yii::$app->request->post('Module');
+    //    if (!$model->validate())
+      //  {
+        //    $model->errors;
+        //}
+        //$model->save();
+
             //////
-            $insert_id = $model->id;
-        return $this->redirect(['dupa/index/', 'id' => $insert_id]);
+            //$insert_id = $model->id;
+        return $this->redirect(['dupa/show/', 'id' => $insert_id]);
      //       return redirect()->route(config('laraadmin.adminRoute') . '.__route_resource__.index');
             
        // } else {
          //   return redirect(config('laraadmin.adminRoute') . "/");
         //}
+    }
+
+    public function actionShow()
+    {
+
+            $id = (int)Yii::$app->request->get('id');
+            echo $id;
+
+            $__singular_var__ = Module::find()->where(['id' => $id])->one();
+
+            if(isset($__singular_var__->id)) {
+
+                $module = Module::getModule($id);
+                $module->row = $__singular_var__;
+
+                return $this->render('show', [
+                    'module' => $module,
+                    'view_col' => $module->view_col,
+                    'no_header' => true,
+                    'no_padding' => "no-padding",
+                    '__singular_var__' => $__singular_var__
+                ]);
+            }
+
     }
 }

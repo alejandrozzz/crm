@@ -20,6 +20,23 @@ class ModuleFields extends ActiveRecord{
 
     ];
 
+    public function rules(){
+
+        return [
+            [['colname'], 'string'],
+            [['label'], 'string'],
+            [['module'], 'integer'],
+            [['field_type'], 'integer'],
+            [['unique'], 'integer'],
+            [['defaultvalue'], 'string'],
+            [['minlength'], 'integer'],
+            [['maxlength'], 'integer'],
+            [['required'], 'integer'],
+            [['listing_col'], 'integer'],
+            [['popup_vals'], 'string']
+        ];
+    }
+
     public static function getModuleFields($moduleName)
     {
         $module = Module::find()->where('name', $moduleName)->one();

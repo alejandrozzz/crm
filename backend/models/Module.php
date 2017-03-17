@@ -20,35 +20,66 @@ class Module extends ActiveRecord
     protected $hidden = [
     
     ];
-	
+    public function rules(){
+
+        return [
+            [['name'], 'string'],
+            [['label'], 'string'],
+            [['name_db'], 'integer'],
+            [['view_col'], 'integer'],
+            [['model'], 'integer'],
+            [['controller'], 'string'],
+            [['fa_icon'], 'string'],
+            [['is_gen'], 'integer']
+
+        ];
+    }
+
 	public static function generateBase($module_name, $icon)
     {
         
         $names = DupaHelper::generateModuleNames($module_name, $icon);
-        
+        ///var_dump($names);
         // Check is Generated
         $is_gen = false;
-        if(file_exists(base_path('backend/controllers/' . ($names->controller) . ".php"))) {
-            if(($names->model == "User" || $names->model == "Role" || $names->model == "Permission") && file_exists(base_path('backend/models/' . ($names->model) . ".php"))) {
+        if(file_exists(__DIR__.'backend/controllers/' . ($names['controller']) . ".php")) {
+            if(($names['model'] == "User" || $names['model'] == "Role" || $names['model'] == "Permission") && file_exists(__DIR__.'backend/models/' . ($names['model']) . ".php")) {
                 $is_gen = true;
-            } else if(file_exists(base_path('backend/models/' . ($names->model) . ".php"))) {
+            } else if(file_exists(__DIR__.'backend/models/' . ($names['model']) . ".php")) {
                 $is_gen = true;
             }
         }
-        $module = self::find()->where('name', $names->module)->one();
-        if(!isset($module->id)) {
-            $module = Module::create([
-                'name' => $names->module,
-                'label' => $names->label,
-                'name_db' => $names->table,
-                'view_col' => "",
-                'model' => $names->model,
-                'controller' => $names->controller,
-                'fa_icon' => $names->fa_icon,
-                'is_gen' => $is_gen,
-            
-            ]);
+
+        $module = self::find()->where("name like '%".$names['model']."%'")->one();
+
+        if(empty($module)) {
+
+            $module = new Module();
+            //var_dump($module->attributes());
+            $names['name'] = $names['module'];
+            unset($names['module']);
+            $names['name_db'] = $names['table'];
+            unset($names['table']);
+            $names['view_col'] = '';
+            $names['is_gen'] = 0;
+            $names['created_at'] = 0;
+            $names['updated_at'] = 0;
+            //var_dump($names);
+            $module->attributes = $names;
+            var_dump($names);
+//            $module->name = $names->module;
+//            $module->label = $names->label;
+//            $module->name_db = $names->table;
+//            $module->view_col = "";
+//            $module->model = $names->model;
+//            $module->controller = $names->controller;
+//            $module->fa_icon = $names->fa_icon;
+//            $module->is_gen = $is_gen;
+
+            $module->save();
+
         }
+
         return $module->id;
     }
 	
@@ -742,7 +773,7 @@ class Module extends ActiveRecord
         return $listing_cols_temp;
     }
 
-    public static function get($module_name)
+    public static function getModule($module_name)
     {
         $module = null;
         if(is_int($module_name)) {
@@ -755,9 +786,8 @@ class Module extends ActiveRecord
         if(isset($module)) {
             $module = $module->attributes;
 
-            $fields = ModuleFields::find()->where('module', $module['id'])->orderBy('sort', 'asc')->asArray()->all();
-            var_dump($fields);
-            die();
+            $fields = ModuleFields::find()->where(['module'=>$module['id']])->orderBy('sort', 'asc')->asArray()->all();
+
             $fields2 = array();
             foreach($fields as $field) {
                 $fields2[$field['colname']] = $field;
@@ -768,7 +798,46 @@ class Module extends ActiveRecord
             return null;
         }
     }
-	
+
+    public static function insertModule($module_name, $request)
+    {
+        $module = Module::getModule($module_name);
+        var_dump($module);
+        die();
+        if(isset($module)) {
+            echo 2;
+            $model_name = ucfirst(str_singular($module_name));
+            if($model_name == "User" || $model_name == "Role" || $model_name == "Permission") {
+                $model = "backend\\" . ucfirst(str_singular($module_name));
+            } else {
+                $model = "backend\\models\\" . ucfirst(str_singular($module_name));
+            }
+
+            // Delete if unique rows available which are deleted
+            $old_row = null;
+            $uniqueFields = ModuleFields::find()->where(['module' => $module->id])->where(['unique', '1'])->asArray()->all();
+            foreach($uniqueFields as $field) {
+                //Log::debug("insert: " . $module->name_db . " - " . $field['colname'] . " - " . $request->{$field['colname']});
+                $old_row = $model::find()->whereNotNull('deleted_at')->where([$field['colname'], $request->{$field['colname']}])->one();
+                if(isset($old_row->id)) {
+                    //Log::debug("deleting: " . $module->name_db . " - " . $field['colname'] . " - " . $request->{$field['colname']});
+                    $model::find()->whereNotNull('deleted_at')->where([$field['colname'], $request->{$field['colname']}])->one()->delete();
+                }
+            }
+
+            $row = new $model;
+            if(isset($old_row->id)) {
+                // To keep old & new row id remain same
+                $row->id = $old_row->id;
+            }
+            $row = Module::processDBRow($module, $request, $row);
+            $row->save();
+            return $row->id;
+        } else {
+            return null;
+        }
+    }
+
 	public static function tableName(){
 		return '{{modules}}';
 	}

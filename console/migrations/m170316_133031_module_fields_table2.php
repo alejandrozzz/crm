@@ -22,7 +22,7 @@ class m170316_133031_module_fields_table2 extends Migration
             'minlength' => $this->integer()->defaultValue(0),
             'maxlength' => $this->integer()->defaultValue(0),
             'required' => $this->boolean()->defaultValue(false),
-            'popup_valse' => $this->string(),
+            'popup_vals' => $this->string(),
             'sort' => $this->integer()->defaultValue(0),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),

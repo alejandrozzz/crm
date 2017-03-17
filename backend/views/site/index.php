@@ -22,7 +22,7 @@ $this->title = 'My Yii Application';
 	
 		<?php 
 		$model = new Module();
-		$form = ActiveForm::begin([ 'enableClientValidation' => true, 'action'	=> ['dupa/store'], 'method' => 'post',
+		$form = ActiveForm::begin([ 'enableClientValidation' => true, 'action'	=> ['site/store'], 'method' => 'post',
                 'options'                => [
                     'id'      => '__singular_var__-add-form'
 					
