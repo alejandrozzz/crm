@@ -2,7 +2,7 @@
 
 use yii\db\Migration;
 
-class m170316_125524_module_fields_table2 extends Migration
+class m170316_133031_module_fields_table2 extends Migration
 {
     public function up()
     {
@@ -12,11 +12,11 @@ class m170316_125524_module_fields_table2 extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
         $this->createTable('{{%module_fields}}', [
-            'id' => $this->primaryKey(),
+            'id' => $this->primaryKey()->unsigned(),
             'colname' => $this->string(30),
             'label' => $this->string(100),
-            'module' => $this->integer() . ' UNSIGNED NOT NULL',
-            'field_type' => $this->integer() . ' UNSIGNED NOT NULL',
+            'module' => $this->integer(10) . ' UNSIGNED NOT NULL',
+            'field_type' => $this->integer(10) . ' UNSIGNED NOT NULL',
             'unique' => $this->boolean()->defaultValue(false),
             'defaultvalue' => $this->string(),
             'minlength' => $this->integer()->defaultValue(0),
@@ -29,6 +29,12 @@ class m170316_125524_module_fields_table2 extends Migration
             'listing_col' => $this->boolean()->defaultValue(true)
 
         ]);
+        $this->addForeignKey(
+            'FK_module', '{{%module_fields}}', 'module', '{{%modules}}', 'id', 'CASCADE', 'CASCADE'
+        );
+        $this->addForeignKey(
+            'FK_field_type', '{{%module_fields}}', 'field_type', '{{%module_field_types}}', 'id', 'CASCADE', 'CASCADE'
+        );
 
     }
 

@@ -2,7 +2,7 @@
 
 use yii\db\Migration;
 
-class m170313_142921_createModulesTable extends Migration
+class m170313_142921_createModulesTable2 extends Migration
 {
     public function up()
     {
@@ -13,7 +13,7 @@ class m170313_142921_createModulesTable extends Migration
         }
 
         $this->createTable('{{%modules}}', [
-            'id' => $this->primaryKey(),
+            'id' => $this->primaryKey()->unsigned(),
             'name' => $this->string(50),
             'name_db' => $this->string(50),
             'label' => $this->string(100),

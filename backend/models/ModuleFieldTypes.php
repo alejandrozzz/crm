@@ -10,7 +10,7 @@ use yii\helpers\DupaHelper;
 use yii\db\Migration;
 
 
-class ModuleFieldTypes extends Model
+class ModuleFieldTypes extends ActiveRecord
 {
 
     protected $table = 'module_field_types';
@@ -18,7 +18,7 @@ class ModuleFieldTypes extends Model
     protected $fillable = [
         "name"
     ];
-    
+
     protected $hidden = [
     
     ];
@@ -26,8 +26,12 @@ class ModuleFieldTypes extends Model
         return ['name'];
     }
     public function rules(){
-        return [['name'], 'required'];
+
+        return [
+            [['name'], 'required']
+        ];
     }
+
     // ModuleFieldTypes::getFTypes()
     public static function getFTypes()
     {
@@ -50,6 +54,6 @@ class ModuleFieldTypes extends Model
         return $fields2;
     }
     public static function tableName(){
-        return '{{module_field_types}}';
+        return '{{%module_field_types}}';
     }
 }

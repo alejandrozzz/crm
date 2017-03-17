@@ -13,7 +13,7 @@ class m170316_133030_CreateModuleFieldTypesTable2 extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
         $this->createTable('{{%module_field_types}}', [
-            'id' =>$this->primaryKey(),
+            'id' =>$this->primaryKey()->unsigned(),
             'name' => $this->string(30),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull()
