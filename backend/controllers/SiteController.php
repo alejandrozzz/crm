@@ -143,7 +143,7 @@ class SiteController extends Controller
         $module = Module::find($id)->one();
 		
         $module = Module::getModule($module->name);
-		var_dump($module);
+		
         $tables = DupaHelper::getDBTables([]);
         $modules = DupaHelper::getModuleNames([]);
 

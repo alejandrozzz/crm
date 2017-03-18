@@ -49,8 +49,8 @@ class FieldController extends Controller{
 	
 	public function actionStore()
     {
-
-        $module_id =Yii::$app->request->post('ModuleFields')['id'];
+		
+        $module_id =Yii::$app->request->post('module_id');
 		
         $module = Module::find($module_id)->one();
         
@@ -60,5 +60,9 @@ class FieldController extends Controller{
         //$role = \App\Role::where("name", "SUPER_ADMIN")->first();
         //Module::setDefaultFieldRoleAccess($field_id, $role->id, "full");
         
-        return redirect()->route(config('laraadmin.adminRoute') . '.modules.show', [$module_id]);
+		return $this->redirect(['/site/show',
+            'id' => (int)$module_id
+        ]);
+        
     }
+}

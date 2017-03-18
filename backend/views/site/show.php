@@ -102,7 +102,9 @@ use yii\bootstrap\ActiveForm;?>
 						</tr>
 						</thead>
 						<tbody>														
-							<?php foreach ($module['fields'] as $field) : ?>
+							<?php
+							var_dump($module['fields']);
+							foreach ($module['fields'] as $field) : ?>
 								<tr>
 									<td style="display:none;">{{ $field['sort'] }}</td>
 									<td><?php $field['id'] ?></td>
@@ -230,7 +232,7 @@ use yii\bootstrap\ActiveForm;?>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title" id="myModalLabel">Add <?php echo $module['model']; ?> Field</h4>
 			</div>
-			<?php $form->field($model, 'id')->hiddenInput(['value' => $model['id']]) ?>
+			<?php echo  Html::hiddenInput('module_id', $module['id']); ?>
 			
 			<div class="modal-body">
 				<div class="box-body">

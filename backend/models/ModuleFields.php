@@ -7,6 +7,7 @@ use yii\base\Model;
 use yii\db\ActiveRecord;
 use yii\helpers\DupaHelper;
 use yii\db\Migration;
+use yii\db\Schema;
 
 class ModuleFields extends ActiveRecord{
 
@@ -60,86 +61,90 @@ class ModuleFields extends ActiveRecord{
         $module = Module::find($request['module_id'])->one();
         $module_id = $request['module_id'];
         
-        $field = ModuleFields::find()->where('colname', $request->colname)->where('module', $module_id)->one();
+        $field = self::find()->where(['colname' => (string)$request['ModuleFields']['colname'], 'module' => (int)$module_id])->one();
         if(!isset($field->id)) {
-            $field = new ModuleFields;
-            $field->colname = $request->colname;
-            $field->label = $request->label;
-            $field->module = $request->module_id;
-            $field->field_type = $request->field_type;
-            if($request->unique) {
+            $field = new ModuleFields();
+            $field->colname = $request['ModuleFields']['colname'];
+            $field->label = $request['ModuleFields']['label'];
+            $field->module = $request['module_id'];
+            $field->field_type = $request['ModuleFields']['field_type'];
+            if($request['ModuleFields']['unique']) {
                 $field->unique = true;
             } else {
                 $field->unique = false;
             }
-            $field->defaultvalue = $request->defaultvalue;
-            if($request->minlength == "") {
-                $request->minlength = 0;
+            $field->defaultvalue = $request['ModuleFields']['defaultvalue'];
+            if($request['ModuleFields']['minlength'] == "") {
+                $request['ModuleFields']['minlength'] = 0;
             }
-            if($request->maxlength == "") {
-                if(in_array($request->field_type, [1, 8, 16, 17, 19, 20, 22, 23])) {
-                    $request->maxlength = 256;
-                } else if(in_array($request->field_type, [14])) {
-                    $request->maxlength = 20;
-                } else if(in_array($request->field_type, [3, 6, 10, 13])) {
-                    $request->maxlength = 11;
+            if($request['ModuleFields']['maxlength'] == "") {
+                if(in_array($request['ModuleFields']['field_type'], [1, 8, 16, 17, 19, 20, 22, 23])) {
+                    $request['ModuleFields']['maxlength'] = 256;
+                } else if(in_array($request['ModuleFields']['field_type'], [14])) {
+                    $request['ModuleFields']['maxlength'] = 20;
+                } else if(in_array($request['ModuleFields']['field_type'], [3, 6, 10, 13])) {
+                    $request['ModuleFields']['maxlength'] = 11;
                 }
             }
-            $field->minlength = $request->minlength;
-            if($request->maxlength != null && $request->maxlength != "") {
-                $field->maxlength = $request->maxlength;
+            $field->minlength = $request['ModuleFields']['minlength'];
+            if($request['ModuleFields']['maxlength'] != null && $request['ModuleFields']['maxlength'] != "") {
+                $field->maxlength = $request['ModuleFields']['maxlength'];
             }
-            if($request->required) {
+            if($request['ModuleFields']['required']) {
                 $field->required = true;
             } else {
                 $field->required = false;
             }
-            if($request->listing_col) {
+            if($request['ModuleFields']['listing_col']) {
                 $field->listing_col = true;
             } else {
                 $field->listing_col = false;
             }
-            if($request->field_type == 7 || $request->field_type == 15 || $request->field_type == 18 || $request->field_type == 20) {
-                if($request->popup_value_type == "table") {
-                    $field->popup_vals = "@" . $request->popup_vals_table;
-                } else if($request->popup_value_type == "list") {
-                    $request->popup_vals_list = json_encode($request->popup_vals_list);
-                    $field->popup_vals = $request->popup_vals_list;
+            if($request['ModuleFields']['field_type'] == 7 || $request['ModuleFields']['field_type'] == 15 || $request['ModuleFields']['field_type'] == 18 || $request['ModuleFields']['field_type'] == 20) {
+                if($request['ModuleFields']['popup_value_type'] == 1) {
+                    $field->popup_vals = "@" . $request['ModuleFields']['popup_vals'];
+                } else if($request['ModuleFields']['popup_value_type'] == 2) {
+                    $request['ModuleFields']['popup_vals'] = json_encode($request['ModuleFields']['popup_vals']);
+                    $field->popup_vals = $request['ModuleFields']['popup_vals'];
                 }
             } else {
                 $field->popup_vals = "";
             }            
             // Get number of Module fields
-            $modulefields = ModuleFields::where('module', $module_id)->get();
+            $modulefields = self::find()->where(['module'=>$module_id])->one();
             
             // Create Schema for Module Field when table is not exist
-            if(!Schema::hasTable($module->name_db)) {
-                Schema::create($module->name_db, function ($table) {
-                    $table->increments('id');
-                    $table->softDeletes();
-                    $table->timestamps();
-                });
-            } else if(Schema::hasTable($module->name_db) && count($modulefields) == 0) {
+            if(!Yii::$app->db->schema->getTableSchema($module['name_db'])) {
+				$tableOptions = null;
+				
+					$tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
+				
+				$m = new Migration();
+				$m->createTable($module['name_db'], [
+					'id' => Schema::TYPE_PK,
+					'created_at' => Schema::TYPE_INTEGER,
+					'updated_at' => Schema::TYPE_INTEGER
+				], $tableOptions);
+            } else if(Yii::$app->db->schema->getTableSchema($module['name_db']) && count($modulefields) == 0) {
                 // create SoftDeletes + Timestamps for module with existing table
-                Schema::table($module->name_db, function ($table) {
-                    $table->softDeletes();
-                    $table->timestamps();
-                });
+				Yii::$app->db->createCommand()
+				 ->update($module['name_db'], ['created_at' => time(), 'updated_at' => time()])
+				 ->execute();
             }
+			$table = Yii::$app->db->schema->getTableSchema($module['name_db']);
+			
             // Create Schema for Module Field when table is exist
-            if(!Schema::hasColumn($module->name_db, $field->colname)) {
-                Schema::table($module->name_db, function ($table) use ($field, $module) {
-                    // $table->string($field->colname);
-                    // createUpdateFieldSchema()
-                    $field->module_obj = $module;
-                    Module::create_field_schema($table, $field, false);
-                });
+            if(!isset($table->columns[$field->colname])) {
+				$m = new Migration();
+				$m->addColumn($module['name_db'],$field->colname,Schema::TYPE_STRING . " DEFAULT 0");
+                
             }
         }
-        unset($field->module_obj);
+        //unset($field->module_obj);
         // field_type conversion to integer
         if(is_string($field->field_type)) {
-            $ftypes = ModuleFieldTypes::getFTypes();
+            $ftypes =array_flip(ModuleFieldTypes::getFTypes());
+			
             $field->field_type = $ftypes[$field->field_type];
         }
         $field->save();
