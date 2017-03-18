@@ -101,4 +101,28 @@ class DupaHelper
         
         return $modules_out2;
     }
+	
+	public static function parseValues($value)
+    {
+        // return $value;
+        $valueOut = "";
+        if(strpos($value, '[') !== false) {
+            $arr = json_decode($value);
+            foreach($arr as $key) {
+                $valueOut .= "<div class='label label-primary'>" . $key . "</div> ";
+            }
+        } else if(strpos($value, ',') !== false) {
+            $arr = array_map('trim', explode(",", $value));
+            foreach($arr as $key) {
+                $valueOut .= "<div class='label label-primary'>" . $key . "</div> ";
+            }
+        } else if(strpos($value, '@') !== false) {
+            $valueOut .= "<b data-toggle='tooltip' data-placement='top' title='From " . str_replace("@", "", $value) . " table' class='text-primary'>" . $value . "</b>";
+        } else if($value == "") {
+            $valueOut .= "";
+        } else {
+            $valueOut = "<div class='label label-primary'>" . $value . "</div> ";
+        }
+        return $valueOut;
+    }
 }

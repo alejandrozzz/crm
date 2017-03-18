@@ -839,7 +839,32 @@ class Module extends ActiveRecord
             return null;
         }
     }
-
+	
+	public static function itemCount($module_name)
+    {
+        $module = Module::getModule($module_name);
+        if(isset($module)) {
+            $model_name = ucfirst($module_name);
+            if($model_name == "User" || $model_name == "Role" || $model_name == "Permission") {
+                if(file_exists(__DIR__ . 'backend/models/' . $model_name . ".php")) {
+                    $model = "backend\\" . $model_name;
+                    return $model::count();
+                } else {
+                    return -1;
+                }
+            } else {
+                if(file_exists(__DIR__ . 'backend/models/' . $model_name . ".php")) {
+                    $model = "backend\\models\\" . $model_name;
+                    return $model::count();
+                } else {
+                    return -1;
+                }
+            }
+        } else {
+            return -1;
+        }
+    }
+	
 	public static function tableName(){
 		return '{{modules}}';
 	}
