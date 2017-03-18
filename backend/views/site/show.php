@@ -1,5 +1,9 @@
-<?php use backend\models\Module; 
-use backend\helpers\DupaHelper;?>
+<?php 
+use backend\models\Module; 
+use backend\models\ModuleFields; 
+use backend\helpers\DupaHelper;
+use yii\helpers\Html;
+use yii\bootstrap\ActiveForm;?>
 <div id="page-content" class="profile2">
 	<?php if(isset($module['is_gen']) && $module['is_gen']) : ?>
 	<div class="bg-success clearfix">
@@ -211,68 +215,76 @@ use backend\helpers\DupaHelper;?>
 	</div>
 	</div>
 	</div>
+	<?php 
+	$model = new ModuleFields();
+	$form = ActiveForm::begin([ 'enableClientValidation' => true, 'action'	=> ['field/store'], 'method' => 'post',
+                'options'                => [
+                    'id'      => 'field-form'
+					
+                 ]]);
+				 ?>
 <div class="modal fade" id="AddFieldModal" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="myModalLabel">Add {{ $module->model }} Field</h4>
+				<h4 class="modal-title" id="myModalLabel">Add <?php echo $module['model']; ?> Field</h4>
 			</div>
-			{!! Form::open(['route' => config('laraadmin.adminRoute') . '.module_fields.store', 'id' => 'field-form']) !!}
-			{{ Form::hidden("module_id", $module->id) }}
+			<?php $form->field($model, 'id')->hiddenInput(['value' => $model['id']]) ?>
+			
 			<div class="modal-body">
 				<div class="box-body">
 					<div class="form-group">
-						<label for="label">Field Label :</label>
-						{{ Form::text("label", null, ['class'=>'form-control', 'placeholder'=>'Field Label', 'data-rule-minlength' => 2, 'data-rule-maxlength'=>20, 'required' => 'required']) }}
+						
+						<?php echo $form->field($model, 'label')->textInput(['class'=>'form-control', 'placeholder'=>'Field Label', 'data-rule-minlength' => 2, 'data-rule-maxlength'=>20, 'required' => 'required'])->label('Field Label :') ?>
+						
 					</div>
 					
 					<div class="form-group">
-						<label for="colname">Column Name :</label>
-						{{ Form::text("colname", null, ['class'=>'form-control', 'placeholder'=>'Column Name (lowercase)', 'data-rule-minlength' => 2, 'data-rule-maxlength'=>20, 'data-rule-banned-words' => 'true', 'required' => 'required']) }}
+						<?php echo $form->field($model, 'colname')->textInput(['class'=>'form-control', 'placeholder'=>'Column Name (lowercase)', 'data-rule-minlength' => 2, 'data-rule-maxlength'=>20, 'data-rule-banned-words' => 'true', 'required' => 'required'])->label('Column Name :') ?>
 					</div>
 					
 					<div class="form-group">
-						<label for="field_type">UI Type:</label>
-						{{ Form::select("field_type", $ftypes, null, ['class'=>'form-control', 'required' => 'required']) }}
+						
+						<?php echo $form->field($model, 'field_type')->listBox($ftypes, ['class'=>'form-control', 'required' => 'required'])->label('UI Type:') ?>
 					</div>
 					
 					<div id="unique_val">
 						<div class="form-group">
-							<label for="unique">Unique:</label>
-							{{ Form::checkbox("unique", "unique", false, []) }}
+							
 							<div class="Switch Round Off" style="vertical-align:top;margin-left:10px;"><div class="Toggle"></div></div>
+							<?php echo $form->field($model, 'unique')->checkbox()->label('Unique') ?>
 						</div>
 					</div>	
 					
 					<div id="default_val">
 						<div class="form-group">
-							<label for="defaultvalue">Default Value :</label>
-							{{ Form::text("defaultvalue", null, ['class'=>'form-control', 'placeholder'=>'Default Value']) }}
+							
+							<?php echo $form->field($model, 'defaultvalue')->textInput(['class'=>'form-control', 'placeholder'=>'Default Value'])->label('Default Value :') ?>
 						</div>
 					</div>
 
 					<div id="length_div">
 						<div class="form-group">
-							<label for="minlength">Minimum :</label>
-							{{ Form::number("minlength", null, ['class'=>'form-control', 'placeholder'=>'Minimum Value']) }}
+							
+							<?php echo $form->field($model, 'minlength')->textInput(['class'=>'form-control', 'placeholder'=>'Minimum Value'])->label('Minimum :') ?>
+						
 						</div>
 						
 						<div class="form-group">
-							<label for="maxlength">Maximum :</label>
-							{{ Form::number("maxlength", null, ['class'=>'form-control', 'placeholder'=>'Maximum Value']) }}
+							<?php echo $form->field($model, 'maxlength')->textInput(['class'=>'form-control', 'placeholder'=>'Maximum Value'])->label('Maximum :') ?>
 						</div>
 					</div>
 					
 					<div class="form-group">
-						<label for="required">Required:</label>
-						{{ Form::checkbox("required", "required", false, []) }}
+						<?php echo $form->field($model, 'required')->checkbox(); ?>
 						<div class="Switch Round Off" style="vertical-align:top;margin-left:10px;"><div class="Toggle"></div></div>
 					</div>
 					
 					<div class="form-group">
-						<label for="listing_col">Show in Index Listing:</label>
-						{{ Form::checkbox("listing_col", "listing_col", false, []) }}
+						
+						<?php echo $form->field($model, 'listing_col')->checkbox(); ?>
+						
 						<div class="Switch Round Off" style="vertical-align:top;margin-left:10px;"><div class="Toggle"></div></div>
 					</div>
 					<!--
@@ -283,29 +295,24 @@ use backend\helpers\DupaHelper;?>
 					-->
 					
 					<div class="form-group values">
-						<label for="popup_vals">Values :</label>
-						<div class="radio" style="margin-bottom:20px;">
-							<label>{{ Form::radio("popup_value_type", "table", true) }} From Table</label>
-							<label>{{ Form::radio("popup_value_type", "list", false) }} From List</label>
-						</div>
-						{{ Form::select("popup_vals_table", $tables, "", ['id'=>'popup_vals_table', 'class'=>'form-control', 'rel' => '']) }}
 						
-						<select id="popup_vals_list" class="form-control popup_vals_list" rel="taginput" multiple="1" data-placeholder="Add Multiple values (Press Enter to add)" name="popup_vals_list[]">
-							@if(env('APP_ENV') == "testing")
-								<option>Bloomsbury</option>
-								<option>Marvel</option>
-								<option>Universal</option>
-							@endif
-						</select>
+						<div class="radio" style="margin-bottom:20px;">
+							<?php 
+							echo Html::radioList('popup_value_type', null, ['1' => 'table', '2' => 'list'], []);
+							//echo $form->field($model, 'popup_value_type')->radioList(); ?> 	
+						</div>
+						<?php echo $form->field($model, 'popup_vals')->listBox($tables, ['id'=>'popup_vals_table', 'class'=>'form-control', 'rel' => ''])->label('Values :') ?>
 					</div>
 					
 				</div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				{!! Form::submit( 'Submit', ['class'=>'btn btn-success']) !!}
+				<?php echo Html::submitButton('Submit', ['class' => 'btn btn-success']) ?>
 			</div>
-			{!! Form::close() !!}
+			
+      
+	  <?php ActiveForm::end();?>
 		</div>
 	</div>
 </div>

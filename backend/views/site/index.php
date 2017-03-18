@@ -3,6 +3,7 @@ use yii\helpers\Html;
 use yii\bootstrap\Modal;
 use yii\bootstrap\ActiveForm;
 use backend\models\Module;
+use backend\models\ModuleFields;
 use backend\controllers\Dupa;
 /* @var $this yii\web\View */
 
