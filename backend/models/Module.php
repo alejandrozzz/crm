@@ -5,7 +5,7 @@ namespace backend\models;
 use Yii;
 use yii\base\Model;
 use yii\db\ActiveRecord;
-use yii\helpers\DupaHelper;
+use backend\helpers\DupaHelper;
 use yii\db\Migration;
 
 class Module extends ActiveRecord
@@ -25,9 +25,9 @@ class Module extends ActiveRecord
         return [
             [['name'], 'string'],
             [['label'], 'string'],
-            [['name_db'], 'integer'],
-            [['view_col'], 'integer'],
-            [['model'], 'integer'],
+            [['name_db'], 'string'],
+            [['view_col'], 'string'],
+            [['model'], 'string'],
             [['controller'], 'string'],
             [['fa_icon'], 'string'],
             [['is_gen'], 'integer']
@@ -41,12 +41,12 @@ class Module extends ActiveRecord
         $names = DupaHelper::generateModuleNames($module_name, $icon);
         ///var_dump($names);
         // Check is Generated
-        $is_gen = false;
+        $is_gen = 0;
         if(file_exists(__DIR__.'backend/controllers/' . ($names['controller']) . ".php")) {
             if(($names['model'] == "User" || $names['model'] == "Role" || $names['model'] == "Permission") && file_exists(__DIR__.'backend/models/' . ($names['model']) . ".php")) {
-                $is_gen = true;
+                $is_gen = 1;
             } else if(file_exists(__DIR__.'backend/models/' . ($names['model']) . ".php")) {
-                $is_gen = true;
+                $is_gen = 1;
             }
         }
 
@@ -56,30 +56,32 @@ class Module extends ActiveRecord
 
             $module = new Module();
             //var_dump($module->attributes());
-            $names['name'] = $names['module'];
+            /*$names['name'] = $names['module'];
             unset($names['module']);
             $names['name_db'] = $names['table'];
-            unset($names['table']);
+            unset($names['singular_l']);
+			unset($names['singular_c']);
             $names['view_col'] = '';
             $names['is_gen'] = 0;
             $names['created_at'] = 0;
-            $names['updated_at'] = 0;
+            $names['updated_at'] = 0;*/
             //var_dump($names);
-            $module->attributes = $names;
-            var_dump($names);
-//            $module->name = $names->module;
-//            $module->label = $names->label;
-//            $module->name_db = $names->table;
-//            $module->view_col = "";
-//            $module->model = $names->model;
-//            $module->controller = $names->controller;
-//            $module->fa_icon = $names->fa_icon;
-//            $module->is_gen = $is_gen;
-
+            //$module->attributes = $names;
+            
+            $module->name = $names['module'];
+            $module->label = $names['label'];
+            $module->name_db = $names['table'];
+            $module->view_col = "";
+            $module->model = $names['model'];
+            $module->controller = $names['controller'];
+            $module->fa_icon = '';
+            $module->is_gen = $is_gen;
+			$module->created_at = 0;
+			$module->updated_at = 0;
             $module->save();
-
+			//var_dump($module);
         }
-
+		
         return $module->id;
     }
 	

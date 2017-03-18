@@ -35,7 +35,7 @@ class ModuleFieldTypes extends ActiveRecord
     // ModuleFieldTypes::getFTypes()
     public static function getFTypes()
     {
-        $fields = ModuleFieldTypes::find()->all();
+        $fields = self::find()->all();
         $fields2 = array();
         foreach($fields as $field) {
             $fields2[$field['name']] = $field['id'];
@@ -46,10 +46,10 @@ class ModuleFieldTypes extends ActiveRecord
     // ModuleFieldTypes::getFTypes2()
     public static function getFTypes2()
     {
-        $fields = ModuleFieldTypes::find()->all();
+        $fields = self::find()->all();
         $fields2 = array();
         foreach($fields as $field) {
-            $fields2[$field['id']] = $field['name'];
+            $fields2[$field['id']] = (string)$field['name'];
         }
         return $fields2;
     }

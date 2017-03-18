@@ -9,7 +9,7 @@ use common\models\LoginForm;
 use backend\models\Module;
 use backend\models\ModuleFields;
 use backend\models\ModuleFieldTypes;
-use yii\helpers\DupaHelper;
+use backend\helpers\DupaHelper;
 
 /**
  * Site controller
@@ -128,18 +128,20 @@ class SiteController extends Controller
     {
 
         $module_id = Module::generateBase(Yii::$app->request->post('Module')['name'], '');
-        echo $module_id;
-        die();
-        return $this->redirect('/site/show',[
-            'id' => $module_id
+        
+        return $this->redirect(['/site/show',
+            'id' => (int)$module_id
         ]);
         //return redirect()->route(config('laraadmin.adminRoute') . '.modules.show', [$module_id]);
     }
 
     public function actionShow($id)
     {
+		
         $ftypes = ModuleFieldTypes::getFTypes2();
-        $module = Module::find($id);
+		
+        $module = Module::find($id)->one();
+		
         $module = Module::getModule($module->name);
 
         $tables = DupaHelper::getDBTables([]);
@@ -148,14 +150,14 @@ class SiteController extends Controller
         // Get Module Access for all roles
         //$roles = Module::getRoleAccess($id);
 
-        return $this->render('dupa/show', [
+        return $this->render('show', [
             'no_header' => true,
             'no_padding' => "no-padding",
             'ftypes' => $ftypes,
             'tables' => $tables,
             'modules' => $modules,
             'roles' => [],
-            'module' => $module
+            'module' => get_object_vars($module)
         ]);
     }
 }
