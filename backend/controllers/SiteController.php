@@ -128,7 +128,7 @@ class SiteController extends Controller
     {
 
         $module_id = Module::generateBase(Yii::$app->request->post('Module')['name'], '');
-        
+       
         return $this->redirect(['show',
             'id' => $module_id
         ]);
@@ -137,6 +137,7 @@ class SiteController extends Controller
 
     public function actionShow($id)
     {
+		
         $ftypes = ModuleFieldTypes::getFTypes2();
         $module = Module::find()->where('id = ' . Yii::$app->request->get('id'))->one();
         $module = Module::getModule($module->name);

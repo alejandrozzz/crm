@@ -25,9 +25,9 @@ class Module extends ActiveRecord
         return [
             [['name'], 'string'],
             [['label'], 'string'],
-            [['name_db'], 'integer'],
+            [['name_db'], 'string'],
             [['view_col'], 'integer'],
-            [['model'], 'integer'],
+            [['model'], 'string'],
             [['controller'], 'string'],
             [['fa_icon'], 'string'],
             [['is_gen'], 'integer']
@@ -66,7 +66,7 @@ class Module extends ActiveRecord
             $names['updated_at'] = 0;
             //var_dump($names);
             $module->attributes = $names;
-            var_dump($names);
+            
 //            $module->name = $names->module;
 //            $module->label = $names->label;
 //            $module->name_db = $names->table;
@@ -79,7 +79,7 @@ class Module extends ActiveRecord
             $module->save();
 
         }
-
+		
         return $module->id;
     }
 	
