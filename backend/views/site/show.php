@@ -1,4 +1,5 @@
 <?php 
+use yii\helpers\Url;
 use backend\models\Module; 
 use backend\models\ModuleFields; 
 use backend\helpers\DupaHelper;
@@ -130,7 +131,7 @@ use yii\bootstrap\ActiveForm;?>
 										<a href="{{ url(config('laraadmin.adminRoute') . '/module_fields/'.$field['id'].'/edit') }}" class="btn btn-edit-field btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;" id="edit_{{ $field['colname'] }}"><i class="fa fa-edit"></i></a>
 										<a href="{{ url(config('laraadmin.adminRoute') . '/module_fields/'.$field['id'].'/delete') }}" class="btn btn-edit-field btn-danger btn-xs" style="display:inline;padding:2px 5px 3px 5px;" id="delete_{{ $field['colname'] }}"><i class="fa fa-trash"></i></a>
 										<?php if($field['colname'] != $module['view_col']) : ?>
-											<a href="{{ url(config('laraadmin.adminRoute') . '/modules/'.$module->id.'/set_view_col/'.$field['colname']) }}" class="btn btn-edit-field btn-success btn-xs" style="display:inline;padding:2px 5px 3px 5px;" id="view_col_{{ $field['colname'] }}"><i class="fa fa-eye"></i></a>
+											<a href="<?php echo Yii::$app->urlManager->createUrl(['/site/set_view_col','id'=> $module['id'], 'column_name' => $field['colname']]);?>" class="btn btn-edit-field btn-success btn-xs" style="display:inline;padding:2px 5px 3px 5px;" id="view_col_<?php echo $field['colname'] ?>"><i class="fa fa-eye"></i></a>
 										<?php endif; ?>
 									</td>
 								</tr>
@@ -324,5 +325,22 @@ use yii\bootstrap\ActiveForm;?>
 		$('.btn-add-field').click(function(){
 			$('#AddFieldModal').modal('show');
 		})
+		$("#generate_migr_crud").on("click", function() {
+		var $fa = $(this).find("i");
+		$fa.removeClass("fa-cube");
+		$fa.addClass("fa-refresh");
+		$fa.addClass("fa-spin");
+		$.ajax({
+			url: "<?php echo Url::to(['/site/generate_migr_crud', 'module_id' => $module['id']])?>",
+			method: 'GET',
+			success: function( data ) {
+				$fa.removeClass("fa-refresh");
+				$fa.removeClass("fa-spin");
+				$fa.addClass("fa-check");
+				console.log(data);
+				location.reload();
+			}
+		});
+	});
 	})
 </script>

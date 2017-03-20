@@ -177,4 +177,49 @@ class SiteController extends Controller
             }*/
         }
     }
+	
+	public function actionSet_view_col()
+    {
+		$get = Yii::$app->request->get();
+        $module = Module::find()->where('id = ' . $get['id'])->one();
+        $module->view_col = $get['column_name'];
+        $module->save();
+        
+		return $this->redirect(['show',
+            'id' => $get['id']
+        ]);
+    }
+	
+	public function actionGenerate_migr_crud()
+    {
+		$get = Yii::$app->request->get();
+        $module = Module::find()->where(['id' => $get['module_id']])->one();
+        $module = Module::getModule($module->name);
+        
+        // Generate Migration
+        CodeGenerator::generateMigration($module->name_db, true);
+        
+        // Create Config for Code Generation
+        $config = CodeGenerator::generateConfig($module->name, $module->fa_icon);
+        
+        // Generate CRUD
+        CodeGenerator::createController($config);
+        CodeGenerator::createModel($config);
+        CodeGenerator::createViews($config);
+        CodeGenerator::appendRoutes($config);
+        CodeGenerator::addMenu($config);
+        
+        // Set Module Generated = True
+        $module = Module::find($module_id);
+        $module->is_gen = '1';
+        $module->save();
+        
+        // Give Default Full Access to Super Admin
+        $role = Role::where("name", "SUPER_ADMIN")->first();
+        Module::setDefaultRoleAccess($module->id, $role->id, "full");
+        
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
 }

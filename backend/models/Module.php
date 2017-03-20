@@ -26,7 +26,7 @@ class Module extends ActiveRecord
             [['name'], 'string'],
             [['label'], 'string'],
             [['name_db'], 'string'],
-            [['view_col'], 'integer'],
+            [['view_col'], 'string'],
             [['model'], 'string'],
             [['controller'], 'string'],
             [['fa_icon'], 'string'],
@@ -853,7 +853,7 @@ class Module extends ActiveRecord
                 }
             } else {
                 if(file_exists(__DIR__.'backend/models/' . $model_name . ".php")) {
-                    $model = "backend\\modela\\" . $model_name;
+                    $model = "backend\\models\\" . $model_name;
                     return $model::count();
                 } else {
                     return -1;
