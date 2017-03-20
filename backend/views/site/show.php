@@ -72,7 +72,7 @@ use yii\bootstrap\ActiveForm;?>
 			<a id="tab_sort" role="tab" data-toggle="tab"  class="tab_info " href="#sort" data-target="#tab-sort"><i class="fa fa-sort"></i> Sort</a>
 		</li>
 		
-		<a data-toggle="modal" data-target="#AddFieldModal" class="btn btn-success btn-sm pull-right btn-add-field" style="margin-top:10px;margin-right:10px;">Add Field</a>
+		<a class="btn btn-success btn-sm pull-right btn-add-field" style="margin-top:10px;margin-right:10px;">Add Field</a>
 	</ul>
 
 	<div class="tab-content">
@@ -319,3 +319,10 @@ use yii\bootstrap\ActiveForm;?>
 		</div>
 	</div>
 </div>
+<script>
+	$(function() {
+		$('.btn-add-field').click(function(){
+			$('#AddFieldModal').modal('show');
+		})
+	})
+</script>

@@ -5,7 +5,7 @@ namespace backend\models;
 use Yii;
 use yii\base\Model;
 use yii\db\ActiveRecord;
-use yii\helpers\DupaHelper;
+use backend\helpers\DupaHelper;
 use yii\db\Migration;
 
 class Module extends ActiveRecord

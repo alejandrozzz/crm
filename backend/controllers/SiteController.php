@@ -127,7 +127,7 @@ class SiteController extends Controller
     public function actionStore()
     {
 
-        $module_id = Module::generateBase(Yii::$app->request->post('Module')['name'], '');
+        $module_id = Module::generateBase(Yii::$app->request->post('Module')['name'], Yii::$app->request->post('Module')['fa_icon']);
        
         return $this->redirect(['show',
             'id' => $module_id
@@ -157,5 +157,24 @@ class SiteController extends Controller
             'roles' => [],
             'module' => get_object_vars($module)
         ]);
+    }
+	
+	public function actionUpdate()
+    {
+		
+		$post = Yii::$app->request->post();
+        $module = Module::find()->where('id = ' . $post['id'])->one();
+        if(isset($module->id)) {
+            $module->label = ucfirst($post['label']);
+            $module->fa_icon = $post['icon'];
+            $module->save();
+            /*
+            $menu = Menu::where('url', strtolower($module->name))->where('type', 'module')->first();
+            if(isset($menu->id)) {
+                $menu->name = ucfirst($request->label);
+                $menu->icon = $request->icon;
+                $menu->save();
+            }*/
+        }
     }
 }

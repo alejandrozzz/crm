@@ -46,7 +46,7 @@ class DupaHelper
         } else {
             $tables = Yii::$app->db->createCommand('SHOW TABLES')->queryAll();
         }
-        var_dump($tables);
+        
 		//die();
         $tables_out = array();
         foreach($tables as $table) {
