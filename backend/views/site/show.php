@@ -103,19 +103,20 @@ use yii\bootstrap\ActiveForm;?>
 						</thead>
 						<tbody>														
 							<?php
-							var_dump($module['fields']);
+							
 							foreach ($module['fields'] as $field) : ?>
+							
 								<tr>
 									<td style="display:none;">{{ $field['sort'] }}</td>
-									<td><?php $field['id'] ?></td>
-									<td><?php $field['label'] ?></td>
-									<td><?php $field['colname'] ?></td>
-									<td><?php $ftypes[$field['field_type']] ?></td>
-									<td><?php if($field['unique']) : ?> <span class="text-danger">True</span><?php endif; ?> </td>
-									<td><?php $field['defaultvalue'] ?></td>
-									<td><?php $field['minlength'] ?></td>
-									<td><?php $field['maxlength'] ?></td>
-									<td><?php if($field['required']) : ?> <span class="text-danger">True</span><?php endif; ?> </td>
+									<td><?php echo $field['id'] ?></td>
+									<td><?php echo $field['label'] ?></td>
+									<td><?php echo $field['colname'] ?></td>
+									<td><?php echo $ftypes[$field['field_type']] ?></td>
+									<td><?php if($field['unique']) : echo '<span class="text-danger">True</span>'?><?php endif; ?> </td>
+									<td><?php echo $field['defaultvalue'] ?></td>
+									<td><?php echo $field['minlength'] ?></td>
+									<td><?php echo $field['maxlength'] ?></td>
+									<td><?php if($field['required']) : echo '<span class="text-danger">True</span>'?><?php endif; ?> </td>
 									<td>
 										<form id="listing_view_cal" action="{{ url(config('laraadmin.adminRoute') . '/module_field_listing_show') }}">
 											<input name="ref_{!! $field['id'] !!}" type="checkbox" @if($field['listing_col'] == 1) checked="checked" @endif>

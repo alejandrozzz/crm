@@ -129,24 +129,21 @@ class SiteController extends Controller
 
         $module_id = Module::generateBase(Yii::$app->request->post('Module')['name'], '');
         
-        return $this->redirect(['/site/show',
-            'id' => (int)$module_id
+        return $this->redirect(['show',
+            'id' => $module_id
         ]);
         //return redirect()->route(config('laraadmin.adminRoute') . '.modules.show', [$module_id]);
     }
 
     public function actionShow($id)
     {
-		
         $ftypes = ModuleFieldTypes::getFTypes2();
-		
-        $module = Module::find($id)->one();
-		
+        $module = Module::find()->where('id = ' . Yii::$app->request->get('id'))->one();
         $module = Module::getModule($module->name);
 		
         $tables = DupaHelper::getDBTables([]);
         $modules = DupaHelper::getModuleNames([]);
-
+		
         // Get Module Access for all roles
         //$roles = Module::getRoleAccess($id);
 

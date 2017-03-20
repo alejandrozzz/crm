@@ -55,7 +55,7 @@ class FieldController extends Controller{
         $module = Module::find($module_id)->one();
         
         $field_id = ModuleFields::createField(Yii::$app->request->post());
-        
+		
         // Give Default Full Access to Super Admin
         //$role = \App\Role::where("name", "SUPER_ADMIN")->first();
         //Module::setDefaultFieldRoleAccess($field_id, $role->id, "full");

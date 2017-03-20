@@ -5,7 +5,7 @@ namespace backend\models;
 use Yii;
 use yii\base\Model;
 use yii\db\ActiveRecord;
-use yii\helpers\DupaHelper;
+use backend\helpers\DupaHelper;
 use yii\db\Migration;
 use yii\db\Schema;
 
@@ -58,20 +58,22 @@ class ModuleFields extends ActiveRecord{
 	
 	public static function createField($request)
     {
-        $module = Module::find($request['module_id'])->one();
+        $module = Module::find()->where('id = '.$request['module_id'])->one();
         $module_id = $request['module_id'];
-        
+		
         $field = self::find()->where(['colname' => (string)$request['ModuleFields']['colname'], 'module' => (int)$module_id])->one();
         if(!isset($field->id)) {
+			
             $field = new ModuleFields();
             $field->colname = $request['ModuleFields']['colname'];
             $field->label = $request['ModuleFields']['label'];
             $field->module = $request['module_id'];
-            $field->field_type = $request['ModuleFields']['field_type'];
+            $field->field_type = (int)$request['ModuleFields']['field_type'];
+			
             if($request['ModuleFields']['unique']) {
-                $field->unique = true;
+                $field->unique = 1;
             } else {
-                $field->unique = false;
+                $field->unique = 0;
             }
             $field->defaultvalue = $request['ModuleFields']['defaultvalue'];
             if($request['ModuleFields']['minlength'] == "") {
@@ -91,14 +93,14 @@ class ModuleFields extends ActiveRecord{
                 $field->maxlength = $request['ModuleFields']['maxlength'];
             }
             if($request['ModuleFields']['required']) {
-                $field->required = true;
+                $field->required = 1;
             } else {
-                $field->required = false;
+                $field->required = 0;
             }
             if($request['ModuleFields']['listing_col']) {
-                $field->listing_col = true;
+                $field->listing_col = 1;
             } else {
-                $field->listing_col = false;
+                $field->listing_col = 0;
             }
             if($request['ModuleFields']['field_type'] == 7 || $request['ModuleFields']['field_type'] == 15 || $request['ModuleFields']['field_type'] == 18 || $request['ModuleFields']['field_type'] == 20) {
                 if($request['ModuleFields']['popup_value_type'] == 1) {
