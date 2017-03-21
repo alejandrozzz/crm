@@ -11,7 +11,7 @@ use backend\models\ModuleFields;
 use backend\models\ModuleFieldTypes;
 use backend\helpers\DupaHelper;
 use backend\CodeGenerator;
-
+use yii\helpers\Json;
 /**
  * Site controller
  */
@@ -211,15 +211,15 @@ class SiteController extends Controller
         CodeGenerator::addMenu($config);
         
         // Set Module Generated = True
-        $module = Module::find($module_id);
+        $module = Module::find()->where(['id' => $get['module_id']])->one();
         $module->is_gen = '1';
         $module->save();
         
         // Give Default Full Access to Super Admin
-        $role = Role::where("name", "SUPER_ADMIN")->first();
-        Module::setDefaultRoleAccess($module->id, $role->id, "full");
+        //$role = Role::where("name", "SUPER_ADMIN")->first();
+        //Module::setDefaultRoleAccess($module->id, $role->id, "full");
         
-        return response()->json([
+        return Json::encode([
             'status' => 'success'
         ]);
     }

@@ -73,14 +73,14 @@ class CodeGenerator
     public static function createViews($config, $comm = null)
     {
         
-        $templateDirectory = __DIR__ . '/stubs';
+        $templateDirectory = dirname(__DIR__) . '/backend/views';
         
         //LAHelper::log("info", "Creating views...", $comm);
         // Create Folder
-        @mkdir(base_path("resources/views/la/" . $config->dbTableName), 0777, true);
+        @mkdir(dirname(__DIR__)."/backend/views/dupa/" . $config->dbTableName, 0777, true);
         
         // ============================ Listing / Index ============================
-        $md = file_get_contents($templateDirectory . "/views/index.blade.stub");
+        $md = file_get_contents($templateDirectory . "/index.php");
         
         $md = str_replace("__module_name__", $config->moduleName, $md);
         $md = str_replace("__db_table_name__", $config->dbTableName, $md);
@@ -97,10 +97,10 @@ class CodeGenerator
         $inputFields = trim($inputFields);
         $md = str_replace("__input_fields__", $inputFields, $md);
         
-        file_put_contents(base_path('resources/views/la/' . $config->dbTableName . '/index.blade.php'), $md);
+        file_put_contents(dirname(__DIR__).'/backend/views/dupa/' . $config->dbTableName . '/index.php', $md);
         
         // ============================ Edit ============================
-        $md = file_get_contents($templateDirectory . "/views/edit.blade.stub");
+        $md = file_get_contents($templateDirectory . "/edit.php");
         
         $md = str_replace("__module_name__", $config->moduleName, $md);
         $md = str_replace("__db_table_name__", $config->dbTableName, $md);
@@ -117,10 +117,10 @@ class CodeGenerator
         $inputFields = trim($inputFields);
         $md = str_replace("__input_fields__", $inputFields, $md);
         
-        file_put_contents(base_path('resources/views/la/' . $config->dbTableName . '/edit.blade.php'), $md);
+        file_put_contents(dirname(__DIR__).'/backend/views/dupa/' . $config->dbTableName . '/edit.php', $md);
         
         // ============================ Show ============================
-        $md = file_get_contents($templateDirectory . "/views/show.blade.stub");
+        $md = file_get_contents($templateDirectory . "/show.php");
         
         $md = str_replace("__module_name__", $config->moduleName, $md);
         $md = str_replace("__db_table_name__", $config->dbTableName, $md);
@@ -136,7 +136,7 @@ class CodeGenerator
         $displayFields = trim($displayFields);
         $md = str_replace("__display_fields__", $displayFields, $md);
         
-        file_put_contents(base_path('resources/views/la/' . $config->dbTableName . '/show.blade.php'), $md);
+        file_put_contents(dirname(__DIR__).'/backend/views/dupa/' . $config->dbTableName . '/show.php', $md);
     }
     
     /**
@@ -148,9 +148,9 @@ class CodeGenerator
     public static function appendRoutes($config, $comm = null)
     {
         
-        $templateDirectory = __DIR__ . '/stubs';
+        /*$templateDirectory = __DIR__ . '/stubs';
         
-        LAHelper::log("info", "Appending routes...", $comm);
+        //LAHelper::log("info", "Appending routes...", $comm);
         if(\Dwij\Laraadmin\Helpers\LAHelper::laravel_ver() == 5.3) {
             $routesFile = base_path('routes/admin_routes.php');
         } else {
@@ -169,7 +169,7 @@ class CodeGenerator
         $md = str_replace("__singular_var__", $config->singularVar, $md);
         $md = str_replace("__singular_cap_var__", $config->singularCapitalVar, $md);
         
-        file_put_contents($routesFile, $md, FILE_APPEND);
+        file_put_contents($routesFile, $md, FILE_APPEND);*/
     }
     
     /**
@@ -183,8 +183,8 @@ class CodeGenerator
         
         // $templateDirectory = __DIR__.'/stubs';
         
-        LAHelper::log("info", "Appending Menu...", $comm);
-        if(Menu::where("url", $config->dbTableName)->count() == 0) {
+        //LAHelper::log("info", "Appending Menu...", $comm);
+        /*if(Menu::where("url", $config->dbTableName)->count() == 0) {
             Menu::create([
                 "name" => $config->moduleName,
                 "url" => $config->dbTableName,
@@ -192,7 +192,7 @@ class CodeGenerator
                 "type" => 'module',
                 "parent" => 0
             ]);
-        }
+        }*/
         
         // Old Method to add Menu
         // $menu = '<li><a href="{{ url(config("laraadmin.adminRoute") . '."'".'/'.$config->dbTableName."'".') }}"><i class="fa fa-cube"></i> <span>'.$config->moduleName.'</span></a></li>'."\n".'            <!-- LAMenus -->';
