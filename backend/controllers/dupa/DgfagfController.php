@@ -12,12 +12,12 @@ use backend\models\ModuleFieldTypes;
 use backend\helpers\DupaHelper;
 use backend\CodeGenerator;
 use yii\helpers\Json;
-use backend\models\__model_name__;
+use backend\models\Dgfagf;
 
 /**
  * Site controller
  */
-class __controller_class_name__ extends Controller
+class DgfagfController extends Controller
 {
     /**
      * @inheritdoc
