@@ -7,6 +7,7 @@ use yii\db\Migration;
 use backend\models\Module;
 use backend\models\ModuleFieldTypes;
 use backend\helpers\DupaHelper;
+use yii\helpers\Html;
 class CodeGenerator
 {
     /**
@@ -92,7 +93,8 @@ class CodeGenerator
         // Listing columns
         $inputFields = "";
         foreach($config->module->fields as $field) {
-            $inputFields .= "\t\t\t\t\t@la_input($" . "module, '" . $field['colname'] . "')\n";
+			
+            $inputFields .= "\t\t\t\t\t ".Html::textInput('colname', $field['colname'])."\n";
         }
         $inputFields = trim($inputFields);
         $md = str_replace("__input_fields__", $inputFields, $md);
@@ -112,7 +114,8 @@ class CodeGenerator
         // Listing columns
         $inputFields = "";
         foreach($config->module->fields as $field) {
-            $inputFields .= "\t\t\t\t\t@la_input($" . "module, '" . $field['colname'] . "')\n";
+			
+            $inputFields .= "\t\t\t\t\t " . Html::textInput('colname', $field['colname'])."\n";
         }
         $inputFields = trim($inputFields);
         $md = str_replace("__input_fields__", $inputFields, $md);
@@ -131,7 +134,7 @@ class CodeGenerator
         // Listing columns
         $displayFields = "";
         foreach($config->module->fields as $field) {
-            $displayFields .= "\t\t\t\t\t\t@la_display($" . "module, '" . $field['colname'] . "')\n";
+            $displayFields .= "\t\t\t\t\t\t" . Html::textInput('colname', $field['colname'])."\n";
         }
         $displayFields = trim($displayFields);
         $md = str_replace("__display_fields__", $displayFields, $md);
@@ -184,7 +187,7 @@ class CodeGenerator
         // $templateDirectory = __DIR__.'/stubs';
         
         //LAHelper::log("info", "Appending Menu...", $comm);
-        /*if(Menu::where("url", $config->dbTableName)->count() == 0) {
+        if(Menu::where("url", $config->dbTableName)->count() == 0) {
             Menu::create([
                 "name" => $config->moduleName,
                 "url" => $config->dbTableName,
@@ -192,7 +195,7 @@ class CodeGenerator
                 "type" => 'module',
                 "parent" => 0
             ]);
-        }*/
+        }
         
         // Old Method to add Menu
         // $menu = '<li><a href="{{ url(config("laraadmin.adminRoute") . '."'".'/'.$config->dbTableName."'".') }}"><i class="fa fa-cube"></i> <span>'.$config->moduleName.'</span></a></li>'."\n".'            <!-- LAMenus -->';

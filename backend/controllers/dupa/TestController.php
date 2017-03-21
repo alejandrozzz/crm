@@ -12,12 +12,12 @@ use backend\models\ModuleFieldTypes;
 use backend\helpers\DupaHelper;
 use backend\CodeGenerator;
 use yii\helpers\Json;
-use backend\models\__model_name__;
+use backend\models\Test;
 
 /**
  * Site controller
  */
-class __controller_class_name__ extends Controller
+class TestController extends Controller
 {
 	public $show_action = true;
     /**
@@ -58,7 +58,7 @@ class __controller_class_name__ extends Controller
                 'rules' => [
                     // allow authenticated users
                     [
-						__module_name__ => "/". __module_name__ . "/index"
+						Test => "/". Test . "/index"
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -82,12 +82,12 @@ class __controller_class_name__ extends Controller
 
     public function actionIndex()
     {
-        $module = Module::getModule('__module_name__');
+        $module = Module::getModule('Test');
         
         //if(Module::hasAccess($module->id)) {
             return $this->render('index', [
                 'show_actions' => $this->show_action,
-                'listing_cols' => Module::getListingColumns('__module_name__'),
+                'listing_cols' => Module::getListingColumns('Test'),
                 'module' => get_object_vars($module)
             ]);
         //} else {
@@ -96,7 +96,7 @@ class __controller_class_name__ extends Controller
     }
     
     /**
-     * Show the form for creating a new __singular_var__.
+     * Show the form for creating a new test.
      *
      * @return mixed
      */
@@ -106,16 +106,16 @@ class __controller_class_name__ extends Controller
     }
     
     /**
-     * Store a newly created __singular_var__ in database.
+     * Store a newly created test in database.
      *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store()
     {
-        //if(Module::hasAccess("__module_name__", "create")) {
+        //if(Module::hasAccess("Test", "create")) {
             
-            //$rules = Module::validateRules("__module_name__", $request);
+            //$rules = Module::validateRules("Test", $request);
             
             //$validator = Validator::make($request->all(), $rules);
             
@@ -123,9 +123,9 @@ class __controller_class_name__ extends Controller
              //   return redirect()->back()->withErrors($validator)->withInput();
            // }
             
-            $insert_id = Module::insertModule("__module_name__", Yii::$app->request->post('Module'));
+            $insert_id = Module::insertModule("Test", Yii::$app->request->post('Module'));
             
-            //return redirect()->route(config('laraadmin.adminRoute') . '.__route_resource__.index');
+            //return redirect()->route(config('laraadmin.adminRoute') . '.test.index');
             return $this->redirect(['show',
 				'id' => $insert_id
 			]);
@@ -133,26 +133,26 @@ class __controller_class_name__ extends Controller
     }
     
     /**
-     * Display the specified __singular_var__.
+     * Display the specified test.
      *
-     * @param int $id __singular_var__ ID
+     * @param int $id test ID
      * @return mixed
      */
     public function show()
     {
-        //if(Module::hasAccess("__module_name__", "view")) {
+        //if(Module::hasAccess("Test", "view")) {
             
-            $__singular_var__ = __model_name__::find()->where('id = ' . Yii::$app->request->get('id'))->one();
-            if(isset($__singular_var__->id)) {
-                $module = Module::getModule('__module_name__');
-                $module->row = $__singular_var__;
+            $test = Test::find()->where('id = ' . Yii::$app->request->get('id'))->one();
+            if(isset($test->id)) {
+                $module = Module::getModule('Test');
+                $module->row = $test;
                 
                 return $this->render('show', [
                     'module' => $module,
                     'view_col' => $module->view_col,
                     'no_header' => true,
                     'no_padding' => "no-padding",
-					'__singular_var__' => $__singular_var__
+					'test' => $test
                 ]);
             }
        // } else {
@@ -161,39 +161,39 @@ class __controller_class_name__ extends Controller
     }
     
     /**
-     * Show the form for editing the specified __singular_var__.
+     * Show the form for editing the specified test.
      *
-     * @param int $id __singular_var__ ID
+     * @param int $id test ID
      * @return \Illuminate\Http\RedirectResponse
      */
     public function edit()
     {
-        //if(Module::hasAccess("__module_name__", "edit")) {
-            $__singular_var__ = __model_name__::find()->where('id = ' . Yii::$app->request->get('id'))->one();
-            if(isset($__singular_var__->id)) {
-                $module = Module::getModule('__module_name__');
+        //if(Module::hasAccess("Test", "edit")) {
+            $test = Test::find()->where('id = ' . Yii::$app->request->get('id'))->one();
+            if(isset($test->id)) {
+                $module = Module::getModule('Test');
                 
-                $module->row = $__singular_var__;
+                $module->row = $test;
                 
                 return $this->render('edit', [
                     'module' => $module,
                     'view_col' => $module->view_col,
-					'__singular_var__' => $__singular_var__
+					'test' => $test
                 ]);
             } 
     }
     
     /**
-     * Update the specified __singular_var__ in storage.
+     * Update the specified test in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param int $id __singular_var__ ID
+     * @param int $id test ID
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
         
-            $insert_id = Module::updateRow("__module_name__", Yii::$app->request->post('Module'), Yii::$app->request->post('Module')['id']);
+            $insert_id = Module::updateRow("Test", Yii::$app->request->post('Module'), Yii::$app->request->post('Module')['id']);
             
            return $this->redirect(['index',
 				'id' => $insert_id
@@ -201,18 +201,18 @@ class __controller_class_name__ extends Controller
     }
     
     /**
-     * Remove the specified __singular_var__ from storage.
+     * Remove the specified test from storage.
      *
-     * @param int $id __singular_var__ ID
+     * @param int $id test ID
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy()
     {
-        /*if(Module::hasAccess("__module_name__", "delete")) {
-            __model_name__::find($id)->delete();
+        /*if(Module::hasAccess("Test", "delete")) {
+            Test::find($id)->delete();
             
             // Redirecting to index() method
-            return redirect()->route(config('laraadmin.adminRoute') . '.__route_resource__.index');
+            return redirect()->route(config('laraadmin.adminRoute') . '.test.index');
         } else {
             return redirect(config('laraadmin.adminRoute') . "/");
         }*/
@@ -226,14 +226,14 @@ class __controller_class_name__ extends Controller
      */
     public function dtajax()
     {
-        /*$module = Module::getModule('__module_name__');
-        $listing_cols = Module::getListingColumns('__module_name__');
+        /*$module = Module::getModule('Test');
+        $listing_cols = Module::getListingColumns('Test');
         
-        $values = DB::table('__db_table_name__')->select($listing_cols)->whereNull('deleted_at');
+        $values = DB::table('test')->select($listing_cols)->whereNull('deleted_at');
         $out = Datatables::of($values)->make();
         $data = $out->getData();
         
-        $fields_popup = ModuleFields::getModuleFields('__module_name__');
+        $fields_popup = ModuleFields::getModuleFields('Test');
         
         for($i = 0; $i < count($data->data); $i++) {
             for($j = 0; $j < count($listing_cols); $j++) {
@@ -242,7 +242,7 @@ class __controller_class_name__ extends Controller
                     $data->data[$i][$j] = ModuleFields::getFieldValue($fields_popup[$col], $data->data[$i][$j]);
                 }
                 if($col == $module->view_col) {
-                    $data->data[$i][$j] = '<a href="' . url(config('laraadmin.adminRoute') . '/__route_resource__/' . $data->data[$i][0]) . '">' . $data->data[$i][$j] . '</a>';
+                    $data->data[$i][$j] = '<a href="' . url(config('laraadmin.adminRoute') . '/test/' . $data->data[$i][0]) . '">' . $data->data[$i][$j] . '</a>';
                 }
                 // else if($col == "author") {
                 //    $data->data[$i][$j];
@@ -251,12 +251,12 @@ class __controller_class_name__ extends Controller
             
             if($this->show_action) {
                 $output = '';
-                if(Module::hasAccess("__module_name__", "edit")) {
-                    $output .= '<a href="' . url(config('laraadmin.adminRoute') . '/__route_resource__/' . $data->data[$i][0] . '/edit') . '" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a>';
+                if(Module::hasAccess("Test", "edit")) {
+                    $output .= '<a href="' . url(config('laraadmin.adminRoute') . '/test/' . $data->data[$i][0] . '/edit') . '" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a>';
                 }
                 
-                if(Module::hasAccess("__module_name__", "delete")) {
-                    $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.__route_resource__.destroy', $data->data[$i][0]], 'method' => 'delete', 'style' => 'display:inline']);
+                if(Module::hasAccess("Test", "delete")) {
+                    $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.test.destroy', $data->data[$i][0]], 'method' => 'delete', 'style' => 'display:inline']);
                     $output .= ' <button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button>';
                     $output .= Form::close();
                 }

@@ -136,7 +136,7 @@ class SiteController extends Controller
         //return redirect()->route(config('laraadmin.adminRoute') . '.modules.show', [$module_id]);
     }
 
-    public function actionShow($id)
+    public function actionShow()
     {
 		
         $ftypes = ModuleFieldTypes::getFTypes2();

@@ -53,15 +53,15 @@ $this->title = 'DupaCRM';
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title" id="myModalLabel">Add Module</h4>
 			</div>
-			<?php $form = ActiveForm::begin([ 'enableClientValidation' => true, 'action'	=> ['dupa/__db_table_name__/store'], 'method' => 'post',
+			<?php $form = ActiveForm::begin([ 'enableClientValidation' => true, 'action'	=> ['dupa/test/store'], 'method' => 'post',
                 'options'                => [
-                    'id'      => '__singular_var__-add-form'
+                    'id'      => 'test-add-form'
 					
                  ]]); ?>
 			<div class="modal-body">
 				<div class="box-body">
 					
-					__input_fields__
+					<input type="text" name="colname" value="fa-test">
 					
 				</div>
 			</div>
@@ -74,7 +74,7 @@ $this->title = 'DupaCRM';
 		</div>
 	</div>
 </div>
-<button class="btn btn-success btn-sm pull-right add_new_module_btn">Add __singular_cap_var__ </button>
+<button class="btn btn-success btn-sm pull-right add_new_module_btn">Add Test </button>
 	
 </div>
 <script>

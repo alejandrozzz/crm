@@ -751,16 +751,16 @@ class Module extends ActiveRecord
         if(is_int($module_id_name)) {
             $module = self::get($module_id_name);
         } else {
-            $module = self::find()->where('name', $module_id_name)->one();
+            $module = self::find()->where(['name' => $module_id_name])->one();
         }
-        $listing_cols = ModuleFields::find()->where('module', $module->id)->where('listing_col', 1)->orderBy('sort', 'asc')->asArray()->all();
+        $listing_cols = ModuleFields::find()->where(['module' => $module->id])->andWhere(['listing_col' => 1])->orderBy('sort', 'asc')->asArray()->all();
         
         if($isObjects) {
             $id_col = array('label' => 'id', 'colname' => 'id');
         } else {
             $id_col = 'id';
         }
-        $listing_cols_temp = array($id_col);
+        $listing_cols_temp = [];
         foreach($listing_cols as $col) {
             //if(Module::hasFieldAccess($module->id, $col['id'])) {
                 if($isObjects) {
@@ -845,16 +845,18 @@ class Module extends ActiveRecord
         if(isset($module)) {
             $model_name = ucfirst($module_name);
             if($model_name == "User" || $model_name == "Role" || $model_name == "Permission") {
-                if(file_exists(__DIR__.'backend/' . $model_name . ".php")) {
-                    $model = "backend\\" . $model_name;
-                    return $model::count();
+                if(file_exists(dirname(__DIR__).'/backend/' . $model_name . ".php")) {
+                    $model = dirname(__DIR__)."\\backend\\" . $model_name;
+                    return count($model::find()->all());
                 } else {
                     return -1;
                 }
             } else {
-                if(file_exists(__DIR__.'backend/models/' . $model_name . ".php")) {
+				
+				//die();
+                if(file_exists(dirname(__DIR__).'/models/' . $model_name . ".php")) {
                     $model = "backend\\models\\" . $model_name;
-                    return $model::count();
+                    return count($model::find()->asArray()->all());
                 } else {
                     return -1;
                 }

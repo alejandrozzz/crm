@@ -8,11 +8,12 @@ use yii\db\ActiveRecord;
 use backend\helpers\DupaHelper;
 use yii\db\Migration;
 
-class __model_class_name__ extends ActiveRecord
+class Menu extends ActiveRecord
 
 {
-    protected $table = '__db_table_name__';
+    protected $table = 'test';
 	
 	public static function tableName(){
-		return '{{__db_table_name__}}';
+		return '{{menus}}';
 	}
+}

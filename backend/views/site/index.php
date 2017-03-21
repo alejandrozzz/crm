@@ -26,7 +26,7 @@ $this->title = 'My Yii Application';
 		</thead>
 		<tbody>	
 
-			<?php foreach ($modules as $module) : ?>
+			<?php if (count($modules) > 0 ) : foreach ($modules as $module) : ?>
 				<tr>
 					<td><?php echo $module['id'] ?></td>
 					<td><a href="<?php echo Yii::$app->urlManager->createUrl(['/site/show','id'=> $module['id']]);?>"><?php echo $module['label'] ?></a></td>
@@ -39,7 +39,7 @@ $this->title = 'My Yii Application';
 						<a module_name="<?php echo $module['name'] ?>" module_id="<?php echo $module['id'] ?>" class="btn btn-danger btn-xs delete_module" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-trash"></i></a>
 					</td>
 				</tr>
-			<?php endforeach; ?>
+			<?php endforeach; endif;?>
 		</tbody>
 		</table>
 	</div>
@@ -104,7 +104,7 @@ $this->title = 'My Yii Application';
 				<div class="modal-body">
 					<div class="box-body">
 						
-						<?php echo  Html::hiddenInput('id', $module['id']); ?>
+						<?php if (isset($module)) echo  Html::hiddenInput('id', $module['id']); ?>
 						<div class="form-group">
 							<label for="name">Module Name :</label>
 							<input type="text"  class="form-control module_label_edit" placeholder="Module Name" name="Module Name" value=""/>
