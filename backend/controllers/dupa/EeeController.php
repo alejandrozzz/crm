@@ -12,12 +12,12 @@ use backend\models\ModuleFieldTypes;
 use backend\helpers\DupaHelper;
 use backend\CodeGenerator;
 use yii\helpers\Json;
-use backend\models\Test;
+use backend\models\Eee;
 
 /**
  * Site controller
  */
-class TestController extends Controller
+class EeeController extends Controller
 {
 	public $show_action = true;
     /**
@@ -78,12 +78,12 @@ class TestController extends Controller
 
     public function actionIndex()
     {
-        $module = Module::getModule('Test');
+        $module = Module::getModule('Eee');
         
         //if(Module::hasAccess($module->id)) {
             return $this->render('index', [
                 'show_actions' => $this->show_action,
-                'listing_cols' => Module::getListingColumns('Test'),
+                'listing_cols' => Module::getListingColumns('Eee'),
                 'module' => get_object_vars($module)
             ]);
         //} else {
@@ -99,9 +99,9 @@ class TestController extends Controller
 
     public function actionStore()
     {
-        //if(Module::hasAccess("Test", "create")) {
+        //if(Module::hasAccess("Eee", "create")) {
             
-            //$rules = Module::validateRules("Test", $request);
+            //$rules = Module::validateRules("Eee", $request);
             
             //$validator = Validator::make($request->all(), $rules);
             
@@ -109,9 +109,9 @@ class TestController extends Controller
              //   return redirect()->back()->withErrors($validator)->withInput();
            // }
             
-            $insert_id = Module::insertModule("Test", Yii::$app->request->post('Module'));
+            $insert_id = Module::insertModule("Eee", Yii::$app->request->post('Module'));
             
-            //return redirect()->route(config('laraadmin.adminRoute') . '.test.index');
+            //return redirect()->route(config('laraadmin.adminRoute') . '.eee.index');
             return $this->redirect(['show',
 				'id' => $insert_id
 			]);
@@ -120,19 +120,19 @@ class TestController extends Controller
 
     public function actionShow()
     {
-        //if(Module::hasAccess("Test", "view")) {
+        //if(Module::hasAccess("Eee", "view")) {
             
-            $test = Test::find()->where('id = ' . Yii::$app->request->get('id'))->one();
-            if(isset($test->id)) {
-                $module = Module::getModule('Test');
-                $module->row = $test;
+            $eee = Eee::find()->where('id = ' . Yii::$app->request->get('id'))->one();
+            if(isset($eee->id)) {
+                $module = Module::getModule('Eee');
+                $module->row = $eee;
                 
                 return $this->render('show', [
                     'module' => $module,
                     'view_col' => $module->view_col,
                     'no_header' => true,
                     'no_padding' => "no-padding",
-					'test' => $test
+					'eee' => $eee
                 ]);
             }
        // } else {
@@ -143,17 +143,17 @@ class TestController extends Controller
 
     public function actionEdit()
     {
-        //if(Module::hasAccess("Test", "edit")) {
-            $test = Test::find()->where('id = ' . Yii::$app->request->get('id'))->one();
-            if(isset($test->id)) {
-                $module = Module::getModule('Test');
+        //if(Module::hasAccess("Eee", "edit")) {
+            $eee = Eee::find()->where('id = ' . Yii::$app->request->get('id'))->one();
+            if(isset($eee->id)) {
+                $module = Module::getModule('Eee');
                 
-                $module->row = $test;
+                $module->row = $eee;
                 
                 return $this->render('edit', [
                     'module' => $module,
                     'view_col' => $module->view_col,
-					'test' => $test
+					'eee' => $eee
                 ]);
             } 
     }
@@ -162,7 +162,7 @@ class TestController extends Controller
     public function actionUpdate(Request $request, $id)
     {
         
-            $insert_id = Module::updateRow("Test", Yii::$app->request->post('Module'), Yii::$app->request->post('Module')['id']);
+            $insert_id = Module::updateRow("Eee", Yii::$app->request->post('Module'), Yii::$app->request->post('Module')['id']);
             
            return $this->redirect(['index',
 				'id' => $insert_id
@@ -172,11 +172,11 @@ class TestController extends Controller
 
     public function actionDestroy()
     {
-        /*if(Module::hasAccess("Test", "delete")) {
-            Test::find($id)->delete();
+        /*if(Module::hasAccess("Eee", "delete")) {
+            Eee::find($id)->delete();
             
             // Redirecting to index() method
-            return redirect()->route(config('laraadmin.adminRoute') . '.test.index');
+            return redirect()->route(config('laraadmin.adminRoute') . '.eee.index');
         } else {
             return redirect(config('laraadmin.adminRoute') . "/");
         }*/
@@ -184,14 +184,14 @@ class TestController extends Controller
 
     public function actionDtajax()
     {
-        /*$module = Module::getModule('Test');
-        $listing_cols = Module::getListingColumns('Test');
+        /*$module = Module::getModule('Eee');
+        $listing_cols = Module::getListingColumns('Eee');
         
-        $values = DB::table('test')->select($listing_cols)->whereNull('deleted_at');
+        $values = DB::table('eee')->select($listing_cols)->whereNull('deleted_at');
         $out = Datatables::of($values)->make();
         $data = $out->getData();
         
-        $fields_popup = ModuleFields::getModuleFields('Test');
+        $fields_popup = ModuleFields::getModuleFields('Eee');
         
         for($i = 0; $i < count($data->data); $i++) {
             for($j = 0; $j < count($listing_cols); $j++) {
@@ -200,7 +200,7 @@ class TestController extends Controller
                     $data->data[$i][$j] = ModuleFields::getFieldValue($fields_popup[$col], $data->data[$i][$j]);
                 }
                 if($col == $module->view_col) {
-                    $data->data[$i][$j] = '<a href="' . url(config('laraadmin.adminRoute') . '/test/' . $data->data[$i][0]) . '">' . $data->data[$i][$j] . '</a>';
+                    $data->data[$i][$j] = '<a href="' . url(config('laraadmin.adminRoute') . '/eee/' . $data->data[$i][0]) . '">' . $data->data[$i][$j] . '</a>';
                 }
                 // else if($col == "author") {
                 //    $data->data[$i][$j];
@@ -209,12 +209,12 @@ class TestController extends Controller
             
             if($this->show_action) {
                 $output = '';
-                if(Module::hasAccess("Test", "edit")) {
-                    $output .= '<a href="' . url(config('laraadmin.adminRoute') . '/test/' . $data->data[$i][0] . '/edit') . '" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a>';
+                if(Module::hasAccess("Eee", "edit")) {
+                    $output .= '<a href="' . url(config('laraadmin.adminRoute') . '/eee/' . $data->data[$i][0] . '/edit') . '" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a>';
                 }
                 
-                if(Module::hasAccess("Test", "delete")) {
-                    $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.test.destroy', $data->data[$i][0]], 'method' => 'delete', 'style' => 'display:inline']);
+                if(Module::hasAccess("Eee", "delete")) {
+                    $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.eee.destroy', $data->data[$i][0]], 'method' => 'delete', 'style' => 'display:inline']);
                     $output .= ' <button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button>';
                     $output .= Form::close();
                 }

@@ -1,6 +1,7 @@
 <?php
 
 use yii\db\Migration;
+use backend\models\Module;
 
 class Create_yyys_table extends Migration
 {
@@ -11,15 +12,18 @@ class Create_yyys_table extends Migration
      */
     public function up()
     {
-        Module::generate("Yyy", 'yyys', 'test', 'yyyfa', [
+        Module::generate("Yyy", 'yyys', 'fda', 'yyyfa', [
             [
-                "colname" => "test",
-                "label" => "test",
-                "field_type" => "Currency",
-                "unique" => 1,
+                "colname" => "fda",
+                "label" => "fsdasd",
+                "field_type" => "Date",
+                "unique" => 0,
                 "defaultvalue" => "",
                 "minlength" => 0,
-                "maxlength" => 11,
+                "maxlength" => 0,
+                "created_at" => 0,
+                "updated_at" => 0,
+                "deleted_at" => 0,
                 "required" => 0,
                 "listing_col" => 0
             ]

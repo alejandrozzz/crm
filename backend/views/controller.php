@@ -58,7 +58,6 @@ class __controller_class_name__ extends Controller
                 'rules' => [
                     // allow authenticated users
                     [
-						__module_name__ => "/". __module_name__ . "/index"
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -68,9 +67,6 @@ class __controller_class_name__ extends Controller
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
     public function actions()
     {
         return [
@@ -95,23 +91,13 @@ class __controller_class_name__ extends Controller
         //}
     }
     
-    /**
-     * Show the form for creating a new __singular_var__.
-     *
-     * @return mixed
-     */
-    public function create()
+
+    public function actionCreate()
     {
         //
     }
-    
-    /**
-     * Store a newly created __singular_var__ in database.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function store()
+
+    public function actionStore()
     {
         //if(Module::hasAccess("__module_name__", "create")) {
             
@@ -123,7 +109,7 @@ class __controller_class_name__ extends Controller
              //   return redirect()->back()->withErrors($validator)->withInput();
            // }
             
-            $insert_id = Module::insertModule("__module_name__", Yii::$app->request->post('Module'));
+            $insert_id = Module::insertModule("__module_name__", Yii::$app->request->post());
             
             //return redirect()->route(config('laraadmin.adminRoute') . '.__route_resource__.index');
             return $this->redirect(['show',
@@ -131,14 +117,8 @@ class __controller_class_name__ extends Controller
 			]);
         
     }
-    
-    /**
-     * Display the specified __singular_var__.
-     *
-     * @param int $id __singular_var__ ID
-     * @return mixed
-     */
-    public function show()
+
+    public function actionShow()
     {
         //if(Module::hasAccess("__module_name__", "view")) {
             
@@ -160,13 +140,8 @@ class __controller_class_name__ extends Controller
         //}
     }
     
-    /**
-     * Show the form for editing the specified __singular_var__.
-     *
-     * @param int $id __singular_var__ ID
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function edit()
+
+    public function actionEdit()
     {
         //if(Module::hasAccess("__module_name__", "edit")) {
             $__singular_var__ = __model_name__::find()->where('id = ' . Yii::$app->request->get('id'))->one();
@@ -183,14 +158,8 @@ class __controller_class_name__ extends Controller
             } 
     }
     
-    /**
-     * Update the specified __singular_var__ in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id __singular_var__ ID
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function update(Request $request, $id)
+
+    public function actionUpdate(Request $request, $id)
     {
         
             $insert_id = Module::updateRow("__module_name__", Yii::$app->request->post('Module'), Yii::$app->request->post('Module')['id']);
@@ -200,13 +169,8 @@ class __controller_class_name__ extends Controller
 			]);
     }
     
-    /**
-     * Remove the specified __singular_var__ from storage.
-     *
-     * @param int $id __singular_var__ ID
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function destroy()
+
+    public function actionDestroy()
     {
         /*if(Module::hasAccess("__module_name__", "delete")) {
             __model_name__::find($id)->delete();
@@ -217,14 +181,8 @@ class __controller_class_name__ extends Controller
             return redirect(config('laraadmin.adminRoute') . "/");
         }*/
     }
-    
-    /**
-     * Server side Datatable fetch via Ajax
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function dtajax()
+
+    public function actionDtajax()
     {
         /*$module = Module::getModule('__module_name__');
         $listing_cols = Module::getListingColumns('__module_name__');

@@ -20,7 +20,7 @@ $this->title = 'My Yii Application';
     $temp_module_obj = Module::getModule($menu->name);
     ?>
 
-    <?php if(isset($module->id) && $module->name == $menu->name) : ?>
+    <?php if(isset($module->id) && $module['name'] == $menu->name) : ?>
     <?php echo \backend\helpers\DupaHelper::print_menu($menu ,true); ?>
     <?php else : ?>
     <?php echo \backend\helpers\DupaHelper::print_menu($menu); ?>

@@ -183,7 +183,7 @@ class DupaHelper
             $active_str = 'class="active"';
         }
 
-        $str = '<li' . $treeview . ' ' . $active_str . '><a href="' . Yii::$app->urlManager->createUrl([$menu->url]) . '"><i class="fa ' . $menu->icon . '"></i> <span>' . self::real_module_name($menu->name) . '</span> ' . $subviewSign . '</a>';
+        $str = '<li' . $treeview . ' ' . $active_str . '><a href="' . Yii::$app->urlManager->createUrl(["dupa/".$menu->url]) . '/index/"><i class="fa ' . $menu->icon . '"></i> <span>' . self::real_module_name($menu->name) . '</span> ' . $subviewSign . '</a>';
 
         if(count($childrens)) {
             $str .= '<ul class="treeview-menu">';

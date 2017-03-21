@@ -24,6 +24,7 @@ class m170313_142921_createModulesTable2 extends Migration
 			'is_gen' => $this->boolean(),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
+            'deleted_at' => $this->integer()->notNull(),
         ], $tableOptions);
     }
 

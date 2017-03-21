@@ -3,7 +3,6 @@
 namespace backend\models;
 
 use Yii;
-use yii\base\Model;
 use yii\db\ActiveRecord;
 use backend\helpers\DupaHelper;
 use yii\db\Migration;
@@ -30,7 +29,8 @@ class Module extends ActiveRecord
             [['model'], 'string'],
             [['controller'], 'string'],
             [['fa_icon'], 'string'],
-            [['is_gen'], 'integer']
+            [['is_gen'], 'integer'],
+            [['deleted_at'], 'integer']
 
         ];
     }
@@ -64,6 +64,7 @@ class Module extends ActiveRecord
             $names['is_gen'] = 0;
             $names['created_at'] = 0;
             $names['updated_at'] = 0;
+            $names['deleted_at'] = 0;
             //var_dump($names);
             $module->attributes = $names;
             
@@ -88,7 +89,8 @@ class Module extends ActiveRecord
         
         $names = DupaHelper::generateModuleNames($module_name, $faIcon);
         $fields = Module::format_fields($module_name, $fields);
-        
+
+
         if(substr_count($view_col, " ") || substr_count($view_col, ".")) {
             throw new Exception("Unable to generate migration for " . ($names->module) . " : Invalid view_column_name. 'This should be database friendly lowercase name.'", 1);
         } else if(!Module::validate_view_column($fields, $view_col)) {
@@ -96,27 +98,28 @@ class Module extends ActiveRecord
         } else {
             // Check is Generated
             $is_gen = false;
-            if(file_exists(base_path('backend/controllers/' . ($names->controller) . ".php"))) {
+            if(file_exists(dirname(__DIR__).'/backend/controllers/' . ($names->controller) . ".php")) {
                 if(($names->model == "User" || $names->model == "Role" || $names->model == "Permission") && file_exists(base_path('backend/models/' . ($names->model) . ".php"))) {
                     $is_gen = true;
-                } else if(file_exists(base_path('backend/models/' . ($names->model) . ".php"))) {
+                } else if(dirname(__DIR__).'/backend/models/' . ($names->model) . ".php") {
                     $is_gen = true;
                 }
             }
             
             // Create Module if not exists
-            $module = Module::where('name', $names->module)->first();
+            $module = Module::find()->where(['name' => $names->module])->one();
             if(!isset($module->id)) {
-                $module = Module::create([
-                    'name' => $names->module,
-                    'label' => $names->label,
-                    'name_db' => $names->table,
-                    'view_col' => $view_col,
-                    'model' => $names->model,
-                    'controller' => $names->controller,
-                    'is_gen' => $is_gen,
-                    'fa_icon' => $faIcon
-                ]);
+                $module = new Module();
+
+                    $module->name = $names->module;
+                    $module->label = $names->label;
+                    $module->name_db = $names->table;
+                    $module->view_col = $view_col;
+                    $module->model = $names->model;
+                    $module->controller = $names->controller;
+                    $module->is_gen = $is_gen;
+                    $module->fa_icon = $faIcon;
+                    $module->save();
             }
             
             $ftypes = ModuleFieldTypes::getFTypes();
@@ -125,57 +128,62 @@ class Module extends ActiveRecord
             //print_r($fields);
             
             // Create Database Schema for table
-            Migration::createTable($names->table, function (Blueprint $table) use ($fields, $module, $ftypes) {
-                $table->increments('id');
-                foreach($fields as $field) {
-                    $mod = ModuleFields::find()->where('module', $module->id)->where('colname', $field->colname)->one();
-                    if(!isset($mod->id)) {
-                        if($field->field_type == "Multiselect" || $field->field_type == "Taginput") {
-                            
-                            if(is_string($field->defaultvalue) && starts_with($field->defaultvalue, "[")) {
-                                $field->defaultvalue = json_decode($field->defaultvalue);
-                            }
-                            
-                            if(is_string($field->defaultvalue) || is_int($field->defaultvalue)) {
-                                $dvalue = json_encode([$field->defaultvalue]);
-                            } else {
-                                $dvalue = json_encode($field->defaultvalue);
-                            }
+            $m = new Migration();$m->createTable($names->table, $fields);
+            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
+
+            $m = new Migration();
+
+            foreach($fields as $field) {
+                $mod = ModuleFields::find()->where('module', $module->id)->where('colname', $field->colname)->one();
+                if(!isset($mod->id)) {
+                    if($field->field_type == "Multiselect" || $field->field_type == "Taginput") {
+
+                        if(is_string($field->defaultvalue) && starts_with($field->defaultvalue, "[")) {
+                            $field->defaultvalue = json_decode($field->defaultvalue);
+                        }
+
+                        if(is_string($field->defaultvalue) || is_int($field->defaultvalue)) {
+                            $dvalue = json_encode([$field->defaultvalue]);
                         } else {
+                            $dvalue = json_encode($field->defaultvalue);
+                        }
+                    } else {
+                        $dvalue = $field->defaultvalue;
+                        if(is_string($field->defaultvalue) || is_int($field->defaultvalue)) {
                             $dvalue = $field->defaultvalue;
-                            if(is_string($field->defaultvalue) || is_int($field->defaultvalue)) {
-                                $dvalue = $field->defaultvalue;
-                            } else if(is_array($field->defaultvalue) && is_object($field->defaultvalue)) {
-                                $dvalue = json_encode($field->defaultvalue);
-                            }
+                        } else if(is_array($field->defaultvalue) && is_object($field->defaultvalue)) {
+                            $dvalue = json_encode($field->defaultvalue);
                         }
-                        
-                        $pvalues = $field->popup_vals;
-                        if(is_array($field->popup_vals) || is_object($field->popup_vals)) {
-                            $pvalues = json_encode($field->popup_vals);
-                        }
-                        
-                        // Create Module field Metadata / Context
-                        $field_obj = ModuleFields::create([
-                            'module' => $module->id,
-                            'colname' => $field->colname,
-                            'label' => $field->label,
-                            'field_type' => $ftypes[$field->field_type],
-                            'unique' => $field->unique,
-                            'defaultvalue' => $dvalue,
-                            'minlength' => $field->minlength,
-                            'maxlength' => $field->maxlength,
-                            'required' => $field->required,
-                            'listing_col' => $field->listing_col,
-                            'popup_vals' => $pvalues
-                        ]);
-                        $field->id = $field_obj->id;
-                        $field->module_obj = $module;
                     }
-                    
-                    // Create Module field schema in database
-                    Module::create_field_schema($table, $field);
+
+                    $pvalues = $field->popup_vals;
+                    if(is_array($field->popup_vals) || is_object($field->popup_vals)) {
+                        $pvalues = json_encode($field->popup_vals);
+                    }
+
+                    // Create Module field Metadata / Context
+                    $field_obj = ModuleFields::createField([
+                        'module' => $module->id,
+                        'colname' => $field->colname,
+                        'label' => $field->label,
+                        'field_type' => $ftypes[$field->field_type],
+                        'unique' => $field->unique,
+                        'defaultvalue' => $dvalue,
+                        'minlength' => $field->minlength,
+                        'maxlength' => $field->maxlength,
+                        'required' => $field->required,
+                        'listing_col' => $field->listing_col,
+                        'popup_vals' => $pvalues
+                    ]);
+                    $field->id = $field_obj->id;
+                    $field->module_obj = $module;
                 }
+
+                // Create Module field schema in database
+                self::create_field_schema($m, $field);
+            }
+
+
                 
                 // $table->string('name');
                 // $table->string('designation', 100);
@@ -192,14 +200,14 @@ class Module extends ActiveRecord
                 // $table->date('date_hire');
                 // $table->date('date_left');
                 // $table->double('salary_cur');
-                if($module->name_db == "users") {
-                    $table->rememberToken();
-                }
-                $table->softDeletes();
-                $table->timestamps();
-            });
+                $m->createTable($module['name_db'], [
+                    $fields
+                ], $tableOptions);
+
+
+            };
         }
-    }
+
 	
 	public static function create_field_schema($table, $field, $update = false, $isFieldTypeChange = false)
     {
@@ -221,9 +229,9 @@ class Module extends ActiveRecord
                 $var = null;
                 if($field->maxlength == 0) {
                     if($update) {
-                        $var = $table->text($field->colname)->change();
+                        $var = $table->string($field->colname)->change();
                     } else {
-                        $var = $table->text($field->colname);
+                        $var = $table->string($field->colname);
                     }
                 } else {
                     if($update) {
@@ -805,23 +813,23 @@ class Module extends ActiveRecord
         $module = Module::getModule($module_name);
 
         if(isset($module)) {
-            echo 2;
-            $model_name = ucfirst(str_singular($module_name));
+
+            $model_name = ucfirst($module_name);
             if($model_name == "User" || $model_name == "Role" || $model_name == "Permission") {
-                $model = "backend\\" . ucfirst(str_singular($module_name));
+                $model = "backend\\" . ucfirst($module_name);
             } else {
-                $model = "backend\\models\\" . ucfirst(str_singular($module_name));
+                $model = "backend\\models\\" . ucfirst($module_name);
             }
 
             // Delete if unique rows available which are deleted
             $old_row = null;
-            $uniqueFields = ModuleFields::find()->where(['module' => $module->id])->where(['unique', '1'])->asArray()->all();
+            $uniqueFields = ModuleFields::find()->where(['module' => $module->id])->where(['unique' => '1'])->asArray()->all();
             foreach($uniqueFields as $field) {
                 //Log::debug("insert: " . $module->name_db . " - " . $field['colname'] . " - " . $request->{$field['colname']});
-                $old_row = $model::find()->whereNotNull('deleted_at')->where([$field['colname'], $request->{$field['colname']}])->one();
+                $old_row = $model::find()->where(['is not', 'deleted_at', null])->andWhere([$request['colname'] => $request['colname']])->one();
                 if(isset($old_row->id)) {
                     //Log::debug("deleting: " . $module->name_db . " - " . $field['colname'] . " - " . $request->{$field['colname']});
-                    $model::find()->whereNotNull('deleted_at')->where([$field['colname'], $request->{$field['colname']}])->one()->delete();
+                    $model::find()->where(['is not', 'deleted_at', null])->andWhere([$field['colname'] => $request[$field['colname']]])->one()->delete();
                 }
             }
 
@@ -976,6 +984,85 @@ class Module extends ActiveRecord
             }
         }
         return $out;
+    }
+
+    public static function processDBRow($module, $request, $row)
+    {
+        $ftypes = ModuleFieldTypes::getFTypes2();
+
+        foreach($module->fields as $field) {
+            if(isset($request->{$field['colname']}) || isset($request->{$field['colname'] . "_hidden"})) {
+
+                switch($ftypes[$field['field_type']]) {
+                    case 'Checkbox':
+                        if(isset($request->{$field['colname']})) {
+                            $row->{$field['colname']} = true;
+                        } else if(isset($request->{$field['colname'] . "_hidden"})) {
+                            $row->{$field['colname']} = false;
+                        }
+                        break;
+                    case 'Date':
+                        $null_date = $request->{"null_date_" . $field['colname']};
+                        if(isset($null_date) && $null_date == "true") {
+                            $request->{$field['colname']} = NULL;
+                        } else if($request->{$field['colname']} != "") {
+                            $date = $request->{$field['colname']};
+                            $d2 = date_parse_from_format("d/m/Y", $date);
+                            $request->{$field['colname']} = date("Y-m-d", strtotime($d2['year'] . "-" . $d2['month'] . "-" . $d2['day']));
+                        } else {
+                            $request->{$field['colname']} = date("Y-m-d");
+                        }
+                        $row->{$field['colname']} = $request->{$field['colname']};
+                        break;
+                    case 'Datetime':
+                        $null_date = $request->{"null_date_" . $field['colname']};
+                        if(isset($null_date) && $null_date == "true") {
+                            $request->{$field['colname']} = NULL;
+                        } else if($request->{$field['colname']} != "") {
+                            $date = $request->{$field['colname']};
+                            $d2 = date_parse_from_format("d/m/Y h:i A", $date);
+                            $request->{$field['colname']} = date("Y-m-d H:i:s", strtotime($d2['year'] . "-" . $d2['month'] . "-" . $d2['day'] . " " . substr($date, 11)));
+                        } else {
+                            $request->{$field['colname']} = date("Y-m-d H:i:s");
+                        }
+                        $row->{$field['colname']} = $request->{$field['colname']};
+                        break;
+                    case 'Dropdown':
+                        if($request->{$field['colname']} == 0) {
+                            if(starts_with($field['popup_vals'], "@")) {
+                                $request->{$field['colname']} = DB::raw('NULL');
+                            } else if(starts_with($field['popup_vals'], "[")) {
+                                $request->{$field['colname']} = "";
+                            }
+                        }
+                        $row->{$field['colname']} = $request->{$field['colname']};
+                        break;
+                    case 'Multiselect':
+                        // TODO: Bug fix
+                        $row->{$field['colname']} = json_encode($request->{$field['colname']});
+                        break;
+                    case 'Password':
+                        $row->{$field['colname']} = bcrypt($request->{$field['colname']});
+                        break;
+                    case 'Taginput':
+                        // TODO: Bug fix
+                        $row->{$field['colname']} = json_encode($request->{$field['colname']});
+                        break;
+                    case 'Files':
+                        $files = json_decode($request->{$field['colname']});
+                        $files2 = array();
+                        foreach($files as $file) {
+                            $files2[] = "" . $file;
+                        }
+                        $row->{$field['colname']} = json_encode($files2);
+                        break;
+                    default:
+                        $row->{$field['colname']} = $request->{$field['colname']};
+                        break;
+                }
+            }
+        }
+        return $row;
     }
 	
 	public static function tableName(){

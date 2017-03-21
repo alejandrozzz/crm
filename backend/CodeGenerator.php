@@ -305,6 +305,9 @@ class CodeGenerator
                         "\n                \"defaultvalue\" => " . $dvalue . "," .
                         "\n                \"minlength\" => " . $minlength . "," .
                         "\n                \"maxlength\" => " . $maxlength . "," .
+                        "\n                \"created_at\" => " . 0 . "," .
+                        "\n                \"updated_at\" => " . 0 . "," .
+                        "\n                \"deleted_at\" => " . 0 . "," .
                         "\n                \"required\" => " . $required . ",";
                     
                     if($values != "") {

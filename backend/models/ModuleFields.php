@@ -124,6 +124,7 @@ class ModuleFields extends ActiveRecord{
 				$m = new Migration();
 				$m->createTable($module['name_db'], [
 					'id' => Schema::TYPE_PK,
+                    'deleted_at' => Schema::TYPE_INTEGER,
 					'created_at' => Schema::TYPE_INTEGER,
 					'updated_at' => Schema::TYPE_INTEGER
 				], $tableOptions);
