@@ -803,8 +803,7 @@ class Module extends ActiveRecord
     public static function insertModule($module_name, $request)
     {
         $module = Module::getModule($module_name);
-        var_dump($module);
-        die();
+
         if(isset($module)) {
             echo 2;
             $model_name = ucfirst(str_singular($module_name));
@@ -831,7 +830,7 @@ class Module extends ActiveRecord
                 // To keep old & new row id remain same
                 $row->id = $old_row->id;
             }
-            $row = Module::processDBRow($module, $request, $row);
+            $row = self::processDBRow($module, $request, $row);
             $row->save();
             return $row->id;
         } else {
@@ -842,6 +841,7 @@ class Module extends ActiveRecord
 	 public static function itemCount($module_name)
     {
         $module = Module::getModule($module_name);
+
         if(isset($module)) {
             $model_name = ucfirst($module_name);
             if($model_name == "User" || $model_name == "Role" || $model_name == "Permission") {

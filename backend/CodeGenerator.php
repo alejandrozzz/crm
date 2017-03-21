@@ -6,6 +6,7 @@ use yii\db\Schema;
 use yii\db\Migration;
 use backend\models\Module;
 use backend\models\ModuleFieldTypes;
+use backend\models\Menu;
 use backend\helpers\DupaHelper;
 use yii\helpers\Html;
 class CodeGenerator
@@ -187,14 +188,21 @@ class CodeGenerator
         // $templateDirectory = __DIR__.'/stubs';
         
         //LAHelper::log("info", "Appending Menu...", $comm);
-        if(Menu::where("url", $config->dbTableName)->count() == 0) {
-            Menu::create([
-                "name" => $config->moduleName,
-                "url" => $config->dbTableName,
-                "icon" => "fa " . $config->fa_icon,
-                "type" => 'module',
-                "parent" => 0
-            ]);
+        if(count(Menu::find()->where(["url" => $config->dbTableName])->all()) == 0) {
+            $menu = new Menu();
+            $menu->name = $config->moduleName;
+            $menu->url = $config->dbTableName;
+            $menu->icon = "fa " . $config->fa_icon;
+            $menu->type = 'module';
+            $menu->parent = 0;
+            $menu->save();
+//            Menu::create([
+//                "name" => $config->moduleName,
+//                "url" => $config->dbTableName,
+//                "icon" => "fa " . $config->fa_icon,
+//                "type" => 'module',
+//                "parent" => 0
+//            ]);
         }
         
         // Old Method to add Menu

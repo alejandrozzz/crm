@@ -1,6 +1,7 @@
 <?php
 
 use yii\db\Migration;
+use backend\models\Module;
 
 class Create_tests_table extends Migration
 {
@@ -11,16 +12,16 @@ class Create_tests_table extends Migration
      */
     public function up()
     {
-        Module::generate("Test", 'tests', 'fa-test', 'fa-test', [
+        Module::generate("Test", 'tests', 'test', 'teste', [
             [
-                "colname" => "fa-test",
+                "colname" => "test",
                 "label" => "test",
-                "field_type" => "Address",
+                "field_type" => "Checkbox",
                 "unique" => 1,
                 "defaultvalue" => "",
                 "minlength" => 0,
-                "maxlength" => 256,
-                "required" => 1,
+                "maxlength" => 0,
+                "required" => 0,
                 "listing_col" => 0
             ]
         ]);

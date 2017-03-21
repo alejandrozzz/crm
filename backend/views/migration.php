@@ -1,6 +1,7 @@
 <?php
 
 use yii\db\Migration;
+use backend\models\Module;
 
 class __migration_class_name__ extends Migration
 {

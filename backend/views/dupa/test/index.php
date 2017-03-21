@@ -61,7 +61,7 @@ $this->title = 'DupaCRM';
 			<div class="modal-body">
 				<div class="box-body">
 					
-					<input type="text" name="colname" value="fa-test">
+					<input type="text" name="colname" value="test">
 					
 				</div>
 			</div>

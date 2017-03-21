@@ -2,6 +2,7 @@
 namespace backend\helpers;
 
 use backend\models\module;
+use backend\models\Menu;
 use Yii;
 class DupaHelper
 {
@@ -134,5 +135,73 @@ class DupaHelper
         // If the array keys of the keys match the keys, then the array must
         // not be associative (e.g. the keys array looked like {0:0, 1:1...}).
         return array_keys($keys) !== $keys;
+    }
+
+    public static function print_menu_editor($menu)
+    {
+        $editing = '';//\Collective\Html\FormFacade::open(['route' => [config('laraadmin.adminRoute') . '.la_menus.destroy', $menu->id], 'method' => 'delete', 'style' => 'display:inline']);
+        $editing .= '<button class="btn btn-xs btn-danger pull-right"><i class="fa fa-times"></i></button>';
+        //$editing .= \Collective\Html\FormFacade::close();
+        if($menu->type != "module") {
+            $info = (object)array();
+            $info->id = $menu->id;
+            $info->name = $menu->name;
+            $info->url = $menu->url;
+            $info->type = $menu->type;
+            $info->icon = $menu->icon;
+
+            $editing .= '<a class="editMenuBtn btn btn-xs btn-success pull-right" info=\'' . json_encode($info) . '\'><i class="fa fa-edit"></i></a>';
+        }
+        $str = '<li class="dd-item dd3-item" data-id="' . $menu->id . '">
+			<div class="dd-handle dd3-handle"></div>
+			<div class="dd3-content"><i class="fa ' . $menu->icon . '"></i> ' . $menu->name . ' ' . $editing . '</div>';
+
+        $childrens = Menu::find()->where(["parent"=>$menu->id])->orderBy('hierarchy', 'asc')->all();
+
+        if(count($childrens) > 0) {
+            $str .= '<ol class="dd-list">';
+            foreach($childrens as $children) {
+                $str .= self::print_menu_editor($children);
+            }
+            $str .= '</ol>';
+        }
+        $str .= '</li>';
+        return $str;
+    }
+
+    public static function print_menu($menu, $active = false)
+    {
+        $childrens = Menu::find()->where(["parent" => $menu->id])->orderBy('hierarchy', 'asc')->all();
+        $treeview = "";
+        $subviewSign = "";
+        if(count($childrens)) {
+            $treeview = " class=\"treeview\"";
+            $subviewSign = '<i class="fa fa-angle-left pull-right"></i>';
+        }
+        $active_str = '';
+        if($active) {
+            $active_str = 'class="active"';
+        }
+
+        $str = '<li' . $treeview . ' ' . $active_str . '><a href="' . Yii::$app->urlManager->createUrl([$menu->url]) . '"><i class="fa ' . $menu->icon . '"></i> <span>' . self::real_module_name($menu->name) . '</span> ' . $subviewSign . '</a>';
+
+        if(count($childrens)) {
+            $str .= '<ul class="treeview-menu">';
+            foreach($childrens as $children) {
+                $module = Module::get($children->url);
+                //if(Module::hasAccess($module->id)) {
+                    $str .= self::print_menu($children);
+                //}
+            }
+            $str .= '</ul>';
+        }
+        $str .= '</li>';
+        return $str;
+    }
+
+    public static function real_module_name($name)
+    {
+        $name = str_replace('_', ' ', $name);
+        return $name;
     }
 }

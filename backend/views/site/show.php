@@ -20,7 +20,7 @@ use yii\bootstrap\ActiveForm;?>
 				<div class="col-md-9">
 					<a class="text-white" href=""><h4 data-toggle="tooltip" data-placement="left" title="Open <?php $module['model'] ?> Module" class="name"><?php $module['label'];?></h4></a>
 					<div class="row stats">
-						<div class="col-md-12"><?php Module::itemCount($module['name']) ?> Items</div>
+                        <div class="col-md-12"><?php if(isset($module['is_gen']) && $module['is_gen']) : Module::itemCount($module['name']) ?> Items <?php endif;?></div>
 					</div>
 					<p class="desc"><?php if(isset($module['is_gen']) && $module['is_gen']) : ?> <div class="label2 success">Module Generated</div> <?php else : ?> <div class="label2 danger" style="border:solid 1px #FFF;">Module not Generated</div> <?php endif; ?></p>
 				</div>

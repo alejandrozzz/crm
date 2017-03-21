@@ -3,14 +3,34 @@ use yii\helpers\Html;
 use yii\bootstrap\Modal;
 use yii\bootstrap\ActiveForm;
 use backend\models\Module;
-use backend\controllers\Dupa;
+use backend\models\Menu;
 use yii\helpers\Url;
 /* @var $this yii\web\View */
 
 $this->title = 'My Yii Application';
 ?>
 <div class="site-index">
-	
+
+    <?php
+    $menuItems = Menu::find()->where(["parent" => 0])->orderBy('hierarchy', 'asc')->all();
+    ?>
+    <?php foreach ($menuItems as $menu) : ?>
+    <?php if($menu->type == "module") : ?>
+    <?php
+    $temp_module_obj = Module::getModule($menu->name);
+    ?>
+
+    <?php if(isset($module->id) && $module->name == $menu->name) : ?>
+    <?php echo \backend\helpers\DupaHelper::print_menu($menu ,true); ?>
+    <?php else : ?>
+    <?php echo \backend\helpers\DupaHelper::print_menu($menu); ?>
+    <?php endif; ?>
+
+    <?php else : ?>
+    <?php echo \backend\helpers\DupaHelper::print_menu($menu); ?>
+    <?php endif;?>
+    <?php endforeach; ?>
+
 	<div class="box box-success">
 	<!--<div class="box-header"></div>-->
 	<div class="box-body">

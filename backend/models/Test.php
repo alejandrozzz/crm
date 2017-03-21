@@ -12,8 +12,9 @@ class Test extends ActiveRecord
 
 {
     protected $table = 'test';
-	
-	public static function tableName(){
-		return '{{test}}';
-	}
+
+    public static function tableName()
+    {
+        return '{{test}}';
+    }
 }

@@ -12,7 +12,9 @@ class __model_class_name__ extends ActiveRecord
 
 {
     protected $table = '__db_table_name__';
-	
-	public static function tableName(){
-		return '{{__db_table_name__}}';
-	}
+
+    public static function tableName()
+    {
+        return '{{__db_table_name__}}';
+    }
+}
