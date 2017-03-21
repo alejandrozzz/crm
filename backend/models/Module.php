@@ -863,7 +863,119 @@ class Module extends ActiveRecord
             return -1;
         }
     }
-
+	
+	public static function format_fields($module_name, $fields)
+    {
+        $out = array();
+        foreach($fields as $field) {
+            // Check if field format is New
+            if(DupaHelper::is_assoc_array($field)) {
+                $obj = (object)$field;
+                
+                if(!isset($obj->colname)) {
+                    throw new Exception("Migration " . $module_name . " -  Field does not have colname", 1);
+                } else if(!isset($obj->label)) {
+                    throw new Exception("Migration " . $module_name . " -  Field does not have label", 1);
+                } else if(!isset($obj->field_type)) {
+                    throw new Exception("Migration " . $module_name . " -  Field does not have field_type", 1);
+                }
+                if(!isset($obj->unique)) {
+                    $obj->unique = 0;
+                }
+                if(!isset($obj->defaultvalue)) {
+                    $obj->defaultvalue = '';
+                }
+                if(!isset($obj->minlength)) {
+                    $obj->minlength = 0;
+                }
+                if(!isset($obj->maxlength)) {
+                    $obj->maxlength = 0;
+                } else {
+                    // Because maxlength above 256 will not be supported by Unique
+                    if($obj->unique) {
+                        $obj->maxlength = 250;
+                    } else {
+                        $obj->maxlength = $obj->maxlength;
+                    }
+                }
+                if(!isset($obj->required)) {
+                    $obj->required = 0;
+                }
+                if(!isset($obj->listing_col)) {
+                    $obj->listing_col = 1;
+                } else {
+                    if($obj->listing_col == true) {
+                        $obj->listing_col = 1;
+                    } else {
+                        $obj->listing_col = 0;
+                    }
+                }
+                
+                if(!isset($obj->popup_vals)) {
+                    $obj->popup_vals = "";
+                } else {
+                    if(is_array($obj->popup_vals)) {
+                        $obj->popup_vals = json_encode($obj->popup_vals);
+                    } else {
+                        $obj->popup_vals = $obj->popup_vals;
+                    }
+                }
+                // var_dump($obj);
+                $out[] = $obj;
+            } else {
+                // Handle Old field format - Sequential Array
+                $obj = (Object)array();
+                $obj->colname = $field[0];
+                $obj->label = $field[1];
+                $obj->field_type = $field[2];
+                
+                if(!isset($field[3])) {
+                    $obj->unique = 0;
+                } else {
+                    $obj->unique = $field[3];
+                }
+                if(!isset($field[4])) {
+                    $obj->defaultvalue = '';
+                } else {
+                    $obj->defaultvalue = $field[4];
+                }
+                if(!isset($field[5])) {
+                    $obj->minlength = 0;
+                } else {
+                    $obj->minlength = $field[5];
+                }
+                if(!isset($field[6])) {
+                    $obj->maxlength = 0;
+                } else {
+                    // Because maxlength above 256 will not be supported by Unique
+                    if($obj->unique) {
+                        $obj->maxlength = 250;
+                    } else {
+                        $obj->maxlength = $field[6];
+                    }
+                }
+                if(!isset($field[7])) {
+                    $obj->required = 0;
+                } else {
+                    $obj->required = $field[7];
+                }
+                $obj->listing_col = 1;
+                
+                if(!isset($field[8])) {
+                    $obj->popup_vals = "";
+                } else {
+                    if(is_array($field[8])) {
+                        $obj->popup_vals = json_encode($field[8]);
+                    } else {
+                        $obj->popup_vals = $field[8];
+                    }
+                }
+                $out[] = $obj;
+            }
+        }
+        return $out;
+    }
+	
 	public static function tableName(){
 		return '{{modules}}';
 	}

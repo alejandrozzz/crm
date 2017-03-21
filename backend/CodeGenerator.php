@@ -1,26 +1,12 @@
 <?php
-/**
- * Code generated using LaraAdmin
- * Help: http://laraadmin.com
- * LaraAdmin is open-sourced software licensed under the MIT license.
- * Developed by: Dwij IT Solutions
- * Developer Website: http://dwijitsolutions.com
- */
-namespace backend\dupa;
+namespace backend;
 use Exception;
-//use Illuminate\Filesystem\Filesystem;
+use Yii;
+use yii\db\Schema;
+use yii\db\Migration;
 use backend\models\Module;
 use backend\models\ModuleFieldTypes;
 use backend\helpers\DupaHelper;
-//use Dwij\Laraadmin\Models\Menu;
-/**
- * Class CodeGenerator
- * @package Dwij\Laraadmin
- *
- * This class performs the Code Generation for Controller, Model, CRUDs Views, Routes, Menu and Migrations.
- * This also generates the naming config which contains names for controllers, tables and everything required
- * to generate CRUDs.
- */
 class CodeGenerator
 {
     /**
@@ -32,10 +18,10 @@ class CodeGenerator
     public static function createController($config, $comm = null)
     {
         
-        $templateDirectory = __DIR__ . '/stubs';
+        $templateDirectory = dirname(__DIR__) . '/backend/views';
         
-        LAHelper::log("info", "Creating controller...", $comm);
-        $md = file_get_contents($templateDirectory . "/controller.stub");
+        //DupaHelper::log("info", "Creating controller...", $comm);
+        $md = file_get_contents($templateDirectory . "/controller.php");
         
         $md = str_replace("__controller_class_name__", $config->controllerName, $md);
         $md = str_replace("__model_name__", $config->modelName, $md);
@@ -55,7 +41,7 @@ class CodeGenerator
         $md = str_replace("__db_table_name__", $config->dbTableName, $md);
         $md = str_replace("__singular_var__", $config->singularVar, $md);
         
-        file_put_contents(base_path('app/Http/Controllers/LA/' . $config->controllerName . ".php"), $md);
+        file_put_contents(dirname(__DIR__).'/backend/controllers/dupa/' . $config->controllerName . ".php", $md);
     }
     
     /**
@@ -65,17 +51,17 @@ class CodeGenerator
      * @param null $comm command Object
      */
     public static function createModel($config, $comm = null)
-    {
+    {		
         
-        $templateDirectory = __DIR__ . '/stubs';
+        $templateDirectory = dirname(__DIR__) . '/backend/views';
         
-        LAHelper::log("info", "Creating model...", $comm);
-        $md = file_get_contents($templateDirectory . "/model.stub");
+        //LAHelper::log("info", "Creating model...", $comm);
+        $md = file_get_contents($templateDirectory . "/model.php");
         
         $md = str_replace("__model_class_name__", $config->modelName, $md);
         $md = str_replace("__db_table_name__", $config->dbTableName, $md);
         
-        file_put_contents(base_path('app/Models/' . $config->modelName . ".php"), $md);
+        file_put_contents(dirname(__DIR__).'/backend/Models/' . $config->modelName . ".php", $md);
     }
     
     /**
@@ -89,7 +75,7 @@ class CodeGenerator
         
         $templateDirectory = __DIR__ . '/stubs';
         
-        LAHelper::log("info", "Creating views...", $comm);
+        //LAHelper::log("info", "Creating views...", $comm);
         // Create Folder
         @mkdir(base_path("resources/views/la/" . $config->dbTableName), 0777, true);
         
@@ -227,26 +213,26 @@ class CodeGenerator
      */
     public static function generateMigration($table, $generate = false, $comm = null)
     {
-        $filesystem = new Filesystem();
+        //$filesystem = new Filesystem();
         
-        if(starts_with($table, "create_")) {
+        if(substr($table, 0, strlen('create_')) === 'create_') {
             $tname = str_replace("create_", "", $table);
             $table = str_replace("_table", "", $tname);
         }
         
-        $modelName = ucfirst(str_singular($table));
-        $tableP = str_plural(strtolower($table));
-        $tableS = str_singular(strtolower($table));
+        $modelName = ucfirst($table);
+        $tableP = strtolower($table).'s';
+        $tableS = strtolower($table);
         $migrationName = 'create_' . $tableP . '_table';
         $migrationFileName = date("Y_m_d_His_") . $migrationName . ".php";
-        $migrationClassName = ucfirst(camel_case($migrationName));
+        $migrationClassName = ucfirst(ucwords($migrationName));
         $dbTableName = $tableP;
-        $moduleName = ucfirst(str_plural($table));
+        $moduleName = ucfirst($table);
         
-        LAHelper::log("info", "Model:\t   " . $modelName, $comm);
-        LAHelper::log("info", "Module:\t   " . $moduleName, $comm);
-        LAHelper::log("info", "Table:\t   " . $dbTableName, $comm);
-        LAHelper::log("info", "Migration: " . $migrationName . "\n", $comm);
+        //LAHelper::log("info", "Model:\t   " . $modelName, $comm);
+        //LAHelper::log("info", "Module:\t   " . $moduleName, $comm);
+        //LAHelper::log("info", "Table:\t   " . $dbTableName, $comm);
+        //LAHelper::log("info", "Migration: " . $migrationName . "\n", $comm);
         
         // Reverse migration generation from table
         $generateData = "";
@@ -257,9 +243,9 @@ class CodeGenerator
         
         if($generate) {
             // check if table, module and module fields exists
-            $module = Module::get($moduleName);
+            $module = Module::getModule($moduleName);
             if(isset($module)) {
-                LAHelper::log("info", "Module exists :\t   " . $moduleName, $comm);
+               // LAHelper::log("info", "Module exists :\t   " . $moduleName, $comm);
                 
                 $viewColumnName = $module->view_col;
                 $faIcon = $module->fa_icon;
@@ -267,13 +253,13 @@ class CodeGenerator
                 $ftypes = ModuleFieldTypes::getFTypes2();
                 foreach($module->fields as $field) {
                     $ftype = $ftypes[$field['field_type']];
-                    $unique = "false";
+                    $unique = 0;
                     if($field['unique']) {
-                        $unique = "true";
+                        $unique = 1;
                     }
                     $dvalue = "";
                     if($field['defaultvalue'] != "") {
-                        if(starts_with($field['defaultvalue'], "[")) {
+                        if(substr($field['defaultvalue'], 0, strlen("[")) === "[") {
                             $dvalue = $field['defaultvalue'];
                         } else {
                             $dvalue = '"' . $field['defaultvalue'] . '"';
@@ -283,13 +269,13 @@ class CodeGenerator
                     }
                     $minlength = $field['minlength'];
                     $maxlength = $field['maxlength'];
-                    $required = "false";
+                    $required = 0;
                     if($field['required']) {
-                        $required = "true";
+                        $required = 1;
                     }
-                    $listing_col = "false";
+                    $listing_col = 0;
                     if($field['listing_col']) {
-                        $listing_col = "true";
+                        $listing_col = 1;
                     }
                     $values = "";
                     if($field['popup_vals'] != "") {
@@ -321,38 +307,38 @@ class CodeGenerator
                 $generateData = trim($generateData, ", ");
                 
                 // Find existing migration file
-                $mfiles = scandir(base_path('database/migrations/'));
+                $mfiles = scandir(dirname(__DIR__).'/console/migrations/');
                 // print_r($mfiles);
                 $fileExists = false;
                 $fileExistName = "";
                 foreach($mfiles as $mfile) {
-                    if(str_contains($mfile, $migrationName)) {
+                    if(strpos($mfile, $migrationName) !== false) {
                         $fileExists = true;
                         $fileExistName = $mfile;
                     }
                 }
                 if($fileExists) {
-                    LAHelper::log("info", "Replacing old migration file: " . $fileExistName, $comm);
+                    //LAHelper::log("info", "Replacing old migration file: " . $fileExistName, $comm);
                     $migrationFileName = $fileExistName;
                 } else {
                     // If migration not exists in migrations table
-                    if(\DB::table('migrations')->where('migration', 'like', '%' . $migrationName . '%')->count() == 0) {
-                        \DB::table('migrations')->insert([
-                            'migration' => str_replace(".php", "", $migrationFileName),
-                            'batch' => 1
-                        ]);
-                    }
+					
+                    //if(!$m::find()->where([ 'migration' => $migrationName])->exists()) {
+                        //$m = new Migration();
+						//$m->version = str_replace(".php", "", $migrationFileName);
+						//$m->save();
+                    //}
                 }
             } else {
-                LAHelper::log("error", "Module " . $moduleName . " doesn't exists; Cannot generate !!!", $comm);
+                //LAHelper::log("error", "Module " . $moduleName . " doesn't exists; Cannot generate !!!", $comm);
             }
         }
         
-        $templateDirectory = __DIR__ . '/stubs';
+        $templateDirectory = dirname(__DIR__) . '/backend/views';
         
         try {
-            LAHelper::log("line", "Creating migration...", $comm);
-            $migrationData = file_get_contents($templateDirectory . "/migration.stub");
+            //LAHelper::log("line", "Creating migration...", $comm);
+            $migrationData = file_get_contents($templateDirectory . "/migration.php");
             
             $migrationData = str_replace("__migration_class_name__", $migrationClassName, $migrationData);
             $migrationData = str_replace("__db_table_name__", $dbTableName, $migrationData);
@@ -362,14 +348,14 @@ class CodeGenerator
             $migrationData = str_replace("__fa_icon__", $faIcon, $migrationData);
             $migrationData = str_replace("__generated__", $generateData, $migrationData);
             
-            file_put_contents(base_path('database/migrations/' . $migrationFileName), $migrationData);
+            file_put_contents(dirname(__DIR__).'/console/migrations/' . $migrationFileName, $migrationData);
             // Load newly generated migration into environment. Needs in testing mode.
-            require_once base_path('database/migrations/'.$migrationFileName);
+            require_once(dirname(__DIR__).'/console/migrations/'.$migrationFileName);
             
         } catch(Exception $e) {
             throw new Exception("Unable to generate migration for " . $table . " : " . $e->getMessage(), 1);
         }
-        LAHelper::log("info", "Migration done: " . $migrationFileName . "\n", $comm);
+        //LAHelper::log("info", "Migration done: " . $migrationFileName . "\n", $comm);
     }
     
     /**
@@ -388,23 +374,23 @@ class CodeGenerator
         $config = array();
         $config = (object)$config;
         
-        if(starts_with($module, "create_")) {
+        if(substr($module, 0, strlen('create_')) === 'create_') {
             $tname = str_replace("create_", "", $module);
             $module = str_replace("_table", "", $tname);
         }
         
-        $config->modelName = ucfirst(str_singular($module));
-        $tableP = str_plural(strtolower($module));
-        $tableS = str_singular(strtolower($module));
+        $config->modelName = ucfirst($module);
+        $tableP = strtolower($module);
+        $tableS = strtolower($module);
         $config->dbTableName = $tableP;
         $config->fa_icon = $icon;
-        $config->moduleName = ucfirst(str_plural($module));
-        $config->moduleName2 = str_replace('_', ' ', ucfirst(str_plural($module)));
-        $config->controllerName = ucfirst(str_plural($module)) . "Controller";
-        $config->singularVar = strtolower(str_singular($module));
-        $config->singularCapitalVar = str_replace('_', ' ', ucfirst(str_singular($module)));
+        $config->moduleName = ucfirst($module);
+        $config->moduleName2 = str_replace('_', ' ', ucfirst($module));
+        $config->controllerName = ucfirst($module) . "Controller";
+        $config->singularVar = strtolower($module);
+        $config->singularCapitalVar = str_replace('_', ' ', ucfirst($module));
         
-        $module = Module::get($config->moduleName);
+        $module = Module::getModule($config->moduleName);
         if(!isset($module->id)) {
             throw new Exception("Please run 'php artisan migrate' for 'create_" . $config->dbTableName . "_table' in order to create CRUD.\nOr check if any problem in Module Name '" . $config->moduleName . "'.", 1);
             return;

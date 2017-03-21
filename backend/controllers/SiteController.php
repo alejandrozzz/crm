@@ -10,6 +10,7 @@ use backend\models\Module;
 use backend\models\ModuleFields;
 use backend\models\ModuleFieldTypes;
 use backend\helpers\DupaHelper;
+use backend\CodeGenerator;
 
 /**
  * Site controller
