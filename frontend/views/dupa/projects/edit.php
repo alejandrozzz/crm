@@ -2,21 +2,23 @@
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 ?>
- <?php $form = ActiveForm::begin([ 'enableClientValidation' => true, 'action'	=> ['dupa/companies/update'], 'method' => 'post',
+<div class="right_col" role="main">
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+ <?php $form = ActiveForm::begin([ 'enableClientValidation' => true, 'action'	=> ['dupa/projects/update'], 'method' => 'post',
                     'options'                => [
-                        'id'      => 'companies-edit-form'
+                        'id'      => 'projects-edit-form'
 
                     ]]); ?>
-                <?php echo Html::hiddenInput('id', $companies['id'] ); ?>
+                <?php echo Html::hiddenInput('id', $projects['id'] ); ?>
 
                 <input type="text" name="name" value="">
-					 <input type="text" name="address" value="">
-					 <input type="text" name="phone" value="">
-					 <input type="text" name="mobile" value="">
 
                 <br>
                 <div class="form-group">
                     <?php echo Html::submitButton('Send', ['class' => 'btn btn-success']) ?>
                 </div>
                 <?php ActiveForm::end(); ?>
-    
+</div>
+</div>
+</div>

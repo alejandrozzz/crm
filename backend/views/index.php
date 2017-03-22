@@ -10,9 +10,11 @@ use yii\grid\GridView;
 use yii\data\ActiveDataProvider;
 use yii\grid\ActionColumn;
 
-$this->title = 'DupaCRM';
+$this->title = '__module_name__';
 ?>
-<div class="site-index">
+<div class="right_col" role="main">
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
 
     <?php $listing_cols[] =[ 'class' => ActionColumn::className(),
         'buttons' => [
@@ -80,8 +82,10 @@ $this->title = 'DupaCRM';
 		</div>
 	</div>
 </div>
+
 <button class="btn btn-success btn-sm pull-right add_new_module_btn">Add __singular_cap_var__ </button>
-	
+	</div>
+</div>
 </div>
 <script>
 	$(function(){

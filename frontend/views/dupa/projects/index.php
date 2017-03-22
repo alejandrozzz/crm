@@ -5,19 +5,21 @@ use yii\bootstrap\ActiveForm;
 use backend\models\Module;
 use backend\controllers\Dupa;
 use yii\helpers\Url;
-use backend\models\Companies;
+use backend\models\Projects;
 use yii\grid\GridView;
 use yii\data\ActiveDataProvider;
 use yii\grid\ActionColumn;
 
-$this->title = 'DupaCRM';
+$this->title = 'Projects';
 ?>
-<div class="site-index">
+<div class="right_col" role="main">
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
 
     <?php $listing_cols[] =[ 'class' => ActionColumn::className(),
         'buttons' => [
             'view' => function ($url, $model, $key) {
-                $customurl=Yii::$app->getUrlManager()->createUrl(['/dupa/companies/edit','id'=>$model['id']]);
+                $customurl=Yii::$app->getUrlManager()->createUrl(['/dupa/projects/edit','id'=>$model['id']]);
                 return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $customurl);
             },
             'update' => function ($url, $model, $key) {
@@ -33,7 +35,7 @@ $this->title = 'DupaCRM';
     ?>
     <?= GridView::widget([
         'dataProvider' => new ActiveDataProvider([
-            'query' => Companies::find(),
+            'query' => Projects::find(),
         ]),
         'columns' => $listing_cols,
 
@@ -59,18 +61,15 @@ $this->title = 'DupaCRM';
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title" id="myModalLabel">Add Module</h4>
 			</div>
-			<?php $form = ActiveForm::begin([ 'enableClientValidation' => true, 'action'	=> ['dupa/companies/store'], 'method' => 'post',
+			<?php $form = ActiveForm::begin([ 'enableClientValidation' => true, 'action'	=> ['dupa/projects/store'], 'method' => 'post',
                 'options'                => [
-                    'id'      => 'companies-add-form'
+                    'id'      => 'projects-add-form'
 					
                  ]]); ?>
 			<div class="modal-body">
 				<div class="box-body">
 					
 					<input type="text" name="colname" value="name">
-					 <input type="text" name="colname" value="address">
-					 <input type="text" name="colname" value="phone">
-					 <input type="text" name="colname" value="mobile">
 					
 				</div>
 			</div>
@@ -83,8 +82,10 @@ $this->title = 'DupaCRM';
 		</div>
 	</div>
 </div>
-<button class="btn btn-success btn-sm pull-right add_new_module_btn">Add Companies </button>
-	
+
+<button class="btn btn-success btn-sm pull-right add_new_module_btn">Add Projects </button>
+	</div>
+</div>
 </div>
 <script>
 	$(function(){

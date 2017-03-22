@@ -1,1 +1,0 @@
-$form->field( (object) $testsdsadsa, "address")->textInput(["class"=>"form-control"]);

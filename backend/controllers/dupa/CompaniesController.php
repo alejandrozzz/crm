@@ -159,10 +159,10 @@ class CompaniesController extends Controller
     }
     
 
-    public function actionUpdate(Request $request, $id)
+    public function actionUpdate()
     {
         
-            $insert_id = Module::updateRow("Companies", Yii::$app->request->post('Module'), Yii::$app->request->post('Module')['id']);
+            $insert_id = Module::updateRow("Companies", Yii::$app->request->post(), Yii::$app->request->post('id'));
             
            return $this->redirect(['index',
 				'id' => $insert_id

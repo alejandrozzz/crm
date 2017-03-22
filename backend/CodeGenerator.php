@@ -43,7 +43,7 @@ class CodeGenerator
         $md = str_replace("__db_table_name__", $config->dbTableName, $md);
         $md = str_replace("__singular_var__", $config->singularVar, $md);
         
-        file_put_contents(dirname(__DIR__).'/backend/controllers/dupa/' . $config->controllerName . ".php", $md);
+        file_put_contents(dirname(__DIR__).'/frontend/controllers/dupa/' . $config->controllerName . ".php", $md);
     }
     
     /**
@@ -79,7 +79,7 @@ class CodeGenerator
         
         //LAHelper::log("info", "Creating views...", $comm);
         // Create Folder
-        @mkdir(dirname(__DIR__)."/backend/views/dupa/" . $config->dbTableName, 0777, true);
+        @mkdir(dirname(__DIR__)."/frontend/views/dupa/" . $config->dbTableName, 0777, true);
         
         // ============================ Listing / Index ============================
         $md = file_get_contents($templateDirectory . "/index.php");
@@ -101,7 +101,7 @@ class CodeGenerator
         $inputFields = trim($inputFields);
         $md = str_replace("__input_fields__", $inputFields, $md);
         
-        file_put_contents(dirname(__DIR__).'/backend/views/dupa/' . $config->dbTableName . '/index.php', $md);
+        file_put_contents(dirname(__DIR__).'/frontend/views/dupa/' . $config->dbTableName . '/index.php', $md);
         
         // ============================ Edit ============================
         $md = file_get_contents($templateDirectory . "/edit.php");
@@ -125,7 +125,7 @@ class CodeGenerator
         $inputFields = trim($inputFields);
         $md = str_replace("__input_fields__", $inputFields, $md);
 
-        file_put_contents(dirname(__DIR__).'/backend/views/dupa/' . $config->dbTableName . '/edit.php', $md);
+        file_put_contents(dirname(__DIR__).'/frontend/views/dupa/' . $config->dbTableName . '/edit.php', $md);
         
         // ============================ Show ============================
         $md = file_get_contents($templateDirectory . "/show.php");
@@ -144,7 +144,7 @@ class CodeGenerator
         $displayFields = trim($displayFields);
         $md = str_replace("__display_fields__", $displayFields, $md);
         
-        file_put_contents(dirname(__DIR__).'/backend/views/dupa/' . $config->dbTableName . '/show.php', $md);
+        file_put_contents(dirname(__DIR__).'/frontend/views/dupa/' . $config->dbTableName . '/show.php', $md);
     }
     
     /**

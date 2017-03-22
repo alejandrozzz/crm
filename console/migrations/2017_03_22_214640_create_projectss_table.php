@@ -3,7 +3,7 @@
 use yii\db\Migration;
 use backend\models\Module;
 
-class Create_contactss_table extends Migration
+class Create_projectss_table extends Migration
 {
     /**
      * Migration generate Module Table Schema by LaraAdmin
@@ -12,12 +12,12 @@ class Create_contactss_table extends Migration
      */
     public function up()
     {
-        Module::generate("Contacts", 'contactss', 'name', 'fa-group', [
+        Module::generate("Projects", 'projectss', 'name', 'fa-archive', [
             [
                 "colname" => "name",
                 "label" => "Name",
                 "field_type" => "Name",
-                "unique" => 0,
+                "unique" => 1,
                 "defaultvalue" => "",
                 "minlength" => 0,
                 "maxlength" => 256,
@@ -37,9 +37,9 @@ class Create_contactss_table extends Migration
      */
     public function down()
     {
-		$tableSchema = Yii::$app->db->schema->getTableSchema('contactss');
+		$tableSchema = Yii::$app->db->schema->getTableSchema('projectss');
         if($tableSchema !== null) {
-            $this->dropTable('contactss');
+            $this->dropTable('projectss');
         }
     }
 }
