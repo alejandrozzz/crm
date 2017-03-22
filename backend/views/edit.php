@@ -16,13 +16,8 @@ use yii\helpers\Html;
                     ]]); ?>
                 <?php echo Html::hiddenInput('id', $__singular_var__['id'] ); ?>
 
-                <?php
-                echo 1111;
-                $file_handle = fopen('CACHE_'.$__singular_var__['id'].'.php', 'w');
-                fwrite($file_handle, __input_fields__);
-                fclose($file_handle);
-                include('CACHE_'.$__singular_var__['id'].'.php');
-                ?>
+                <?=__input_fields__?>
+
                 <br>
                 <div class="form-group">
                     <?php echo Html::submitButton('Send', ['class' => 'btn btn-success']) ?>

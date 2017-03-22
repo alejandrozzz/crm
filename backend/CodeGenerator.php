@@ -123,7 +123,7 @@ class CodeGenerator
         $md = str_replace("__singular_var__", $config->singularVar, $inputFields);
         $inputFields = trim($inputFields);
         $md = str_replace("__input_fields__", $inputFields, $md);
-        $md = mb_convert_encoding($md, 'HTML-ENTITIES', "UTF-8");
+
         file_put_contents(dirname(__DIR__).'/backend/views/dupa/' . $config->dbTableName . '/edit.php', $md);
         
         // ============================ Show ============================

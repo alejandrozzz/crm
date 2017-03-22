@@ -1,0 +1,1 @@
+$form->field( (object) $dfsdds, "dfs")->textInput(["class"=>"form-control"]);
