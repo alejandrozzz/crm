@@ -9,19 +9,15 @@ use yii\helpers\Html;
     <div class="box-body">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                <?php $form = ActiveForm::begin([ 'enableClientValidation' => true, 'action'	=> ['dupa/__db_table_name__/update'], 'method' => 'post',
+                <?php $form = ActiveForm::begin([ 'enableClientValidation' => true, 'action'	=> ['dupa/asddsaf/update'], 'method' => 'post',
                     'options'                => [
-                        'id'      => '__singular_var__-edit-form'
+                        'id'      => 'asddsaf-edit-form'
 
                     ]]); ?>
-                <?php echo Html::hiddenInput('id', $__singular_var__['id'] ); ?>
+                <?php echo Html::hiddenInput('id', $asddsaf['id'] ); ?>
 
                 <?php
-                echo 1111;
-                $file_handle = fopen('CACHE_'.$__singular_var__['id'].'.php', 'w');
-                fwrite($file_handle, __input_fields__);
-                fclose($file_handle);
-                include('CACHE_'.$__singular_var__['id'].'.php');
+                \t\t\t\t\t $form->field( (object) $__singular_var__, aaaa)->textInput(["class"=>"form-control"]);\n
                 ?>
                 <br>
                 <div class="form-group">

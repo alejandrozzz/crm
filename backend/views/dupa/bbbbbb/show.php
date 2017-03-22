@@ -1,5 +1,3 @@
-
-
 <div id="page-content" class="profile2">
     <div class="bg-primary clearfix">
         <div class="col-md-4">
@@ -9,7 +7,7 @@
                     <div class="profile-icon text-primary"><i class="fa {{ $module->fa_icon }}"></i></div>
                 </div>
                 <div class="col-md-9">
-                    <h4 class="name">{{ $__singular_var__->$view_col }}</h4>
+                    <h4 class="name">{{ $bbbbbb->$view_col }}</h4>
                     <div class="row stats">
                         <div class="col-md-4"><i class="fa fa-facebook"></i> 234</div>
                         <div class="col-md-4"><i class="fa fa-twitter"></i> 12</div>
@@ -75,12 +73,12 @@
             </div>
         </div>
         <div class="col-md-1 actions">
-            @la_access("__module_name__", "edit")
-            <a href="{{ url(config('laraadmin.adminRoute') . '/__db_table_name__/'.$__singular_var__->id.'/edit') }}" class="btn btn-xs btn-edit btn-default"><i class="fa fa-pencil"></i></a><br>
+            @la_access("Bbbbbb", "edit")
+            <a href="{{ url(config('laraadmin.adminRoute') . '/bbbbbb/'.$bbbbbb->id.'/edit') }}" class="btn btn-xs btn-edit btn-default"><i class="fa fa-pencil"></i></a><br>
             @endla_access
 
-            @la_access("__module_name__", "delete")
-            {{ Form::open(['route' => [config('laraadmin.adminRoute') . '.__db_table_name__.destroy', $__singular_var__->id], 'method' => 'delete', 'style'=>'display:inline']) }}
+            @la_access("Bbbbbb", "delete")
+            {{ Form::open(['route' => [config('laraadmin.adminRoute') . '.bbbbbb.destroy', $bbbbbb->id], 'method' => 'delete', 'style'=>'display:inline']) }}
             <button class="btn btn-default btn-delete btn-xs" type="submit"><i class="fa fa-times"></i></button>
             {{ Form::close() }}
             @endla_access
@@ -88,7 +86,7 @@
     </div>
 
     <ul data-toggle="ajax-tab" class="nav nav-tabs profile" role="tablist">
-        <li class=""><a href="{{ url(config('laraadmin.adminRoute') . '/__db_table_name__') }}" data-toggle="tooltip" data-placement="right" title="Back to __module_name_2__"><i class="fa fa-chevron-left"></i></a></li>
+        <li class=""><a href="{{ url(config('laraadmin.adminRoute') . '/bbbbbb') }}" data-toggle="tooltip" data-placement="right" title="Back to Bbbbbb"><i class="fa fa-chevron-left"></i></a></li>
         <li class="active"><a role="tab" data-toggle="tab" class="active" href="#tab-general-info" data-target="#tab-info"><i class="fa fa-bars"></i> General Info</a></li>
         <li class=""><a role="tab" data-toggle="tab" href="#tab-timeline" data-target="#tab-timeline"><i class="fa fa-clock-o"></i> Timeline</a></li>
     </ul>
@@ -101,7 +99,7 @@
                         <h4>General Info</h4>
                     </div>
                     <div class="panel-body">
-                        __display_fields__
+                        <input type="text" name="colname" value="address">
                     </div>
                 </div>
             </div>

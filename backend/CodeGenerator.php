@@ -115,13 +115,15 @@ class CodeGenerator
 
         // Listing columns
         $inputFields = "";
+
         foreach($config->module->fields as $field) {
 
-            $inputFields .= "\t\t\t\t\t " . Html::textInput($field['colname'], '')."\n";
+            $inputFields .= '$form->field( (object) $__singular_var__, "'.$field["colname"].'")->textInput(["class"=>"form-control"]);';
         }
+        $md = str_replace("__singular_var__", $config->singularVar, $inputFields);
         $inputFields = trim($inputFields);
         $md = str_replace("__input_fields__", $inputFields, $md);
-        
+        $md = mb_convert_encoding($md, 'HTML-ENTITIES', "UTF-8");
         file_put_contents(dirname(__DIR__).'/backend/views/dupa/' . $config->dbTableName . '/edit.php', $md);
         
         // ============================ Show ============================
@@ -388,12 +390,12 @@ class CodeGenerator
     {
         $config = array();
         $config = (object)$config;
-        
+
         if(substr($module, 0, strlen('create_')) === 'create_') {
             $tname = str_replace("create_", "", $module);
             $module = str_replace("_table", "", $tname);
         }
-        
+
         $config->modelName = ucfirst($module);
         $tableP = strtolower($module);
         $tableS = strtolower($module);

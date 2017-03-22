@@ -1,0 +1,1 @@
+echo $form->field( (object) $ddddd, "address")->textInput(["class"=>"form-control"]);
