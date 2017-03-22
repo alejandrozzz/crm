@@ -78,6 +78,7 @@ class __controller_class_name__ extends Controller
 
     public function actionIndex()
     {
+		$this->bodyClass = 'nav-md footer_fixed';
         $module = Module::getModule('__module_name__');
         
         //if(Module::hasAccess($module->id)) {
@@ -172,14 +173,13 @@ class __controller_class_name__ extends Controller
 
     public function actionDestroy()
     {
-        /*if(Module::hasAccess("__module_name__", "delete")) {
-            __model_name__::find($id)->delete();
+        /*if(Module::hasAccess("__module_name__", "delete")) {*/
+            __model_name__::find()->where(["id" => Yii::$app->request->post('id')])->delete();
             
             // Redirecting to index() method
-            return redirect()->route(config('laraadmin.adminRoute') . '.__route_resource__.index');
-        } else {
-            return redirect(config('laraadmin.adminRoute') . "/");
-        }*/
+            return $this->redirect(['index',
+				'id' => $insert_id
+			]);
     }
 
     public function actionDtajax()

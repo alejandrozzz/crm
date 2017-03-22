@@ -52,7 +52,7 @@ if ( $currentAction != 'site/signup' && $currentAction != 'site/login' && $curre
             <!-- /menu profile quick info -->
 
             <br />
-			<?php $menuItems = \backend\models\Menu::find()->all();?>
+			<?php $menuItems = \backend\models\Menu::find()->where(["parent" => 0])->orderBy('hierarchy', 'asc')->all();?>
             <!-- sidebar menu -->
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">

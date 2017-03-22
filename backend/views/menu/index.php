@@ -16,7 +16,7 @@ use yii\bootstrap\ActiveForm;
                         <div class="tab-pane active" id="tab-modules">
                             <ul>
                                 <?php foreach ($modules as $module) : ?>
-                                <li><i class="fa <?=$module->fa_icon ?>"></i> <?=$module->label ?> <a module_id="<?=$module->id ?>" class="addModuleMenu pull-right"><i class="fa fa-plus"></i></a></li>
+                                <li><i class="fa <?=$module->fa_icon ?>"></i> <?=$module->label ?> <a module_id="<?=$module->id ?>" href="" class="addModuleMenu pull-right"><i class="fa fa-plus"></i></a></li>
                                 <?php endforeach; ?>
                             </ul>
                         </div>

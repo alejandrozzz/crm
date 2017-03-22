@@ -78,6 +78,7 @@ class Test9Controller extends Controller
 
     public function actionIndex()
     {
+		$this->bodyClass = 'nav-md footer_fixed';
         $module = Module::getModule('Test9');
         
         //if(Module::hasAccess($module->id)) {
