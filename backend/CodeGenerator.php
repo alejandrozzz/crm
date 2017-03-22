@@ -119,7 +119,7 @@ class CodeGenerator
         foreach($config->module->fields as $field) {
 
             //$inputFields .= '$form->field( (object) $__singular_var__, "'.$field["colname"].'")->textInput(["class"=>"form-control"]);';
-			$inputFields .= "\t\t\t\t\t ".Html::textInput($field['colname'], '')."\n";
+			$inputFields .= "<div class='form-group'><label class='control-label col-md-3 col-sm-3 col-xs-12' for='".$field['colname']."'>".$field['colname']."</label><div class='col-md-6 col-sm-6 col-xs-12'>".Html::textInput($field['colname'], '', ['class' => 'form-control col-md-7 col-xs-12'])."</div></div>";
         }
         //$md = str_replace("__singular_var__", $config->singularVar, $inputFields);
         $inputFields = trim($inputFields);

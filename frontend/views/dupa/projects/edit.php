@@ -7,7 +7,8 @@ use yii\helpers\Html;
 	<div class="col-md-12 col-sm-12 col-xs-12">
  <?php $form = ActiveForm::begin([ 'enableClientValidation' => true, 'action'	=> ['dupa/projects/update'], 'method' => 'post',
                     'options'                => [
-                        'id'      => 'projects-edit-form'
+                        'id'      => 'projects-edit-form',
+						'form-horizontal form-label-left'
 
                     ]]); ?>
                 <?php echo Html::hiddenInput('id', $projects['id'] ); ?>

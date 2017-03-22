@@ -5,19 +5,19 @@ use yii\bootstrap\ActiveForm;
 use backend\models\Module;
 use backend\controllers\Dupa;
 use yii\helpers\Url;
-use backend\models\__module_name__;
+use backend\models\Test5;
 use yii\grid\GridView;
 use yii\data\ActiveDataProvider;
 use yii\grid\ActionColumn;
 
-$this->title = '__module_name__';
+$this->title = 'Test5';
 ?>
 <div class="right_col" role="main">
 <div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">
 	<div class="x_panel">
                   <div class="x_title">
-                    <h2>__module_name__ List</h2>
+                    <h2>Test5 List</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -40,24 +40,18 @@ $this->title = '__module_name__';
                     <table class="table">
                       <thead>
                         <tr>
-							<th scope="row">Id</th>
 							<?php foreach($listing_cols as $col) : ?>
-								<th><?php echo $col ?></th>
+								<th>$col</th>
 							<?php endforeach;?>
-							<th scope="row">Edit</th>
-							<th scope="row">Delete</th>
                         </tr>
                       </thead>
                       <tbody>
-					  <?php foreach (__module_name__::find()->all() as $m) : ?>
+					  <?php foreach (Test5::find()->all() as $m) : ?>
 						  <tr>
-                          
-						  <td><?php echo $m->id ?></td>
+                          <th scope="row"><?php $m->id ?></th>
 						  <?php foreach($listing_cols as $col) : ?>
-								<td><?php echo $m->$col ?></td>
+								<td><?php $m->$col ?></td>
 							<?php endforeach;?>
-							<td><?php echo Html::a('<span class="glyphicon glyphicon-pencil"></span>', Yii::$app->getUrlManager()->createUrl(['/dupa/__small_module_name__/edit','id'=>$m->id])); ?></td>
-							<td><?php echo Html::a('<span class="glyphicon glyphicon-remove"></span>', Yii::$app->getUrlManager()->createUrl(['/dupa/__small_module_name__/destroy','id'=>$m->id])); ?></td>
                         </tr>
 					  <?php endforeach;?>
                       </tbody>
@@ -66,10 +60,10 @@ $this->title = '__module_name__';
                   </div>
                 </div>
               </div>
-    <?php /*$listing_cols[] =[ 'class' => ActionColumn::className(),
+    <?php $listing_cols[] =[ 'class' => ActionColumn::className(),
         'buttons' => [
             'view' => function ($url, $model, $key) {
-                $customurl=Yii::$app->getUrlManager()->createUrl(['/dupa/__small_module_name__/edit','id'=>$model['id']]);
+                $customurl=Yii::$app->getUrlManager()->createUrl(['/dupa/test5/edit','id'=>$model['id']]);
                 return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $customurl);
             },
             'update' => function ($url, $model, $key) {
@@ -81,15 +75,15 @@ $this->title = '__module_name__';
         ]
     ];
 
-*/
+
     ?>
-    <?php /*echo GridView::widget([
+    <?= GridView::widget([
         'dataProvider' => new ActiveDataProvider([
-            'query' => __module_name__::find(),
+            'query' => Test5::find(),
         ]),
         'columns' => $listing_cols,
 
-    ]); */?>
+    ]); ?>
 	
 		<?php 
 		$model = new Module();
@@ -109,23 +103,23 @@ $this->title = '__module_name__';
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="myModalLabel">Add New __module_name__</h4>
+				<h4 class="modal-title" id="myModalLabel">Add Module</h4>
 			</div>
-			<?php $form = ActiveForm::begin([ 'enableClientValidation' => true, 'action'	=> ['dupa/__db_table_name__/store'], 'method' => 'post',
+			<?php $form = ActiveForm::begin([ 'enableClientValidation' => true, 'action'	=> ['dupa/test5/store'], 'method' => 'post',
                 'options'                => [
-                    'id'      => '__singular_var__-add-form'
+                    'id'      => 'test5-add-form'
 					
                  ]]); ?>
 			<div class="modal-body">
 				<div class="box-body">
 					
-					Do You really want to create a new instance of __module_name__ module?
-					<div class="hide">__input_fields__</div>
+					<input type="text" name="colname" value="name">
+					
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-				<?php echo Html::submitButton('Create', ['class' => 'btn btn-success']) ?>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<?php echo Html::submitButton('Send', ['class' => 'btn btn-success']) ?>
 			</div>
 			<?php //Modal::end();
 	  ActiveForm::end();?>
@@ -133,7 +127,7 @@ $this->title = '__module_name__';
 	</div>
 </div>
 
-<button class="btn btn-success btn-sm pull-right add_new_module_btn">Add __singular_cap_var__ </button>
+<button class="btn btn-success btn-sm pull-right add_new_module_btn">Add Test5 </button>
 	</div>
 </div>
 <script>

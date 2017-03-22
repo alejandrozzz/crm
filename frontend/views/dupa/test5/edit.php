@@ -7,7 +7,7 @@ use yii\helpers\Html;
 	<div class="col-md-12 col-sm-12 col-xs-12">
 	<div class="x_panel">
                   <div class="x_title">
-                    <h2>__module_name__ №<?=$__singular_var__['id']?> Edit Form</h2>
+                    <h2>Test5 №<?=$test5['id']?> Edit Form</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -28,15 +28,15 @@ use yii\helpers\Html;
                   <div class="x_content" style="display: block;">
                     <br>
                     
- <?php $form = ActiveForm::begin([ 'enableClientValidation' => true, 'action'	=> ['dupa/__db_table_name__/update'], 'method' => 'post',
+ <?php $form = ActiveForm::begin([ 'enableClientValidation' => true, 'action'	=> ['dupa/test5/update'], 'method' => 'post',
                     'options'                => [
-                        'id'      => '__singular_var__-edit-form',
+                        'id'      => 'test5-edit-form',
 						'class'	=> 'form-horizontal form-label-left',
 
                     ]]); ?>
-                <?php echo Html::hiddenInput('id', $__singular_var__['id'] ); ?>
+                <?php echo Html::hiddenInput('id', $test5['id'] ); ?>
 
-                __input_fields__
+                <div class='form-group'><label class='control-label col-md-3 col-sm-3 col-xs-12' for='name'>name</label><div class='col-md-6 col-sm-6 col-xs-12'><input type="text" class="form-control col-md-7 col-xs-12" name="name" value=""></div></div>
 
                 <div class="ln_solid"></div>
                 <div class="form-group">
