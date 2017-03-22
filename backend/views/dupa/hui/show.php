@@ -1,3 +1,5 @@
+var_dump(Yii::$app->db->schema->getTableSchema($module['name_db'])->getColumn($field['colname']))
+
 <div id="page-content" class="profile2">
     <div class="bg-primary clearfix">
         <div class="col-md-4">

@@ -99,7 +99,7 @@
                         <h4>General Info</h4>
                     </div>
                     <div class="panel-body">
-                        __display_fields__
+
                     </div>
                 </div>
             </div>

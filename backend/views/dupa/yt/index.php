@@ -1,42 +1,44 @@
 <?php
+$model_name = trim($module['model'],"'");
 use yii\helpers\Html;
 use yii\bootstrap\Modal;
 use yii\bootstrap\ActiveForm;
 use backend\models\Module;
 use backend\controllers\Dupa;
 use yii\helpers\Url;
-use backend\models\__module_name__;
 use yii\grid\GridView;
 use yii\data\ActiveDataProvider;
-use yii\grid\ActionColumn;
-
 $this->title = 'DupaCRM';
 ?>
 <div class="site-index">
+	
+	<div class="box box-success">
+    <!--<div class="box-header"></div>-->
+    <div class="box-body">
+        <table id="example1" class="table table-bordered">
+        <thead>
+        <tr class="success">
 
-    <?php $listing_cols[] =[ 'class' => ActionColumn::className(),
-        'buttons' => [
-            'view' => function ($url, $model, $key) {
-                $customurl=Yii::$app->getUrlManager()->createUrl(['/dupa/__small_module_name__/edit','id'=>$model['id']]);
-                return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $customurl);
-            },
-            'update' => function ($url, $model, $key) {
-                return '';
-            },
-            'delete' => function ($url, $model, $key) {
-                return '';
-            }
-        ]
-    ];
+            <?php foreach( $listing_cols as $col ) : ?>
 
-
-    ?>
+            <th><?php echo $module['fields'][$col]['label']?></th>
+            <?php endforeach; ?>
+            <?php if($show_actions) : ?>
+            <th>Actions</th>
+            <?php endif; ?>
+        </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+        </table>
+    </div>
+</div>
     <?= GridView::widget([
         'dataProvider' => new ActiveDataProvider([
-            'query' => __module_name__::find(),
+            'query' => $model_name::find()->with('tags','authors'),
         ]),
         'columns' => $listing_cols,
-
     ]); ?>
 	
 		<?php 
@@ -59,15 +61,13 @@ $this->title = 'DupaCRM';
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title" id="myModalLabel">Add Module</h4>
 			</div>
-			<?php $form = ActiveForm::begin([ 'enableClientValidation' => true, 'action'	=> ['dupa/__db_table_name__/store'], 'method' => 'post',
-                'options'                => [
-                    'id'      => '__singular_var__-add-form'
-					
-                 ]]); ?>
+
 			<div class="modal-body">
 				<div class="box-body">
 					
-					__input_fields__
+					<input type="text" name="colname" value="yt">
+					 <input type="text" name="colname" value="yy">
+					 <input type="text" name="colname" value="uu">
 					
 				</div>
 			</div>
@@ -80,7 +80,7 @@ $this->title = 'DupaCRM';
 		</div>
 	</div>
 </div>
-<button class="btn btn-success btn-sm pull-right add_new_module_btn">Add __singular_cap_var__ </button>
+<button class="btn btn-success btn-sm pull-right add_new_module_btn">Add Yt </button>
 	
 </div>
 <script>

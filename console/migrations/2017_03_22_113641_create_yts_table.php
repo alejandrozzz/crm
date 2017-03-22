@@ -3,7 +3,7 @@
 use yii\db\Migration;
 use backend\models\Module;
 
-class Create_newmodules_table extends Migration
+class Create_yts_table extends Migration
 {
     /**
      * Migration generate Module Table Schema by LaraAdmin
@@ -12,11 +12,24 @@ class Create_newmodules_table extends Migration
      */
     public function up()
     {
-        Module::generate("Newmodule", 'newmodules', 'a', 'fa-new', [
+        Module::generate("Yt", 'yts', 'uu', 'yt', [
             [
-                "colname" => "a",
-                "label" => "a",
-                "field_type" => "Address",
+                "colname" => "yt",
+                "label" => "yt",
+                "field_type" => "Currency",
+                "unique" => 0,
+                "defaultvalue" => "",
+                "minlength" => 0,
+                "maxlength" => 11,
+                "created_at" => 0,
+                "updated_at" => 0,
+                "deleted_at" => 0,
+                "required" => 1,
+                "listing_col" => 1
+            ], [
+                "colname" => "yy",
+                "label" => "yy",
+                "field_type" => "Taginput",
                 "unique" => 0,
                 "defaultvalue" => "",
                 "minlength" => 0,
@@ -25,24 +38,11 @@ class Create_newmodules_table extends Migration
                 "updated_at" => 0,
                 "deleted_at" => 0,
                 "required" => 0,
-                "listing_col" => 1
+                "listing_col" => 0
             ], [
-                "colname" => "b",
-                "label" => "b",
-                "field_type" => "Date",
-                "unique" => 0,
-                "defaultvalue" => "",
-                "minlength" => 0,
-                "maxlength" => 0,
-                "created_at" => 0,
-                "updated_at" => 0,
-                "deleted_at" => 0,
-                "required" => 0,
-                "listing_col" => 1
-            ], [
-                "colname" => "c",
-                "label" => "c",
-                "field_type" => "Dropdown",
+                "colname" => "uu",
+                "label" => "uu",
+                "field_type" => "String",
                 "unique" => 0,
                 "defaultvalue" => "",
                 "minlength" => 0,
@@ -52,7 +52,7 @@ class Create_newmodules_table extends Migration
                 "deleted_at" => 0,
                 "required" => 0,
                 "listing_col" => 1,
-                "popup_vals" => "@menus",
+                "popup_vals" => "@yt",
             ]
         ]);
     }
@@ -64,9 +64,9 @@ class Create_newmodules_table extends Migration
      */
     public function down()
     {
-		$tableSchema = Yii::$app->db->schema->getTableSchema('newmodules');
+		$tableSchema = Yii::$app->db->schema->getTableSchema('yts');
         if($tableSchema !== null) {
-            $this->dropTable('newmodules');
+            $this->dropTable('yts');
         }
     }
 }

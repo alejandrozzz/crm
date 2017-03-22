@@ -9,15 +9,16 @@ use yii\helpers\Html;
     <div class="box-body">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                <?php $form = ActiveForm::begin([ 'enableClientValidation' => true, 'action'	=> ['dupa/__db_table_name__/update'], 'method' => 'post',
+                <?php $form = ActiveForm::begin([ 'enableClientValidation' => true, 'action'	=> ['dupa/rew/update'], 'method' => 'post',
                     'options'                => [
-                        'id'      => '__singular_var__-edit-form'
+                        'id'      => 'rew-edit-form'
 
                     ]]); ?>
-                <?php echo Html::hiddenInput('id', $__singular_var__['id'] ); ?>
+                <?php echo Html::hiddenInput('id', $rew['id'] ); ?>
 
 
-                __input_fields__
+                <input type="text" name="a" value="">
+					 <input type="text" name="b" value="">
 
                 <br>
                 <div class="form-group">

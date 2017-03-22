@@ -757,7 +757,7 @@ class Module extends ActiveRecord
     {
         $module = null;
         if(is_int($module_id_name)) {
-            $module = self::get($module_id_name);
+            $module = self::getModule($module_id_name);
         } else {
             $module = self::find()->where(['name' => $module_id_name])->one();
         }
@@ -790,12 +790,13 @@ class Module extends ActiveRecord
             $module = self::find()->where(['name' => $module_name, 'name_db' => $module_name])->asArray()->one();
         }
 
+
         // If Module is found in database also attach its field array to it.
         if(isset($module)) {
             $module = $module;
 			
             $fields = ModuleFields::find()->where(['module'=>$module['id']])->orderBy('sort', 'asc')->asArray()->all();
-			
+
             $fields2 = array();
             foreach($fields as $field) {
                 $fields2[$field['colname']] = $field;
@@ -991,7 +992,7 @@ class Module extends ActiveRecord
         $ftypes = ModuleFieldTypes::getFTypes2();
 
         foreach($module->fields as $field) {
-            if(isset($request->{$field['colname']}) || isset($request->{$field['colname'] . "_hidden"})) {
+            if(isset($request[$field['colname']]) || isset($request->{$field['colname'] . "_hidden"})) {
 
                 switch($ftypes[$field['field_type']]) {
                     case 'Checkbox':
@@ -1057,14 +1058,35 @@ class Module extends ActiveRecord
                         $row->{$field['colname']} = json_encode($files2);
                         break;
                     default:
-                        $row->{$field['colname']} = $request->{$field['colname']};
+                        $row->{$field['colname']} = $request[$field['colname']];
                         break;
                 }
             }
         }
         return $row;
     }
-	
+
+    public static function updateRow($module_name, $request, $id)
+    {
+        $module = Module::getModule($module_name);
+        if(isset($module)) {
+            $model_name = ucfirst($module_name);
+            if($model_name == "User" || $model_name == "Role" || $model_name == "Permission") {
+                $model = "backend\\" . ucfirst($module_name);
+            } else {
+                $model = "backend\\models\\" . ucfirst($module_name);
+            }
+            //$row = new $module_path;
+            $row = $model::find()->where(['id' => $id])->one();
+            $row = self::processDBRow($module, $request, $row);
+
+            $row->save();
+            return $row->id;
+        } else {
+            return null;
+        }
+    }
+
 	public static function tableName(){
 		return '{{modules}}';
 	}

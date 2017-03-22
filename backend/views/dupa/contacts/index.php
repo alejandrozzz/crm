@@ -5,11 +5,10 @@ use yii\bootstrap\ActiveForm;
 use backend\models\Module;
 use backend\controllers\Dupa;
 use yii\helpers\Url;
-use backend\models\__module_name__;
+use backend\models\Contacts;
 use yii\grid\GridView;
 use yii\data\ActiveDataProvider;
 use yii\grid\ActionColumn;
-
 $this->title = 'DupaCRM';
 ?>
 <div class="site-index">
@@ -17,8 +16,8 @@ $this->title = 'DupaCRM';
     <?php $listing_cols[] =[ 'class' => ActionColumn::className(),
         'buttons' => [
             'view' => function ($url, $model, $key) {
-                $customurl=Yii::$app->getUrlManager()->createUrl(['/dupa/__small_module_name__/edit','id'=>$model['id']]);
-                return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $customurl);
+                $customurl=Yii::$app->getUrlManager()->createUrl(['/dupa/contacts/edit','id'=>$model['id']]);
+                return Html::a('View', $customurl);
             },
             'update' => function ($url, $model, $key) {
                 return '';
@@ -33,7 +32,7 @@ $this->title = 'DupaCRM';
     ?>
     <?= GridView::widget([
         'dataProvider' => new ActiveDataProvider([
-            'query' => __module_name__::find(),
+            'query' => Contacts::find(),
         ]),
         'columns' => $listing_cols,
 
@@ -59,15 +58,16 @@ $this->title = 'DupaCRM';
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title" id="myModalLabel">Add Module</h4>
 			</div>
-			<?php $form = ActiveForm::begin([ 'enableClientValidation' => true, 'action'	=> ['dupa/__db_table_name__/store'], 'method' => 'post',
+			<?php $form = ActiveForm::begin([ 'enableClientValidation' => true, 'action'	=> ['dupa/contacts/store'], 'method' => 'post',
                 'options'                => [
-                    'id'      => '__singular_var__-add-form'
+                    'id'      => 'contacts-add-form'
 					
                  ]]); ?>
 			<div class="modal-body">
 				<div class="box-body">
 					
-					__input_fields__
+					<input type="text" name="colname" value="name">
+					 <input type="text" name="colname" value="address">
 					
 				</div>
 			</div>
@@ -80,7 +80,7 @@ $this->title = 'DupaCRM';
 		</div>
 	</div>
 </div>
-<button class="btn btn-success btn-sm pull-right add_new_module_btn">Add __singular_cap_var__ </button>
+<button class="btn btn-success btn-sm pull-right add_new_module_btn">Add Contacts </button>
 	
 </div>
 <script>

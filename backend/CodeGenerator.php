@@ -90,7 +90,8 @@ class CodeGenerator
         $md = str_replace("__singular_var__", $config->singularVar, $md);
         $md = str_replace("__singular_cap_var__", $config->singularCapitalVar, $md);
         $md = str_replace("__module_name_2__", $config->moduleName2, $md);
-        
+        $md = str_replace("__small_module_name__", strtolower($config->moduleName), $md);
+
         // Listing columns
         $inputFields = "";
         foreach($config->module->fields as $field) {
@@ -111,12 +112,12 @@ class CodeGenerator
         $md = str_replace("__singular_var__", $config->singularVar, $md);
         $md = str_replace("__singular_cap_var__", $config->singularCapitalVar, $md);
         $md = str_replace("__module_name_2__", $config->moduleName2, $md);
-        
+
         // Listing columns
         $inputFields = "";
         foreach($config->module->fields as $field) {
-			
-            $inputFields .= "\t\t\t\t\t " . Html::textInput('colname', $field['colname'])."\n";
+
+            $inputFields .= "\t\t\t\t\t " . Html::textInput($field['colname'], '')."\n";
         }
         $inputFields = trim($inputFields);
         $md = str_replace("__input_fields__", $inputFields, $md);
@@ -290,7 +291,7 @@ class CodeGenerator
                     }
                     $values = "";
                     if($field['popup_vals'] != "") {
-                        if(starts_with($field['popup_vals'], "[")) {
+                        if(substr($field['popup_vals'], 0, strlen("[")) === "[") {
                             $values = $field['popup_vals'];
                         } else {
                             $values = '"' . $field['popup_vals'] . '"';

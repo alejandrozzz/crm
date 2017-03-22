@@ -103,9 +103,9 @@ class ModuleFields extends ActiveRecord{
                 $field->listing_col = 0;
             }
             if($request['ModuleFields']['field_type'] == 7 || $request['ModuleFields']['field_type'] == 15 || $request['ModuleFields']['field_type'] == 18 || $request['ModuleFields']['field_type'] == 20) {
-                if($request['ModuleFields']['popup_value_type'] == 1) {
+                if($request['popup_value_type'] == 1) {
                     $field->popup_vals = "@" . $request['ModuleFields']['popup_vals'];
-                } else if($request['ModuleFields']['popup_value_type'] == 2) {
+                } else if($request['popup_value_type'] == 2) {
                     $request['ModuleFields']['popup_vals'] = json_encode($request['ModuleFields']['popup_vals']);
                     $field->popup_vals = $request['ModuleFields']['popup_vals'];
                 }
