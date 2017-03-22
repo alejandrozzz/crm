@@ -8,6 +8,7 @@ use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
 AppAsset::register($this);
+use yii\helpers\Url;
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -31,7 +32,7 @@ if ( $currentAction != 'site/signup' && $currentAction != 'site/login' && $curre
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="<?php Yii::$app->homeUrl ?>" class="site_title"><i class="fa fa-thumbs-up"></i> <span>DupaCRM</span></a>
+              <a href="<?php echo Yii::$app->homeUrl ?>" class="site_title"><i class="fa fa-thumbs-up"></i> <span>DupaCRM</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -59,7 +60,7 @@ if ( $currentAction != 'site/signup' && $currentAction != 'site/login' && $curre
                 <h3>Modules</h3>
                 <ul class="nav side-menu">
 				<?php foreach ($menuItems as $module) : ?>
-                  <li><a href="<?php echo Yii::$app->getUrlManager()->createUrl(['/dupa/'.$module->url.'/index','id'=>$module->id]); ?>"><i class="<?=$module->icon ?>"></i> <?=$module->name ?> <span class="fa fa-chevron-down"></span></a>
+                  <li><a href="<?php echo Yii::$app->getUrlManager()->createUrl(['/dupa/'.$module->url.'/index','id'=>$module->id]); ?>"><i class="<?=$module->icon ?>"></i> <?=$module->name ?><!-- <span class="fa fa-chevron-down"></span>--></a>
                     <ul class="nav child_menu">
                       <li><a href="index.html">Dashboard</a></li>
                       <li><a href="index2.html">Dashboard2</a></li>
@@ -151,7 +152,7 @@ if ( $currentAction != 'site/signup' && $currentAction != 'site/login' && $curre
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
                     <li><a href="javascript:;"> Profile</a></li>
                     <li>
-                      <a href="javascript:;">
+                      <a href="<?php echo Yii::$app->urlManagerBackend->createUrl(['']);?>">
                         <span class="badge bg-red pull-right">50%</span>
                         <span>Settings</span>
                       </a>

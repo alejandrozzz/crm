@@ -53,3 +53,12 @@ frontend
 vendor/                  contains dependent 3rd-party packages
 environments/            contains environment-based overrides
 ```
+Configs:
+'urlManagerBackend' => [
+            'class' => 'yii\web\urlManager',
+            'baseUrl' => 'http://backend.localhost/',
+			'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            
+            
+        ],

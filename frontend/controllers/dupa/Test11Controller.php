@@ -12,12 +12,12 @@ use backend\models\ModuleFieldTypes;
 use backend\helpers\DupaHelper;
 use backend\CodeGenerator;
 use yii\helpers\Json;
-use backend\models\__model_name__;
+use backend\models\Test11;
 
 /**
  * Site controller
  */
-class __controller_class_name__ extends Controller
+class Test11Controller extends Controller
 {
 	public $show_action = true;
     /**
@@ -79,12 +79,12 @@ class __controller_class_name__ extends Controller
     public function actionIndex()
     {
 		$this->bodyClass = 'nav-md footer_fixed';
-        $module = Module::getModule('__module_name__');
+        $module = Module::getModule('Test11');
         
         //if(Module::hasAccess($module->id)) {
             return $this->render('index', [
                 'show_actions' => $this->show_action,
-                'listing_cols' => Module::getListingColumns('__module_name__'),
+                'listing_cols' => Module::getListingColumns('Test11'),
                 'module' => get_object_vars($module)
             ]);
         //} else {
@@ -100,9 +100,9 @@ class __controller_class_name__ extends Controller
 
     public function actionStore()
     {
-        //if(Module::hasAccess("__module_name__", "create")) {
+        //if(Module::hasAccess("Test11", "create")) {
             
-            //$rules = Module::validateRules("__module_name__", $request);
+            //$rules = Module::validateRules("Test11", $request);
             
             //$validator = Validator::make($request->all(), $rules);
             
@@ -110,9 +110,9 @@ class __controller_class_name__ extends Controller
              //   return redirect()->back()->withErrors($validator)->withInput();
            // }
             
-            $insert_id = Module::insertModule("__module_name__", Yii::$app->request->post());
+            $insert_id = Module::insertModule("Test11", Yii::$app->request->post());
             
-            //return redirect()->route(config('laraadmin.adminRoute') . '.__route_resource__.index');
+            //return redirect()->route(config('laraadmin.adminRoute') . '.test11.index');
             return $this->redirect(['edit',
 				'id' => $insert_id
 			]);
@@ -121,19 +121,19 @@ class __controller_class_name__ extends Controller
 
     public function actionShow()
     {
-        //if(Module::hasAccess("__module_name__", "view")) {
+        //if(Module::hasAccess("Test11", "view")) {
             
-            $__singular_var__ = __model_name__::find()->where('id = ' . Yii::$app->request->get('id'))->one();
-            if(isset($__singular_var__->id)) {
-                $module = Module::getModule('__module_name__');
-                $module->row = $__singular_var__;
+            $test11 = Test11::find()->where('id = ' . Yii::$app->request->get('id'))->one();
+            if(isset($test11->id)) {
+                $module = Module::getModule('Test11');
+                $module->row = $test11;
                 
                 return $this->render('show', [
                     'module' => $module,
                     'view_col' => $module->view_col,
                     'no_header' => true,
                     'no_padding' => "no-padding",
-					'__singular_var__' => $__singular_var__
+					'test11' => $test11
                 ]);
             }
        // } else {
@@ -144,17 +144,17 @@ class __controller_class_name__ extends Controller
 
     public function actionEdit()
     {
-        //if(Module::hasAccess("__module_name__", "edit")) {
-            $__singular_var__ = __model_name__::find()->where('id = ' . Yii::$app->request->get('id'))->one();
-            if(isset($__singular_var__->id)) {
-                $module = Module::getModule('__module_name__');
+        //if(Module::hasAccess("Test11", "edit")) {
+            $test11 = Test11::find()->where('id = ' . Yii::$app->request->get('id'))->one();
+            if(isset($test11->id)) {
+                $module = Module::getModule('Test11');
                 
-                $module->row = $__singular_var__;
+                $module->row = $test11;
                 
                 return $this->render('edit', [
                     'module' => $module,
                     'view_col' => $module->view_col,
-					'__singular_var__' => $__singular_var__
+					'test11' => $test11
                 ]);
             } 
     }
@@ -163,7 +163,7 @@ class __controller_class_name__ extends Controller
     public function actionUpdate()
     {
         
-            $insert_id = Module::updateRow("__module_name__", Yii::$app->request->post(), Yii::$app->request->post('id'));
+            $insert_id = Module::updateRow("Test11", Yii::$app->request->post(), Yii::$app->request->post('id'));
             
            return $this->redirect(['index',
 				'id' => $insert_id
@@ -173,25 +173,25 @@ class __controller_class_name__ extends Controller
 
     public function actionDestroy()
     {
-        /*if(Module::hasAccess("__module_name__", "delete")) {*/
-            __model_name__::find()->where(["id" => Yii::$app->request->get('id')])->one()->delete();
+        /*if(Module::hasAccess("Test11", "delete")) {*/
+            Test11::find()->where(["id" => Yii::$app->request->get('id')])->one()->delete();
             
             // Redirecting to index() method
             return $this->redirect(['index',
-				//'id' => $insert_id
+				'id' => $insert_id
 			]);
     }
 
     public function actionDtajax()
     {
-        /*$module = Module::getModule('__module_name__');
-        $listing_cols = Module::getListingColumns('__module_name__');
+        /*$module = Module::getModule('Test11');
+        $listing_cols = Module::getListingColumns('Test11');
         
-        $values = DB::table('__db_table_name__')->select($listing_cols)->whereNull('deleted_at');
+        $values = DB::table('test11')->select($listing_cols)->whereNull('deleted_at');
         $out = Datatables::of($values)->make();
         $data = $out->getData();
         
-        $fields_popup = ModuleFields::getModuleFields('__module_name__');
+        $fields_popup = ModuleFields::getModuleFields('Test11');
         
         for($i = 0; $i < count($data->data); $i++) {
             for($j = 0; $j < count($listing_cols); $j++) {
@@ -200,7 +200,7 @@ class __controller_class_name__ extends Controller
                     $data->data[$i][$j] = ModuleFields::getFieldValue($fields_popup[$col], $data->data[$i][$j]);
                 }
                 if($col == $module->view_col) {
-                    $data->data[$i][$j] = '<a href="' . url(config('laraadmin.adminRoute') . '/__route_resource__/' . $data->data[$i][0]) . '">' . $data->data[$i][$j] . '</a>';
+                    $data->data[$i][$j] = '<a href="' . url(config('laraadmin.adminRoute') . '/test11/' . $data->data[$i][0]) . '">' . $data->data[$i][$j] . '</a>';
                 }
                 // else if($col == "author") {
                 //    $data->data[$i][$j];
@@ -209,12 +209,12 @@ class __controller_class_name__ extends Controller
             
             if($this->show_action) {
                 $output = '';
-                if(Module::hasAccess("__module_name__", "edit")) {
-                    $output .= '<a href="' . url(config('laraadmin.adminRoute') . '/__route_resource__/' . $data->data[$i][0] . '/edit') . '" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a>';
+                if(Module::hasAccess("Test11", "edit")) {
+                    $output .= '<a href="' . url(config('laraadmin.adminRoute') . '/test11/' . $data->data[$i][0] . '/edit') . '" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a>';
                 }
                 
-                if(Module::hasAccess("__module_name__", "delete")) {
-                    $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.__route_resource__.destroy', $data->data[$i][0]], 'method' => 'delete', 'style' => 'display:inline']);
+                if(Module::hasAccess("Test11", "delete")) {
+                    $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.test11.destroy', $data->data[$i][0]], 'method' => 'delete', 'style' => 'display:inline']);
                     $output .= ' <button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button>';
                     $output .= Form::close();
                 }

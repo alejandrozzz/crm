@@ -3,7 +3,7 @@
 use yii\db\Migration;
 use backend\models\Module;
 
-class Create_companiess_table extends Migration
+class Create_test11s_table extends Migration
 {
     /**
      * Migration generate Module Table Schema by LaraAdmin
@@ -12,24 +12,11 @@ class Create_companiess_table extends Migration
      */
     public function up()
     {
-        Module::generate("Companies", 'companiess', 'name', 'fa-building', [
+        Module::generate("Test11", 'test11s', 'name', 'fa-book', [
             [
                 "colname" => "name",
                 "label" => "Name",
-                "field_type" => "String",
-                "unique" => 1,
-                "defaultvalue" => "",
-                "minlength" => 0,
-                "maxlength" => 0,
-                "created_at" => 0,
-                "updated_at" => 0,
-                "deleted_at" => 0,
-                "required" => 1,
-                "listing_col" => 1
-            ], [
-                "colname" => "address",
-                "label" => "Address",
-                "field_type" => "Address",
+                "field_type" => "Textarea",
                 "unique" => 0,
                 "defaultvalue" => "",
                 "minlength" => 0,
@@ -50,9 +37,9 @@ class Create_companiess_table extends Migration
      */
     public function down()
     {
-		$tableSchema = Yii::$app->db->schema->getTableSchema('companiess');
+		$tableSchema = Yii::$app->db->schema->getTableSchema('test11s');
         if($tableSchema !== null) {
-            $this->dropTable('companiess');
+            $this->dropTable('test11s');
         }
     }
 }

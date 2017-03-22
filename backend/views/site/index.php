@@ -21,13 +21,13 @@ $this->title = 'My Yii Application';
     ?>
 
     <?php if(isset($module->id) && $module['name'] == $menu->name) : ?>
-    <?php echo \backend\helpers\DupaHelper::print_menu($menu ,true); ?>
+    <?php// echo \backend\helpers\DupaHelper::print_menu($menu ,true); ?>
     <?php else : ?>
-    <?php echo \backend\helpers\DupaHelper::print_menu($menu); ?>
+    <?php //echo \backend\helpers\DupaHelper::print_menu($menu); ?>
     <?php endif; ?>
 
     <?php else : ?>
-    <?php echo \backend\helpers\DupaHelper::print_menu($menu); ?>
+    <?php// echo \backend\helpers\DupaHelper::print_menu($menu); ?>
     <?php endif;?>
     <?php endforeach; ?>
 
