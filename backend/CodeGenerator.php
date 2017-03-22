@@ -118,9 +118,10 @@ class CodeGenerator
 
         foreach($config->module->fields as $field) {
 
-            $inputFields .= '$form->field( (object) $__singular_var__, "'.$field["colname"].'")->textInput(["class"=>"form-control"]);';
+            //$inputFields .= '$form->field( (object) $__singular_var__, "'.$field["colname"].'")->textInput(["class"=>"form-control"]);';
+			$inputFields .= "\t\t\t\t\t ".Html::textInput($field['colname'], '')."\n";
         }
-        $md = str_replace("__singular_var__", $config->singularVar, $inputFields);
+        //$md = str_replace("__singular_var__", $config->singularVar, $inputFields);
         $inputFields = trim($inputFields);
         $md = str_replace("__input_fields__", $inputFields, $md);
 
@@ -313,7 +314,7 @@ class CodeGenerator
                         "\n                \"deleted_at\" => " . 0 . "," .
                         "\n                \"required\" => " . $required . ",";
                     
-                    if($values != "") {
+                    if($values != "" && $values!='""""') {
                         $generateData .= "\n                \"listing_col\" => " . $listing_col . ",";
                         $generateData .= "\n                \"popup_vals\" => " . $values . ",";
                     } else {

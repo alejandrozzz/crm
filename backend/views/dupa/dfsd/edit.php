@@ -2,14 +2,14 @@
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 ?>
- <?php $form = ActiveForm::begin([ 'enableClientValidation' => true, 'action'	=> ['dupa/__db_table_name__/update'], 'method' => 'post',
+ <?php $form = ActiveForm::begin([ 'enableClientValidation' => true, 'action'	=> ['dupa/dfsd/update'], 'method' => 'post',
                     'options'                => [
-                        'id'      => '__singular_var__-edit-form'
+                        'id'      => 'dfsd-edit-form'
 
                     ]]); ?>
-                <?php echo Html::hiddenInput('id', $__singular_var__['id'] ); ?>
+                <?php echo Html::hiddenInput('id', $dfsd['id'] ); ?>
 
-                __input_fields__
+                <input type="text" name="fdsadsd" value="">
 
                 <br>
                 <div class="form-group">

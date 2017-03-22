@@ -1,0 +1,1 @@
+$form->field( (object) $fdassa, "dsaf")->textInput(["class"=>"form-control"]);

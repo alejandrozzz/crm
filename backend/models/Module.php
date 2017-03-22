@@ -134,7 +134,7 @@ class Module extends ActiveRecord
             $m = new Migration();
 
             foreach($fields as $field) {
-                $mod = ModuleFields::find()->where('module', $module->id)->where('colname', $field->colname)->one();
+                $mod = ModuleFields::find()->where(['module', $module->id])->where('colname', $field->colname)->one();
                 if(!isset($mod->id)) {
                     if($field->field_type == "Multiselect" || $field->field_type == "Taginput") {
 
@@ -157,10 +157,12 @@ class Module extends ActiveRecord
                     }
 
                     $pvalues = $field->popup_vals;
+					
                     if(is_array($field->popup_vals) || is_object($field->popup_vals)) {
+						if (($field->popup_vals != '""'))
                         $pvalues = json_encode($field->popup_vals);
                     }
-
+					
                     // Create Module field Metadata / Context
                     $field_obj = ModuleFields::createField([
                         'module' => $module->id,
@@ -173,7 +175,7 @@ class Module extends ActiveRecord
                         'maxlength' => $field->maxlength,
                         'required' => $field->required,
                         'listing_col' => $field->listing_col,
-                        'popup_vals' => $pvalues
+                        'popup_vals' => ''
                     ]);
                     $field->id = $field_obj->id;
                     $field->module_obj = $module;
@@ -789,7 +791,6 @@ class Module extends ActiveRecord
         } else {
             $module = self::find()->where(['name' => $module_name, 'name_db' => $module_name])->asArray()->one();
         }
-
 
         // If Module is found in database also attach its field array to it.
         if(isset($module)) {
