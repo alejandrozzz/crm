@@ -9,6 +9,7 @@ use backend\models\ModuleFieldTypes;
 use backend\models\Menu;
 use backend\helpers\DupaHelper;
 use yii\helpers\Html;
+use backend\Dupa;
 class CodeGenerator
 {
     /**
@@ -119,7 +120,7 @@ class CodeGenerator
         foreach($config->module->fields as $field) {
 
             //$inputFields .= '$form->field( (object) $__singular_var__, "'.$field["colname"].'")->textInput(["class"=>"form-control"]);';
-			$inputFields .= "<div class='form-group'><label class='control-label col-md-3 col-sm-3 col-xs-12' for='".$field['colname']."'>".$field['colname']."</label><div class='col-md-6 col-sm-6 col-xs-12'>".Html::textInput($field['colname'], '', ['class' => 'form-control col-md-7 col-xs-12'])."</div></div>";
+			$inputFields .= DupaFormMaker::input($config->module,$field['colname']);
         }
         //$md = str_replace("__singular_var__", $config->singularVar, $inputFields);
         $inputFields = trim($inputFields);
@@ -295,6 +296,8 @@ class CodeGenerator
                     $values = "";
                     if($field['popup_vals'] != "") {
                         if(substr($field['popup_vals'], 0, strlen("[")) === "[") {
+                            $values = $field['popup_vals'];
+                        } else if (substr($field['popup_vals'], 0, strlen('"')) === '"'){
                             $values = $field['popup_vals'];
                         } else {
                             $values = '"' . $field['popup_vals'] . '"';

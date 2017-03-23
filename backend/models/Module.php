@@ -134,7 +134,7 @@ class Module extends ActiveRecord
             $m = new Migration();
 
             foreach($fields as $field) {
-                $mod = ModuleFields::find()->where(['module', $module->id])->where('colname', $field->colname)->one();
+                $mod = ModuleFields::find()->where(['module' => $module->id, 'colname' => $field->colname])->one();
                 if(!isset($mod->id)) {
                     if($field->field_type == "Multiselect" || $field->field_type == "Taginput") {
 
@@ -1030,14 +1030,14 @@ class Module extends ActiveRecord
                         $row->{$field['colname']} = $request->{$field['colname']};
                         break;
                     case 'Dropdown':
-                        if($request->{$field['colname']} == 0) {
-                            if(starts_with($field['popup_vals'], "@")) {
-                                $request->{$field['colname']} = DB::raw('NULL');
-                            } else if(starts_with($field['popup_vals'], "[")) {
-                                $request->{$field['colname']} = "";
+                        if($request[$field['colname']] == 0) {
+                            if(substr($field['popup_vals'], 0, strlen("@")) === "@") {
+                                $request[$field['colname']] = null;
+                            } else if(substr($field['popup_vals'], 0, strlen("[")) === "@") {
+                                $request[$field['colname']] = "";
                             }
                         }
-                        $row->{$field['colname']} = $request->{$field['colname']};
+                        $row->{$field['colname']} = $request[$field['colname']];
                         break;
                     case 'Multiselect':
                         // TODO: Bug fix
@@ -1087,7 +1087,18 @@ class Module extends ActiveRecord
             return null;
         }
     }
-
+	
+	public static function getByTable($table_name)
+    {
+        $module = self::find()->where(['name_db'=>$table_name])->one();
+        if(isset($module)) {
+            $module = $module->toArray();
+            return self::getModule($module['name']);
+        } else {
+            return null;
+        }
+    }
+	
 	public static function tableName(){
 		return '{{modules}}';
 	}
