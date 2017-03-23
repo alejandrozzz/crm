@@ -80,8 +80,8 @@ class CompaniesController extends Controller
     {
 		$this->bodyClass = 'nav-md footer_fixed';
         $module = Module::getModule('Companies');
-        
-        //if(Module::hasAccess($module->id)) {
+		
+		//if(Module::hasAccess($module->id)) {
             return $this->render('index', [
                 'show_actions' => $this->show_action,
                 'listing_cols' => Module::getListingColumns('Companies'),
@@ -153,6 +153,7 @@ class CompaniesController extends Controller
                 
                 return $this->render('edit', [
                     'module' => $module,
+					'listing_cols' => Module::getListingColumns('Companies'),
                     'view_col' => $module->view_col,
 					'companies' => $companies
                 ]);

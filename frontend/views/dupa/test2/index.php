@@ -15,8 +15,58 @@ $this->title = 'Test2';
 <div class="right_col" role="main">
 <div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">
+	<div class="x_panel">
+                  <div class="x_title">
+                    <h2>Test2 List</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a href="#">Settings 1</a>
+                          </li>
+                          <li><a href="#">Settings 2</a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
 
-    <?php $listing_cols[] =[ 'class' => ActionColumn::className(),
+                    <table class="table">
+                      <thead>
+                        <tr>
+							<th scope="row">Id</th>
+							<?php foreach($listing_cols as $col) : ?>
+								<th><?php echo $col ?></th>
+							<?php endforeach;?>
+							<th scope="row">Edit</th>
+							<th scope="row">Delete</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+					  <?php foreach (Test2::find()->all() as $m) : ?>
+						  <tr>
+                          
+						  <td><?php echo $m->id ?></td>
+						  <?php foreach($listing_cols as $col) : ?>
+								<td><?php echo $m->$col ?></td>
+							<?php endforeach;?>
+							<td><?php echo Html::a('<span class="glyphicon glyphicon-pencil"></span>', Yii::$app->getUrlManager()->createUrl(['/dupa/test2/edit','id'=>$m->id])); ?></td>
+							<td><?php echo Html::a('<span class="glyphicon glyphicon-remove"></span>', Yii::$app->getUrlManager()->createUrl(['/dupa/test2/destroy','id'=>$m->id])); ?></td>
+                        </tr>
+					  <?php endforeach;?>
+                      </tbody>
+                    </table>
+
+                  </div>
+                </div>
+              </div>
+    <?php /*$listing_cols[] =[ 'class' => ActionColumn::className(),
         'buttons' => [
             'view' => function ($url, $model, $key) {
                 $customurl=Yii::$app->getUrlManager()->createUrl(['/dupa/test2/edit','id'=>$model['id']]);
@@ -31,15 +81,15 @@ $this->title = 'Test2';
         ]
     ];
 
-
+*/
     ?>
-    <?= GridView::widget([
+    <?php /*echo GridView::widget([
         'dataProvider' => new ActiveDataProvider([
             'query' => Test2::find(),
         ]),
         'columns' => $listing_cols,
 
-    ]); ?>
+    ]); */?>
 	
 		<?php 
 		$model = new Module();
@@ -59,7 +109,7 @@ $this->title = 'Test2';
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="myModalLabel">Add Module</h4>
+				<h4 class="modal-title" id="myModalLabel">Add New Test2</h4>
 			</div>
 			<?php $form = ActiveForm::begin([ 'enableClientValidation' => true, 'action'	=> ['dupa/test2/store'], 'method' => 'post',
                 'options'                => [
@@ -69,13 +119,13 @@ $this->title = 'Test2';
 			<div class="modal-body">
 				<div class="box-body">
 					
-					<input type="text" name="colname" value="name">
-					
+					Do You really want to create a new instance of Test2 module?
+					<div class="hide"><input type="text" name="colname" value="name"></div>
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<?php echo Html::submitButton('Send', ['class' => 'btn btn-success']) ?>
+				<button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+				<?php echo Html::submitButton('Create', ['class' => 'btn btn-success']) ?>
 			</div>
 			<?php //Modal::end();
 	  ActiveForm::end();?>
@@ -85,7 +135,6 @@ $this->title = 'Test2';
 
 <button class="btn btn-success btn-sm pull-right add_new_module_btn">Add Test2 </button>
 	</div>
-</div>
 </div>
 <script>
 	$(function(){

@@ -3,7 +3,7 @@
 use yii\db\Migration;
 use backend\models\Module;
 
-class Create_test2s_table extends Migration
+class Create_test1s_table extends Migration
 {
     /**
      * Migration generate Module Table Schema by LaraAdmin
@@ -12,19 +12,19 @@ class Create_test2s_table extends Migration
      */
     public function up()
     {
-        Module::generate("Test2", 'test2s', 'name', 'test2', [
+        Module::generate("Test1", 'test1s', 'name', 'ddd', [
             [
                 "colname" => "name",
                 "label" => "Name",
-                "field_type" => "Address",
-                "unique" => 1,
+                "field_type" => "Checkbox",
+                "unique" => 0,
                 "defaultvalue" => "",
                 "minlength" => 0,
-                "maxlength" => 256,
+                "maxlength" => 0,
                 "created_at" => 0,
                 "updated_at" => 0,
                 "deleted_at" => 0,
-                "required" => 1,
+                "required" => 0,
                 "listing_col" => 1
             ]
         ]);
@@ -37,9 +37,9 @@ class Create_test2s_table extends Migration
      */
     public function down()
     {
-		$tableSchema = Yii::$app->db->schema->getTableSchema('test2s');
+		$tableSchema = Yii::$app->db->schema->getTableSchema('test1s');
         if($tableSchema !== null) {
-            $this->dropTable('test2s');
+            $this->dropTable('test1s');
         }
     }
 }

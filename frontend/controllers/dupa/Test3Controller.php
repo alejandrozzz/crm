@@ -78,6 +78,7 @@ class Test3Controller extends Controller
 
     public function actionIndex()
     {
+		$this->bodyClass = 'nav-md footer_fixed';
         $module = Module::getModule('Test3');
         
         //if(Module::hasAccess($module->id)) {
@@ -112,7 +113,7 @@ class Test3Controller extends Controller
             $insert_id = Module::insertModule("Test3", Yii::$app->request->post());
             
             //return redirect()->route(config('laraadmin.adminRoute') . '.test3.index');
-            return $this->redirect(['show',
+            return $this->redirect(['edit',
 				'id' => $insert_id
 			]);
         
@@ -152,6 +153,7 @@ class Test3Controller extends Controller
                 
                 return $this->render('edit', [
                     'module' => $module,
+					'listing_cols' => Module::getListingColumns('Test3'),
                     'view_col' => $module->view_col,
 					'test3' => $test3
                 ]);
@@ -172,14 +174,13 @@ class Test3Controller extends Controller
 
     public function actionDestroy()
     {
-        /*if(Module::hasAccess("Test3", "delete")) {
-            Test3::find($id)->delete();
+        /*if(Module::hasAccess("Test3", "delete")) {*/
+            Test3::find()->where(["id" => Yii::$app->request->get('id')])->one()->delete();
             
             // Redirecting to index() method
-            return redirect()->route(config('laraadmin.adminRoute') . '.test3.index');
-        } else {
-            return redirect(config('laraadmin.adminRoute') . "/");
-        }*/
+            return $this->redirect(['index',
+				//'id' => $insert_id
+			]);
     }
 
     public function actionDtajax()

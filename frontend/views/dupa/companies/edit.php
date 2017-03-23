@@ -50,3 +50,11 @@ use yii\helpers\Html;
 </div>
 </div>
 </div>
+<?php 
+var_dump($listing_cols);
+$tmp=[];
+	foreach ($listing_cols as $col){
+		$tmp[$col] = $module->row->attributes[$col];	
+	}
+	Yii::$app->view->registerJs('var values = "'. json_encode($tmp) .'"',  \yii\web\View::POS_HEAD);
+	?>

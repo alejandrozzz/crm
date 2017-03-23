@@ -7,7 +7,7 @@ use yii\helpers\Html;
 	<div class="col-md-12 col-sm-12 col-xs-12">
 	<div class="x_panel">
                   <div class="x_title">
-                    <h2>test2 List</h2>
+                    <h2>Test2 №<?=$test2['id']?> Edit Form</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -36,7 +36,7 @@ use yii\helpers\Html;
                     ]]); ?>
                 <?php echo Html::hiddenInput('id', $test2['id'] ); ?>
 
-                <div class='form-group'><label class='control-label col-md-3 col-sm-3 col-xs-12' for='name'>name</label><input type="text" class="form-control col-md-7 col-xs-12" name="name" value=""></div>
+                <div class='form-group'><label class='control-label col-md-3 col-sm-3 col-xs-12' for='name'>name</label><div class='col-md-6 col-sm-6 col-xs-12'><input type="text" class="form-control col-md-7 col-xs-12" name="name" value=""></div></div>
 
                 <div class="ln_solid"></div>
                 <div class="form-group">
@@ -50,3 +50,19 @@ use yii\helpers\Html;
 </div>
 </div>
 </div>
+<?php 
+	$tmp=[];
+	foreach ($listing_cols as $col){
+		$tmp[$col] = $module->row->attributes[$col];	
+	}
+	Yii::$app->view->registerJs("var values = '". json_encode($tmp) ."'",  \yii\web\View::POS_HEAD);
+?>
+<script>
+	$(document).ready(function(){
+		
+		$.each(JSON.parse(values), function(index, value) {
+			$('input[name="'+index+'"]').val(value);
+		});
+		
+	})
+</script>

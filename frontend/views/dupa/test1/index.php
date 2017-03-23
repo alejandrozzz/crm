@@ -5,19 +5,19 @@ use yii\bootstrap\ActiveForm;
 use backend\models\Module;
 use backend\controllers\Dupa;
 use yii\helpers\Url;
-use backend\models\Test3;
+use backend\models\Test1;
 use yii\grid\GridView;
 use yii\data\ActiveDataProvider;
 use yii\grid\ActionColumn;
 
-$this->title = 'Test3';
+$this->title = 'Test1';
 ?>
 <div class="right_col" role="main">
 <div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">
 	<div class="x_panel">
                   <div class="x_title">
-                    <h2>Test3 List</h2>
+                    <h2>Test1 List</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -49,15 +49,15 @@ $this->title = 'Test3';
                         </tr>
                       </thead>
                       <tbody>
-					  <?php foreach (Test3::find()->all() as $m) : ?>
+					  <?php foreach (Test1::find()->all() as $m) : ?>
 						  <tr>
                           
 						  <td><?php echo $m->id ?></td>
 						  <?php foreach($listing_cols as $col) : ?>
 								<td><?php echo $m->$col ?></td>
 							<?php endforeach;?>
-							<td><?php echo Html::a('<span class="glyphicon glyphicon-pencil"></span>', Yii::$app->getUrlManager()->createUrl(['/dupa/test3/edit','id'=>$m->id])); ?></td>
-							<td><?php echo Html::a('<span class="glyphicon glyphicon-remove"></span>', Yii::$app->getUrlManager()->createUrl(['/dupa/test3/destroy','id'=>$m->id])); ?></td>
+							<td><?php echo Html::a('<span class="glyphicon glyphicon-pencil"></span>', Yii::$app->getUrlManager()->createUrl(['/dupa/test1/edit','id'=>$m->id])); ?></td>
+							<td><?php echo Html::a('<span class="glyphicon glyphicon-remove"></span>', Yii::$app->getUrlManager()->createUrl(['/dupa/test1/destroy','id'=>$m->id])); ?></td>
                         </tr>
 					  <?php endforeach;?>
                       </tbody>
@@ -69,7 +69,7 @@ $this->title = 'Test3';
     <?php /*$listing_cols[] =[ 'class' => ActionColumn::className(),
         'buttons' => [
             'view' => function ($url, $model, $key) {
-                $customurl=Yii::$app->getUrlManager()->createUrl(['/dupa/test3/edit','id'=>$model['id']]);
+                $customurl=Yii::$app->getUrlManager()->createUrl(['/dupa/test1/edit','id'=>$model['id']]);
                 return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $customurl);
             },
             'update' => function ($url, $model, $key) {
@@ -85,7 +85,7 @@ $this->title = 'Test3';
     ?>
     <?php /*echo GridView::widget([
         'dataProvider' => new ActiveDataProvider([
-            'query' => Test3::find(),
+            'query' => Test1::find(),
         ]),
         'columns' => $listing_cols,
 
@@ -109,19 +109,18 @@ $this->title = 'Test3';
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="myModalLabel">Add New Test3</h4>
+				<h4 class="modal-title" id="myModalLabel">Add New Test1</h4>
 			</div>
-			<?php $form = ActiveForm::begin([ 'enableClientValidation' => true, 'action'	=> ['dupa/test3/store'], 'method' => 'post',
+			<?php $form = ActiveForm::begin([ 'enableClientValidation' => true, 'action'	=> ['dupa/test1/store'], 'method' => 'post',
                 'options'                => [
-                    'id'      => 'test3-add-form'
+                    'id'      => 'test1-add-form'
 					
                  ]]); ?>
 			<div class="modal-body">
 				<div class="box-body">
 					
-					Do You really want to create a new instance of Test3 module?
-					<div class="hide"><input type="text" name="colname" value="name">
-					 <input type="text" name="colname" value="address"></div>
+					Do You really want to create a new instance of Test1 module?
+					<div class="hide"><input type="text" name="colname" value="name"></div>
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -134,7 +133,7 @@ $this->title = 'Test3';
 	</div>
 </div>
 
-<button class="btn btn-success btn-sm pull-right add_new_module_btn">Add Test3 </button>
+<button class="btn btn-success btn-sm pull-right add_new_module_btn">Add Test1 </button>
 	</div>
 </div>
 <script>

@@ -12,7 +12,7 @@ class Create_test3s_table extends Migration
      */
     public function up()
     {
-        Module::generate("Test3", 'test3s', 'name', 'test3', [
+        Module::generate("Test3", 'test3s', 'name', 'test2', [
             [
                 "colname" => "name",
                 "label" => "Name",
@@ -21,6 +21,19 @@ class Create_test3s_table extends Migration
                 "defaultvalue" => "",
                 "minlength" => 0,
                 "maxlength" => 0,
+                "created_at" => 0,
+                "updated_at" => 0,
+                "deleted_at" => 0,
+                "required" => 1,
+                "listing_col" => 1
+            ], [
+                "colname" => "address",
+                "label" => "Address",
+                "field_type" => "Address",
+                "unique" => 0,
+                "defaultvalue" => "",
+                "minlength" => 0,
+                "maxlength" => 256,
                 "created_at" => 0,
                 "updated_at" => 0,
                 "deleted_at" => 0,
